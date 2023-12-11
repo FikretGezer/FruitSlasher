@@ -163,6 +163,8 @@ MonoBehaviour:
   rotateSpeed: 50
   spawnOffset: 1
   offset: {x: 0, y: 0}
+  didGetCut: 0
+  isCompleted: 0
 --- !u!1 &3596735288898191162
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,9 +175,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6802992031637113451}
   - component: {fileID: 2259709156367839231}
+  - component: {fileID: 3229880626266427640}
+  - component: {fileID: 8771361956880576213}
   m_Layer: 0
   m_Name: pearD
-  m_TagString: Untagged
+  m_TagString: down
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,7 +193,7 @@ Transform:
   m_GameObject: {fileID: 3596735288898191162}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.15, z: 0}
+  m_LocalPosition: {x: 0, y: -0.493, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -247,6 +251,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &3229880626266427640
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3596735288898191162}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &8771361956880576213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3596735288898191162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23056f5db56ab6f4d83bba43c3790a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5753024543445310100
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,9 +300,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1677263214437854273}
   - component: {fileID: 3639058148735551781}
+  - component: {fileID: 2193214930952114041}
+  - component: {fileID: 2589744470252623666}
   m_Layer: 0
   m_Name: pearU
-  m_TagString: Untagged
+  m_TagString: up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -273,7 +318,7 @@ Transform:
   m_GameObject: {fileID: 5753024543445310100}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.15, z: 0}
+  m_LocalPosition: {x: -0.092, y: 0.467, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -331,3 +376,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &2193214930952114041
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5753024543445310100}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &2589744470252623666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5753024543445310100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23056f5db56ab6f4d83bba43c3790a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
