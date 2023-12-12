@@ -19,7 +19,7 @@ public class FruitSpawner : MonoBehaviour
         if(currentFruit != null && !currentFruit.activeInHierarchy)
             currentFruit = null;
         //Spawn new fruit
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetKeyDown(KeyCode.A))
         {
             var fruit = GetFruit();
             currentFruit = fruit;
@@ -117,7 +117,7 @@ public class FruitSpawner : MonoBehaviour
         while(i < 10)
         {
             var rnd = Random.Range(0, _fruitList.Count);
-            if(!_fruitList[rnd].activeInHierarchy && _fruitList[rnd].GetComponent<Fruit>().isCompleted)
+            if(!_fruitList[rnd].activeInHierarchy && _fruitList[rnd].GetComponent<Fruit>().cutable)
                 return _fruitList[rnd];
             i++;
         }

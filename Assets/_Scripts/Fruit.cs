@@ -18,8 +18,8 @@ public class Fruit : MonoBehaviour
     private float minY, maxY;
     private float multiplier = 1f;
     private bool isItAppearedFirst;
-    private bool didGetCut;
-    public bool isCompleted; //Checks are there 3 alt object
+    public bool cutIt;
+    public bool cutable; //Checks are there 3 alt object
 
     //For splitting
     private GameObject upPart;
@@ -30,15 +30,14 @@ public class Fruit : MonoBehaviour
         cam = Camera.main;
 
         //Get parts for slicing
-        upPart = transform.GetChild(1).gameObject;
-        downPart = transform.GetChild(2).gameObject;
+        downPart = transform.GetChild(1).gameObject;//Down Part
+        upPart = transform.GetChild(2).gameObject;//Upper Part
 
-        isCompleted = true;
+        cutable = true;
 
         //Assign min and max values of the screen
         minX = cam.ScreenToWorldPoint(new Vector2(0f, 0f)).x;
         maxX = cam.ScreenToWorldPoint(new Vector2(Screen.width, 0f)).x;
-        Debug.Log($"{minX}, {maxX}");
         minY = cam.ScreenToWorldPoint(new Vector2(0f, 0f)).y;
         maxY = cam.ScreenToWorldPoint(new Vector2(0f, Screen.height)).y;
     }
@@ -54,8 +53,11 @@ public class Fruit : MonoBehaviour
     }
     private void Update() {
         //Rotate fruit randomly
-        rot += Vector3.forward * rotateSpeed * multiplier * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(rot);
+        if(cutable)
+        {
+            rot += Vector3.forward * rotateSpeed * multiplier * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(rot);
+        }
 
         //Check is fruit outside of the screen before return it to the fruit pool
         if(IsOutsideOfTheCamera() && isItAppearedFirst)
@@ -68,7 +70,9 @@ public class Fruit : MonoBehaviour
         if(Input.GetMouseButtonDown(1))
         {
             if(transform.childCount >= 3)
-                didGetCut = true;
+            {
+                cutIt = true;
+            }
         }
     }
     private void FixedUpdate() {
@@ -83,33 +87,33 @@ public class Fruit : MonoBehaviour
             rigid.AddForce(forceDir * cutSpeed, ForceMode2D.Impulse);
         }
 
-        if(didGetCut)
+        if(cutIt)
         {
-            didGetCut = false;
+            cutIt = false;
 
-            GetComponent<Fruit>().isCompleted = false;
+            GetComponent<Fruit>().cutable = false;
 
-            var child0 = transform.GetChild(1);
-            var child1 = transform.GetChild(2);
+            // var child0 = transform.GetChild(1);
+            // var child1 = transform.GetChild(2);
 
-            if(child0.tag != "down")
+            if(downPart.tag != "down")
             {
-                var temp = child0;
-                child0 = child1;
-                child1 = temp;
+                var temp = downPart;
+                downPart = upPart;
+                upPart = temp;
             }
 
-            child0.gameObject.SetActive(true);
-            child1.gameObject.SetActive(true);
+            downPart.gameObject.SetActive(true);
+            upPart.gameObject.SetActive(true);
 
-            child0.parent = null;
-            child1.parent = null;
+            downPart.transform.parent = null;
+            upPart.transform.parent = null;
 
-            child0.GetComponent<Rigidbody2D>().AddForce(-transform.up * splitSpeed, ForceMode2D.Impulse);
-            child1.GetComponent<Rigidbody2D>().AddForce(transform.up * splitSpeed, ForceMode2D.Impulse);
+            downPart.GetComponent<Rigidbody2D>().AddForce(-transform.up * splitSpeed, ForceMode2D.Impulse);
+            upPart.GetComponent<Rigidbody2D>().AddForce(transform.up * splitSpeed, ForceMode2D.Impulse);
 
-            child0.GetComponent<Piece>().DidGetCut = true;
-            child1.GetComponent<Piece>().DidGetCut = true;
+            downPart.GetComponent<Piece>().DidGetCut = true;
+            upPart.GetComponent<Piece>().DidGetCut = true;
 
             gameObject.SetActive(false);
         }
@@ -133,7 +137,7 @@ public class Fruit : MonoBehaviour
         rot = Vector3.zero;
         transform.rotation = Quaternion.Euler(rot);
         isItAppearedFirst = false;
-        didGetCut = false;
+        cutIt = false;
         jump = false;
     }
 }

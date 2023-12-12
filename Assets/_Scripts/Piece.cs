@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Piece : MonoBehaviour
@@ -56,8 +54,13 @@ public class Piece : MonoBehaviour
                 transform.rotation = Quaternion.Euler(Vector3.zero);
                 transform.localPosition = basePosition;
 
+                /*
+                    • Check did both pieces return
+                    • Also we can check, are there objects with tags up and down
+                    • If there is we can make the fruit cutable again
+                */
                 if(parentFruit.transform.childCount >= 3)
-                    parentFruit.GetComponent<Fruit>().isCompleted = true;
+                    parentFruit.GetComponent<Fruit>().cutable = true;
             }
         }
     }
