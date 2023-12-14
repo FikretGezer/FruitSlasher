@@ -6,6 +6,17 @@ TagManager:
   tags:
   - down
   - up
+  - FxTemporaire
+  - greenApple
+  - lemon
+  - lime
+  - orange
+  - peach
+  - pear
+  - readApple
+  - starFruit
+  - strawberry
+  - watermelon
   layers:
   - Default
   - TransparentFX

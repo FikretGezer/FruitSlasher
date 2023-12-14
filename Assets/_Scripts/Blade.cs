@@ -1,14 +1,22 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Blade : MonoBehaviour
 {
+    private readonly string[] tags = {"greenApple","lemon","lime","orange","peach","pear","redApple","starFruit","strawberry","watermelon"};
+    private readonly string[] colors = {"#ABC837","#FFDC53","#94B800","#FF8A00","#FFCD08","#A0BB33","#C90000","#F9D700","#D40000","#225500"};
     [SerializeField] private GameObject trailEffect;
+    [SerializeField] private Sprite[] splashes;
 
     private Camera cam;
     private Vector2 startPos;
     private Vector2 endPos;
     private void Awake() {
         cam = Camera.main;
+        Cursor.lockState = CursorLockMode.Confined;
 
         if(trailEffect != null)
             trailEffect.SetActive(false);
@@ -16,9 +24,6 @@ public class Blade : MonoBehaviour
     private void Update() {
         RenderTrailEffect();
         CutTheFruit();
-
-
-
     }
     private bool started;
     private void CutTheFruit()
@@ -63,6 +68,16 @@ public class Blade : MonoBehaviour
                         var targetRot = Quaternion.FromToRotation(up, upR);
                         fruit.transform.rotation = Quaternion.Euler(targetRot.eulerAngles);
 
+                        // cut effect
+                        var hitEf = EffectSpawner.Instance.GetEffect();
+                        hitEf.transform.position = fruit.transform.position;
+                        hitEf.SetActive(true);
+
+                        // splash effect
+                        SpawnSplash(fruit.tag, fruit.transform.position);
+
+                        UIUpdater.Instance.IncreaseScore();
+
                         fruit.cutIt = true;
                         /*
                             This is open for some minor adjustments
@@ -86,6 +101,39 @@ public class Blade : MonoBehaviour
                 trailEffect.SetActive(false);
         }
     }
+    private void SpawnSplash(string fruitTag, Vector3 pos)
+    {
+        // Get splash from the pool
+        var splashEf = EffectSpawner.Instance.GetEffectSplash();
+        splashEf.transform.position = pos;
+
+        // Check tags for coloring splashes
+        foreach(var currentTag in tags)
+        {
+            if(fruitTag == currentTag)
+            {
+                int idx = Array.IndexOf(tags, currentTag);
+
+                Color newCol;
+                if(ColorUtility.TryParseHtmlString(colors[idx], out newCol))
+                {
+                    splashEf.GetComponent<SpriteRenderer>().color = newCol;
+                }
+            }
+        }
+        // Assign random size to make it look random
+        var rndSize = Random.Range(0.3f, 0.5f);
+        splashEf.transform.localScale = new Vector3(rndSize, rndSize, rndSize);
+
+        // Assign random splash sprite to make it look random
+        var rndSplash = Random.Range(0, splashes.Length);
+        splashEf.GetComponent<SpriteRenderer>().sprite = splashes[rndSplash];
+
+        // Start animation
+        splashEf.SetActive(true);
+        splashEf.GetComponent<Animator>().SetTrigger("reduceAlpha");
+    }
+
     /*
         1->
             • Add colliders to the fruits

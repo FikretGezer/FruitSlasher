@@ -15,79 +15,45 @@ public class FruitSpawner : MonoBehaviour
     private void Awake() {
         CreateFruits();
     }
+    private void Start() {
+        SpawnTimer();
+    }
     private void Update() {
-        if(currentFruit != null && !currentFruit.activeInHierarchy)
-            currentFruit = null;
+        // if(currentFruit != null && !currentFruit.activeInHierarchy)
+        //     currentFruit = null;
         //Spawn new fruit
         if(Input.GetKeyDown(KeyCode.A))
+        {
+            var fruit = GetFruit();
+            // currentFruit = fruit;
+            fruit.SetActive(true);
+        }
+
+    }
+    private void SpawnTimer()
+    {
+        // Random delay time
+        float rndDelayTime = Random.Range(2f, 3f);
+        // Call cor
+        StartCoroutine(SpawnTimerCor(rndDelayTime));
+    }
+    IEnumerator SpawnTimerCor(float delayTime)
+    {
+        //Delay
+        yield return new WaitForSeconds(delayTime);
+
+        // Random fruit spawn amount
+        int rndSpawnCount = Random.Range(1, 11);
+
+        for (int i = 0; i < rndSpawnCount; i++)
         {
             var fruit = GetFruit();
             currentFruit = fruit;
             fruit.SetActive(true);
         }
-        // if(Input.GetMouseButtonDown(1))
-        // {
-        //     if(currentFruit != null)
-        //     {
-        //         cutIt = true;
-        //     }
-        // }
-        // GetPosses();
+        StartCoroutine(SpawnTimerCor(delayTime));
     }
-    // private Vector2 startPos;
-    // private Vector2 endPos;
-    // private bool clicked;
-    // private void GetPosses()
-    // {
-    //     Debug.Log("deneme");
-    //     if(Input.GetMouseButtonDown(0))
-    //     {
-    //         clicked = false;
-    //         startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //     }
-    //     if(Input.GetMouseButtonUp(0))
-    //     {
-    //         endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //         clicked = true;
-    //         Debug.Log($"startPos{startPos}, endPos: {endPos}");
-    //     }
-    // }
-    // private void OnDrawGizmos() {
-    //     if(clicked)
-    //         Gizmos.DrawLine(startPos, endPos);
-    // }
-    private void FixedUpdate() {
-        // if(cutIt)
-        // {
-        //     cutIt = false;
-
-        //     currentFruit.GetComponent<Fruit>().isCompleted = false;
-
-        //     var child0 = currentFruit.transform.GetChild(1);
-        //     var child1 = currentFruit.transform.GetChild(2);
-
-        //     if(child0.tag != "down")
-        //     {
-        //         var temp = child0;
-        //         child0 = child1;
-        //         child1 = temp;
-        //     }
-
-        //     child0.gameObject.SetActive(true);
-        //     child1.gameObject.SetActive(true);
-
-        //     child0.parent = null;
-        //     child1.parent = null;
-
-        //     child0.GetComponent<Rigidbody2D>().AddForce(-currentFruit.transform.up * splitSpeed, ForceMode2D.Impulse);
-        //     child1.GetComponent<Rigidbody2D>().AddForce(currentFruit.transform.up * splitSpeed, ForceMode2D.Impulse);
-
-        //     child0.GetComponent<Piece>().DidGetCut = true;
-        //     child1.GetComponent<Piece>().DidGetCut = true;
-
-        //     currentFruit.SetActive(false);
-        // }
-    }
+    #region Fruit Pool
     //Spawns objects for pool
     private void CreateFruits()
     {
@@ -124,4 +90,5 @@ public class FruitSpawner : MonoBehaviour
 
         return CreateNewFruit();
     }
+    #endregion
 }

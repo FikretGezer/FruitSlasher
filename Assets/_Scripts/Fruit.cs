@@ -61,7 +61,10 @@ public class Fruit : MonoBehaviour
 
         //Check is fruit outside of the screen before return it to the fruit pool
         if(IsOutsideOfTheCamera() && isItAppearedFirst)
+        {
+            UIUpdater.Instance.DecreaseHealth();
             gameObject.SetActive(false);
+        }
         if(!IsOutsideOfTheCamera())
         {
             isItAppearedFirst = true;
@@ -83,7 +86,10 @@ public class Fruit : MonoBehaviour
             //Apply force more to the right if it spawned on the left of the screen
             //Apply force more to the left if it spawned on the right of the screen
             //Basically change the x value
-            var forceDir = new Vector2(-(transform.position.x / 10f), 1f);
+            var posX = transform.position.x / 10f;
+            var rndX = posX < 0f ? Random.Range(0f, -posX) : Random.Range(-posX, 0f);
+            Debug.Log($"PosX: {posX}, RNDX: {rndX}");
+            var forceDir = new Vector2(rndX, 1f);
             rigid.AddForce(forceDir * cutSpeed, ForceMode2D.Impulse);
         }
 
