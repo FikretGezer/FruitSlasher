@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Runtime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -69,7 +70,7 @@ public class Blade : MonoBehaviour
                         fruit.transform.rotation = Quaternion.Euler(targetRot.eulerAngles);
 
                         // cut effect
-                        var hitEf = EffectSpawner.Instance.GetEffect();
+                        var hitEf = EffectSpawner.Instance.GetEffect(EffectType.HitEffect);
                         hitEf.transform.position = fruit.transform.position;
                         hitEf.SetActive(true);
 
@@ -84,6 +85,18 @@ public class Blade : MonoBehaviour
                                 • When players swipe down to up, if start x > end x, fruit rotates other side
                         */
                     }
+                }
+                else//This is bomb
+                {
+                    var _bomb = hit.collider.GetComponent<Bomb>();
+                    _bomb.cutable = false;
+
+                    var bombEf = EffectSpawner.Instance.GetEffect(EffectType.BombEffect);
+                    bombEf.transform.position = _bomb.transform.position;
+                    bombEf.SetActive(true);
+
+                    _bomb.cutIt = true;
+                    UIUpdater.Instance.EndTheGame();
                 }
             }
         }
@@ -104,7 +117,7 @@ public class Blade : MonoBehaviour
     private void SpawnSplash(string fruitTag, Vector3 pos)
     {
         // Get splash from the pool
-        var splashEf = EffectSpawner.Instance.GetEffectSplash();
+        var splashEf = EffectSpawner.Instance.GetEffect(EffectType.SplashEffect);
         splashEf.transform.position = pos;
 
         // Check tags for coloring splashes
@@ -169,7 +182,7 @@ public class Blade : MonoBehaviour
             Gizmos.DrawLine(startPos, startPos + upR * 2);
 
             var rot = Quaternion.FromToRotation(up, upR);
-            Debug.Log("Rotation: " + rot.eulerAngles);
+            // Debug.Log("Rotation: " + rot.eulerAngles);
         }
     }
 }

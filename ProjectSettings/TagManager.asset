@@ -17,6 +17,7 @@ TagManager:
   - starFruit
   - strawberry
   - watermelon
+  - bomb
   layers:
   - Default
   - TransparentFX

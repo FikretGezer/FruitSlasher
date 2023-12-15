@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="Styles.uss" />
+    <ui:VisualElement name="root-element" style="flex-direction: row;">
+        <ui:Button text="X" display-tooltip-when-elided="true" name="delete-button" class="delete-button" style="width: 10%; color: rgb(0, 0, 0);" />
+        <ui:TextField picking-mode="Ignore" name="input-field" style="width: 80%;" />
+    </ui:VisualElement>
+</ui:UXML>

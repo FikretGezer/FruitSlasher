@@ -6,9 +6,17 @@ public class EffectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject hitEffectPrefab;
     [SerializeField] private GameObject splashEffectPrefab;
+    [SerializeField] private GameObject bombEffectPrefab;
+
     private List<GameObject> effectsHit = new List<GameObject>();
     private List<GameObject> effectsSplash = new List<GameObject>();
-    GameObject effectParent;
+    private List<GameObject> effectsBomb = new List<GameObject>();
+    private List<EffectHolder> effectHolders = new List<EffectHolder>();
+
+    private GameObject effectParent;
+
+    private EffectHolder hitEfHolder, splashEfHolder, bombEfHolder;
+
     public static EffectSpawner Instance;
     private void Awake() {
         if(Instance == null) Instance = this;
@@ -16,59 +24,75 @@ public class EffectSpawner : MonoBehaviour
         effectParent = new GameObject();
         effectParent.name = "Effect Parent";
 
-        CreateEffects();
-        GetEffectSplash();
+        hitEfHolder = new EffectHolder(EffectType.HitEffect, hitEffectPrefab, effectsHit);
+        splashEfHolder = new EffectHolder(EffectType.SplashEffect, splashEffectPrefab, effectsSplash);
+        bombEfHolder = new EffectHolder(EffectType.BombEffect, bombEffectPrefab, effectsBomb);
+
+        effectHolders.Add(hitEfHolder);
+        effectHolders.Add(splashEfHolder);
+        effectHolders.Add(bombEfHolder);
+
+        CreateEffects(hitEfHolder);
+        CreateEffects(splashEfHolder);
+        CreateEffects(bombEfHolder);
     }
-    #region Effect Pool
-    private void CreateEffects()
+
+    #region General Effect Pool
+    private void CreateEffects(EffectHolder _holder)
     {
         for(int i = 0; i < 10; i++)
         {
-            var hit = Instantiate(hitEffectPrefab);
-            hit.SetActive(false);
-            hit.transform.SetParent(effectParent.transform);
-            effectsHit.Add(hit);
+            var effect = Instantiate(_holder.PrefabObj);
+            effect.SetActive(false);
+            effect.transform.SetParent(effectParent.transform);
+            _holder.EffectList.Add(effect);
         }
     }
-    public GameObject GetEffect()
+    private EffectHolder GetEffectHolder(EffectType _effectType)
     {
-        foreach(var hit in effectsHit)
+        foreach(var holder in effectHolders)
         {
-            if(!hit.activeSelf)
-                return hit;
+            if(holder.EffectType == _effectType)
+            {
+                return holder;
+            }
         }
-        var newHit = Instantiate(hitEffectPrefab);
-        newHit.SetActive(false);
-        newHit.transform.SetParent(effectParent.transform);
-        effectsHit.Add(newHit);
-        return newHit;
+        return null;
     }
-    #endregion
-    #region Splash Effect Pool
-    private void CreateEffectsSplash()
+    public GameObject GetEffect(EffectType _effectType)
     {
-        for(int i = 0; i < 10; i++)
+        var holder = GetEffectHolder(_effectType);
+
+        foreach(var effect in holder.EffectList)
         {
-            var splash = Instantiate(splashEffectPrefab);
-            splash.SetActive(false);
-            splash.transform.SetParent(effectParent.transform);
-            effectsSplash.Add(splash);
-        }
-    }
-    public GameObject GetEffectSplash()
-    {
-        foreach(var splash in effectsSplash)
-        {
-            if(!splash.activeSelf)
-                return splash;
+            if(!effect.activeSelf)
+                return effect;
         }
 
-        var newSplash = Instantiate(splashEffectPrefab);
-        newSplash.SetActive(false);
-        newSplash.transform.SetParent(effectParent.transform);
-        effectsSplash.Add(newSplash);
+        var newEffect = Instantiate(holder.PrefabObj);
+        newEffect.SetActive(false);
+        newEffect.transform.SetParent(effectParent.transform);
+        holder.EffectList.Add(newEffect);
 
-        return newSplash;
+        return newEffect;
     }
     #endregion
+
+}
+class EffectHolder{
+    public EffectType EffectType { get; set; }
+    public GameObject PrefabObj { get; set; }
+    public List<GameObject> EffectList { get; set; }
+
+    public EffectHolder(EffectType _effectType, GameObject _prefabObj, List<GameObject> _effectList)
+    {
+        EffectType = _effectType;
+        PrefabObj = _prefabObj;
+        EffectList = _effectList;
+    }
+}
+public enum EffectType{
+    HitEffect,
+    SplashEffect,
+    BombEffect
 }

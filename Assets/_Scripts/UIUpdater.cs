@@ -13,8 +13,8 @@ public class UIUpdater : MonoBehaviour
 
     private List<GameObject> healths = new List<GameObject>();
 
-    private int maxHealth = 2;
-    private int scoreCount = 0;
+    private int maxHealth;
+    private int scoreCount;
     private Animator _imageAnimator;
 
     public static UIUpdater Instance;
@@ -22,7 +22,7 @@ public class UIUpdater : MonoBehaviour
         if(Instance == null) Instance = this;
 
         scoreCount = 0;
-        maxHealth = 2;
+        maxHealth = 3;
 
         foreach(Transform healthImage in healthHolder)
             healths.Add(healthImage.gameObject);
@@ -32,17 +32,35 @@ public class UIUpdater : MonoBehaviour
     {
         scoreCount++;
         _tScore.text = scoreCount.ToString();
+
+        if(scoreCount % 50 == 0)
+            FruitSpawner.Instance.IncreasePercentage();
+
         _imageAnimator.SetTrigger("scoreIncreaser");
     }
     public void DecreaseHealth()
     {
-        if(maxHealth >= 0)
+        if(maxHealth > 0)
         {
+            maxHealth--;
             healths[maxHealth].GetComponent<Animator>().SetTrigger("popUp");
             healths[maxHealth].GetComponent<Image>().color = Color.black;
             if(maxHealth <= 0)
                 Debug.Log("<color=red>Game is over</color>");
-            maxHealth--;
+        }
+    }
+    public void EndTheGame()
+    {
+        Debug.Log("End The Game");
+        if(maxHealth > 0)
+        {
+            for (int i = 0; i < maxHealth; i++)
+            {
+                healths[i].GetComponent<Animator>().SetTrigger("popUp");
+                healths[i].GetComponent<Image>().color = Color.black;
+            }
+            maxHealth = 0;
+            Debug.Log("<color=red>Game is over</color>");
         }
     }
 }
