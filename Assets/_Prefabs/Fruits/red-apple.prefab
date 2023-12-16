@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 8319086472198218443}
   m_Layer: 0
   m_Name: red-apple
-  m_TagString: readApple
+  m_TagString: redApple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -326,8 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f7ec8bd611fed49a2dee1021a9c9ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cutSpeed: 13
-  rotateSpeed: 50
   spawnOffset: 1
   splitSpeed: 5
   offset: {x: 0, y: 0}

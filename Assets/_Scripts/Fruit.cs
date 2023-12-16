@@ -4,8 +4,8 @@ using UnityEngine;
 public class Fruit : MonoBehaviour
 {
     //For movement
-    [SerializeField] private float cutSpeed = 1f;
-    [SerializeField] private float rotateSpeed = 1f;
+    private float cutSpeed;
+    private float rotateSpeed;
     [SerializeField] private float spawnOffset = 1f;
     [SerializeField] private float splitSpeed = 5f;
     [SerializeField] private Vector2 offset;

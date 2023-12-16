@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runtime;
 using UnityEngine;
 
 public class FruitSpawner : MonoBehaviour
@@ -46,19 +47,23 @@ public class FruitSpawner : MonoBehaviour
     }
     IEnumerator SpawnTimerCor(float delayTime)
     {
-        //Delay
+        // Delay
         yield return new WaitForSeconds(delayTime);
 
-        // Random fruit spawn amount
-        int rndSpawnCount = Random.Range(1, 11);
-
-        for (int i = 0; i < rndSpawnCount; i++)
+        // Is Game Over?
+        if(GameManager.Situation == GameSituation.Play)
         {
-            var fruit = GetFruit();
-            fruit.SetActive(true);
+            // Random fruit spawn amount
+            int rndSpawnCount = Random.Range(1, 11);
+
+            for (int i = 0; i < rndSpawnCount; i++)
+            {
+                var fruit = GetFruit();
+                fruit.SetActive(true);
+            }
+            SpawnBomb(0.1f);
+            StartCoroutine(SpawnTimerCor(delayTime));
         }
-        SpawnBomb(0.1f);
-        StartCoroutine(SpawnTimerCor(delayTime));
     }
     public void IncreasePercentage()
     {

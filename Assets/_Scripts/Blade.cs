@@ -8,7 +8,8 @@ using Random = UnityEngine.Random;
 public class Blade : MonoBehaviour
 {
     private readonly string[] tags = {"greenApple","lemon","lime","orange","peach","pear","redApple","starFruit","strawberry","watermelon"};
-    private readonly string[] colors = {"#ABC837","#FFDC53","#94B800","#FF8A00","#FFCD08","#A0BB33","#C90000","#F9D700","#D40000","#225500"};
+    private readonly string[] colors = {"#ABC837","#FFDC53","#94B800","#FF8A00","#FFCD08","#A0BB33","#C90000","#F9D700","#D40000","#C90000"};
+    // private readonly string[] colors = {"#ABC837","#FFDC53","#94B800","#FF8A00","#FFCD08","#A0BB33","#C90000","#F9D700","#D40000","#225500"};
     [SerializeField] private GameObject trailEffect;
     [SerializeField] private Sprite[] splashes;
 
@@ -23,11 +24,38 @@ public class Blade : MonoBehaviour
             trailEffect.SetActive(false);
     }
     private void Update() {
-        RenderTrailEffect();
-        CutTheFruit();
+        if(GameManager.Situation == GameSituation.Play)
+        {
+            RenderTrailEffect();
+            Slash();
+        }
     }
     private bool started;
-    private void CutTheFruit()
+    private void ChangeJuiceColor(int idx, Vector3 pos)
+    {
+        var juice = EffectSpawner.Instance.GetEffect(EffectType.JuiceEffect);
+        var main = juice.GetComponent<ParticleSystem>().main;
+        var clr = CodeToColor(idx);
+        main.startColor = new ParticleSystem.MinMaxGradient(clr, clr);
+
+        foreach(Transform pEf in juice.transform)
+        {
+            main = pEf.gameObject.GetComponent<ParticleSystem>().main;
+            main.startColor = new ParticleSystem.MinMaxGradient(clr, clr);
+        }
+        juice.transform.position = pos;
+        juice.SetActive(true);
+    }
+    private Color CodeToColor(int colorIndex)
+    {
+        Color newCol;
+        if(ColorUtility.TryParseHtmlString(colors[colorIndex], out newCol))
+        {
+            return newCol;
+        }
+        return default;
+    }
+    private void Slash()
     {
         if(Input.GetMouseButtonDown(0))
         {
@@ -45,61 +73,84 @@ public class Blade : MonoBehaviour
             var dir = endPos - startPos;
             var length = dir.magnitude;
 
-            RaycastHit2D hit = Physics2D.Raycast(startPos, dir, length);
+            // RaycastHit2D hit = Physics2D.Raycast(startPos, dir, length);
+            RaycastHit2D hit = Physics2D.Raycast(endPos, Vector3.forward);
             if(hit.collider != null)
             {
                 var fruit = hit.collider.GetComponent<Fruit>();
                 if(fruit != null)
                 {
-                    if(fruit.cutable)//Assign a bool variable rather than checking childcount, it's much more safer
-                    {
-                        //In the original game when fruit got cut, to give the player more accurate cutting filling
-                        //Fruit was being rotated
-                        //Do rotating
-                        fruit.cutable = false;
-                        var up = Vector2.up;
-                        var right = Vector2.right;
-                        var rightR = (endPos - startPos).normalized;
-                        Vector2 upR = (Vector2)Vector3.Cross(rightR, -Vector3.forward);
-                        if(startPos.x > endPos.x)
-                        {
-                            upR = (Vector2)Vector3.Cross(rightR, Vector3.forward);
-                        }
-
-                        var targetRot = Quaternion.FromToRotation(up, upR);
-                        fruit.transform.rotation = Quaternion.Euler(targetRot.eulerAngles);
-
-                        // cut effect
-                        var hitEf = EffectSpawner.Instance.GetEffect(EffectType.HitEffect);
-                        hitEf.transform.position = fruit.transform.position;
-                        hitEf.SetActive(true);
-
-                        // splash effect
-                        SpawnSplash(fruit.tag, fruit.transform.position);
-
-                        UIUpdater.Instance.IncreaseScore();
-
-                        fruit.cutIt = true;
-                        /*
-                            This is open for some minor adjustments
-                                • When players swipe down to up, if start x > end x, fruit rotates other side
-                        */
-                    }
+                    CutTheFruit(fruit);
                 }
                 else//This is bomb
                 {
                     var _bomb = hit.collider.GetComponent<Bomb>();
-                    _bomb.cutable = false;
-
-                    var bombEf = EffectSpawner.Instance.GetEffect(EffectType.BombEffect);
-                    bombEf.transform.position = _bomb.transform.position;
-                    bombEf.SetActive(true);
-
-                    _bomb.cutIt = true;
-                    UIUpdater.Instance.EndTheGame();
+                    ExploadTheBomb(_bomb);
                 }
             }
         }
+    }
+
+    private void CutTheFruit(Fruit fruit)
+    {
+        if(fruit.cutable)//Assign a bool variable rather than checking childcount, it's much more safer
+        {
+            //In the original game when fruit got cut, to give the player more accurate cutting filling
+            //Fruit was being rotated
+            //Do rotating
+            fruit.cutable = false;
+
+            // Rotate Fruit
+            RotateFruitInCuttingAxis(fruit.gameObject);
+
+            // Cut Effect
+            SpawnCutEffect(fruit.transform.position);
+
+            // Splash Effect
+            SpawnSplash(fruit.tag, fruit.transform.position);
+
+            UIUpdater.Instance.IncreaseScore();
+
+            fruit.cutIt = true;
+
+            /*
+            This is open for some minor adjustments
+            • When players swipe down to up, if start x > end x, fruit rotates other side
+            */
+        }
+    }
+    private void RotateFruitInCuttingAxis(GameObject fruit)
+    {
+        var up = Vector2.up;
+        var right = Vector2.right;
+        var rightR = (endPos - startPos).normalized;
+        Vector2 upR = (Vector2)Vector3.Cross(rightR, -Vector3.forward);
+
+        if(startPos.x > endPos.x)
+        {
+            upR = (Vector2)Vector3.Cross(rightR, Vector3.forward);
+        }
+
+        var targetRot = Quaternion.FromToRotation(up, upR);
+        fruit.transform.rotation = Quaternion.Euler(targetRot.eulerAngles);
+    }
+    private void SpawnCutEffect(Vector2 pos)
+    {
+        // cut effect
+        var hitEf = EffectSpawner.Instance.GetEffect(EffectType.HitEffect);
+        hitEf.transform.position = pos;
+        hitEf.SetActive(true);
+    }
+    private void ExploadTheBomb(Bomb _bomb)
+    {
+        _bomb.cutable = false;
+
+        var bombEf = EffectSpawner.Instance.GetEffect(EffectType.BombEffect);
+        bombEf.transform.position = _bomb.transform.position;
+        bombEf.SetActive(true);
+
+        _bomb.cutIt = true;
+        UIUpdater.Instance.EndTheGame();
     }
     private void RenderTrailEffect()
     {
@@ -132,6 +183,7 @@ public class Blade : MonoBehaviour
                 {
                     splashEf.GetComponent<SpriteRenderer>().color = newCol;
                 }
+                ChangeJuiceColor(idx, pos);
             }
         }
         // Assign random size to make it look random
@@ -147,18 +199,6 @@ public class Blade : MonoBehaviour
         splashEf.GetComponent<Animator>().SetTrigger("reduceAlpha");
     }
 
-    /*
-        1->
-            • Add colliders to the fruits
-            • Get start and end positions for mouse
-            • Create a vector between start and end pos
-            • Limit length in physics.raycast func
-            • Try detecting fruits
-            • If one of them is detected, cut it
-        2->
-            • Check startpos and endpos are not same
-            • For that use getmousebutton rather than getmousebuttunup
-    */
     private void OnDrawGizmos() {
         //Basic
         var zero = Vector2.zero;

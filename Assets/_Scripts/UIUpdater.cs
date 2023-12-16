@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Runtime;
 
 public class UIUpdater : MonoBehaviour
 {
@@ -13,9 +15,11 @@ public class UIUpdater : MonoBehaviour
 
     private List<GameObject> healths = new List<GameObject>();
 
+    public bool gameEnded;
     private int maxHealth;
     private int scoreCount;
     private Animator _imageAnimator;
+
 
     public static UIUpdater Instance;
     private void Awake() {
@@ -46,7 +50,10 @@ public class UIUpdater : MonoBehaviour
             healths[maxHealth].GetComponent<Animator>().SetTrigger("popUp");
             healths[maxHealth].GetComponent<Image>().color = Color.black;
             if(maxHealth <= 0)
+            {
+                StartCoroutine(nameof(CountdownCor));
                 Debug.Log("<color=red>Game is over</color>");
+            }
         }
     }
     public void EndTheGame()
@@ -61,6 +68,23 @@ public class UIUpdater : MonoBehaviour
             }
             maxHealth = 0;
             Debug.Log("<color=red>Game is over</color>");
+            StartCoroutine(nameof(CountdownCor));
         }
+    }
+    IEnumerator CountdownCor()
+    {
+        GameManager.Situation = GameSituation.Stop;
+        yield return new WaitForSeconds(2f);
+        EventManager.Broadcasting(GameEvents.OnFinishGame);
+    }
+    private void LoadSceneAgain()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    private void OnEnable() {
+        EventManager.AddHandler(GameEvents.OnFinishGame, LoadSceneAgain);
+    }
+    private void OnDisable() {
+        EventManager.RemoveHandler(GameEvents.OnFinishGame, LoadSceneAgain);
     }
 }

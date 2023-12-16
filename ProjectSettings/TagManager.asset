@@ -13,11 +13,11 @@ TagManager:
   - orange
   - peach
   - pear
-  - readApple
   - starFruit
   - strawberry
   - watermelon
   - bomb
+  - redApple
   layers:
   - Default
   - TransparentFX

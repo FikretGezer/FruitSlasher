@@ -7,15 +7,17 @@ public class EffectSpawner : MonoBehaviour
     [SerializeField] private GameObject hitEffectPrefab;
     [SerializeField] private GameObject splashEffectPrefab;
     [SerializeField] private GameObject bombEffectPrefab;
+    [SerializeField] private GameObject juiceEffectPrefab;
 
     private List<GameObject> effectsHit = new List<GameObject>();
     private List<GameObject> effectsSplash = new List<GameObject>();
     private List<GameObject> effectsBomb = new List<GameObject>();
+    private List<GameObject> effectsJuice = new List<GameObject>();
     private List<EffectHolder> effectHolders = new List<EffectHolder>();
 
     private GameObject effectParent;
 
-    private EffectHolder hitEfHolder, splashEfHolder, bombEfHolder;
+    private EffectHolder hitEfHolder, splashEfHolder, bombEfHolder, juiceEfHolder;
 
     public static EffectSpawner Instance;
     private void Awake() {
@@ -27,14 +29,17 @@ public class EffectSpawner : MonoBehaviour
         hitEfHolder = new EffectHolder(EffectType.HitEffect, hitEffectPrefab, effectsHit);
         splashEfHolder = new EffectHolder(EffectType.SplashEffect, splashEffectPrefab, effectsSplash);
         bombEfHolder = new EffectHolder(EffectType.BombEffect, bombEffectPrefab, effectsBomb);
+        juiceEfHolder = new EffectHolder(EffectType.JuiceEffect, juiceEffectPrefab, effectsJuice);
 
         effectHolders.Add(hitEfHolder);
         effectHolders.Add(splashEfHolder);
         effectHolders.Add(bombEfHolder);
+        effectHolders.Add(juiceEfHolder);
 
         CreateEffects(hitEfHolder);
         CreateEffects(splashEfHolder);
         CreateEffects(bombEfHolder);
+        CreateEffects(juiceEfHolder);
     }
 
     #region General Effect Pool
@@ -94,5 +99,6 @@ class EffectHolder{
 public enum EffectType{
     HitEffect,
     SplashEffect,
-    BombEffect
+    BombEffect,
+    JuiceEffect
 }

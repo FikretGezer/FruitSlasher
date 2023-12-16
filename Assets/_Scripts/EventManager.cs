@@ -6,7 +6,7 @@ namespace Runtime
     public enum GameEvents{
         OnFinishGame
     }
-    public static class GameManager
+    public static class EventManager
     {
         private static Dictionary<GameEvents, Action> _events = new Dictionary<GameEvents, Action>();
 
