@@ -78,15 +78,22 @@ public class Blade : MonoBehaviour
             if(hit.collider != null)
             {
                 var fruit = hit.collider.GetComponent<Fruit>();
+                var specialFruit = hit.collider.GetComponent<SpecialFruit>();
                 if(fruit != null)
                 {
                     CutTheFruit(fruit);
+                }
+                else if(specialFruit != null)
+                {
+                    CameraController.Instance.sFruit = specialFruit.transform;
+                    CameraController.Instance.isActive = true;
                 }
                 else//This is bomb
                 {
                     var _bomb = hit.collider.GetComponent<Bomb>();
                     ExploadTheBomb(_bomb);
                 }
+                startPos = hit.collider.transform.position;
             }
         }
     }
@@ -200,29 +207,6 @@ public class Blade : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        //Basic
-        var zero = Vector2.zero;
-        var up = Vector2.up;
-        var right = Vector2.right;
-
-        // Gizmos.color = Color.green;
-        // Gizmos.DrawLine(zero, up * 2);
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawLine(zero, right * 2);
-
-        //Rotated
-        if(started)
-        {
-            var rightR = (endPos - startPos).normalized;
-            var upR = (Vector2)Vector3.Cross(rightR, -Vector3.forward);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(startPos, startPos + rightR * 2);
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(startPos, startPos + upR * 2);
-
-            var rot = Quaternion.FromToRotation(up, upR);
-            // Debug.Log("Rotation: " + rot.eulerAngles);
-        }
+        Gizmos.DrawLine(startPos, endPos);
     }
 }

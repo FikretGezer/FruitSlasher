@@ -7,6 +7,7 @@ public class FruitSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] _fruitPrefabs;
     [SerializeField] private GameObject _bombPrefab;
+    [SerializeField] private GameObject _specialFruit;
     [SerializeField] private GameObject _fruitParent;
     [SerializeField] private float splitSpeed = 10f;
 
@@ -23,7 +24,7 @@ public class FruitSpawner : MonoBehaviour
         CreateFruits();
     }
     private void Start() {
-        SpawnTimer();
+        // SpawnTimer();
     }
     private void Update() {
         //Spawn new fruit
@@ -36,6 +37,11 @@ public class FruitSpawner : MonoBehaviour
         {
             var bomb = GetBomb();
             bomb.SetActive(true);
+        }
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            var sFruit = Instantiate(_specialFruit);
+            sFruit.SetActive(true);
         }
     }
     private void SpawnTimer()
