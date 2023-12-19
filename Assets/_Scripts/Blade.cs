@@ -55,6 +55,7 @@ public class Blade : MonoBehaviour
         }
         return default;
     }
+    private bool isSpecialFruit;
     private void Slash()
     {
         if(Input.GetMouseButtonDown(0))
@@ -85,15 +86,37 @@ public class Blade : MonoBehaviour
                 }
                 else if(specialFruit != null)
                 {
-                    CameraController.Instance.sFruit = specialFruit.transform;
-                    CameraController.Instance.isActive = true;
+                    CameraController.Instance.SFruit = specialFruit.transform;
+                    CameraController.Instance.IsActive = true;
+
+                    if(!isSpecialFruit)
+                    {
+                        isSpecialFruit = true;
+
+                        // Cut Effect
+                        SpawnCutEffect(specialFruit.transform.position);
+
+                        // Splash Effect
+                        SpawnSplash("redApple", specialFruit.transform.position);
+
+                        EffectSpawner.Instance.GetTextEffect(specialFruit.transform.position);
+                    }
                 }
                 else//This is bomb
                 {
                     var _bomb = hit.collider.GetComponent<Bomb>();
-                    ExploadTheBomb(_bomb);
+                    if(_bomb != null)
+                        ExploadTheBomb(_bomb);
+                    else
+                    {
+                        isSpecialFruit = false;
+                    }
                 }
                 startPos = hit.collider.transform.position;
+            }
+            else
+            {
+                isSpecialFruit = false;
             }
         }
     }
@@ -116,9 +139,16 @@ public class Blade : MonoBehaviour
             // Splash Effect
             SpawnSplash(fruit.tag, fruit.transform.position);
 
-            UIUpdater.Instance.IncreaseScore();
+            UIUpdater.Instance.IncreaseScore(1);
 
             fruit.cutIt = true;
+            if(!comboStart)
+                StartCoroutine(ComboCor(0.1f));
+            else
+            {
+                comboCount++;
+                lastHitFruitPos = cam.WorldToScreenPoint(fruit.transform.position);
+            }
 
             /*
             This is open for some minor adjustments
@@ -126,6 +156,10 @@ public class Blade : MonoBehaviour
             */
         }
     }
+    private int comboCount = 1;
+    private Vector3 lastHitFruitPos;
+    private bool comboStart = false;
+
     private void RotateFruitInCuttingAxis(GameObject fruit)
     {
         var up = Vector2.up;
@@ -206,6 +240,19 @@ public class Blade : MonoBehaviour
         splashEf.GetComponent<Animator>().SetTrigger("reduceAlpha");
     }
 
+
+    private IEnumerator ComboCor(float time)
+    {
+        comboStart = true;
+        comboCount = 1;
+        yield return new WaitForSeconds(time);
+        Debug.Log("ComboCount: " + comboCount);
+        if(comboCount > 1)
+        {
+            EffectSpawner.Instance.GetComboTextEffect(lastHitFruitPos, comboCount);
+        }
+        comboStart = false;
+    }
     private void OnDrawGizmos() {
         Gizmos.DrawLine(startPos, endPos);
     }

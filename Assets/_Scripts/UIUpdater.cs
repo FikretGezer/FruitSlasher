@@ -32,9 +32,9 @@ public class UIUpdater : MonoBehaviour
             healths.Add(healthImage.gameObject);
         _imageAnimator = _imageScore.GetComponent<Animator>();
     }
-    public void IncreaseScore()
+    public void IncreaseScore(int count)
     {
-        scoreCount++;
+        scoreCount += count;
         _tScore.text = scoreCount.ToString();
 
         if(scoreCount % 50 == 0)
@@ -51,7 +51,7 @@ public class UIUpdater : MonoBehaviour
             healths[maxHealth].GetComponent<Image>().color = Color.black;
             if(maxHealth <= 0)
             {
-                StartCoroutine(nameof(CountdownCor));
+                StartCoroutine(nameof(BombCountdownCor));
                 Debug.Log("<color=red>Game is over</color>");
             }
         }
@@ -68,10 +68,10 @@ public class UIUpdater : MonoBehaviour
             }
             maxHealth = 0;
             Debug.Log("<color=red>Game is over</color>");
-            StartCoroutine(nameof(CountdownCor));
+            StartCoroutine(nameof(BombCountdownCor));
         }
     }
-    IEnumerator CountdownCor()
+    IEnumerator BombCountdownCor()
     {
         GameManager.Situation = GameSituation.Stop;
         yield return new WaitForSeconds(2f);

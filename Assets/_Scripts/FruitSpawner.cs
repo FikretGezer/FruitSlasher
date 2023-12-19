@@ -7,21 +7,24 @@ public class FruitSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] _fruitPrefabs;
     [SerializeField] private GameObject _bombPrefab;
-    [SerializeField] private GameObject _specialFruit;
+    [SerializeField] private GameObject _specialFruitPrefab;
     [SerializeField] private GameObject _fruitParent;
     [SerializeField] private float splitSpeed = 10f;
 
     //Fruit pool
     private List<GameObject> _fruitList = new List<GameObject>();
     private List<GameObject> _bombList = new List<GameObject>();
+    private List<GameObject> _specialFruitList = new List<GameObject>();
 
-    public float maxPercentage = 0.1f;
+    public float bombMaxPercentage = 0.25f;
 
     public static FruitSpawner Instance;
     private void Awake() {
         if(Instance == null) Instance = this;
-        maxPercentage = 0.1f;
+        bombMaxPercentage = 0.1f;
         CreateFruits();
+        CreateBombs();
+        CreateSpecialFruit();
     }
     private void Start() {
         // SpawnTimer();
@@ -40,7 +43,7 @@ public class FruitSpawner : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.D))
         {
-            var sFruit = Instantiate(_specialFruit);
+            var sFruit = GetSpecialFruit();
             sFruit.SetActive(true);
         }
     }
@@ -67,21 +70,23 @@ public class FruitSpawner : MonoBehaviour
                 var fruit = GetFruit();
                 fruit.SetActive(true);
             }
-            SpawnBomb(0.1f);
+            SpawnBomb(bombMaxPercentage);
+            SpawnSpecialFruit(0.1f);
             StartCoroutine(SpawnTimerCor(delayTime));
         }
     }
     public void IncreasePercentage()
     {
-        if(maxPercentage < 0.2f)
+        if(bombMaxPercentage < 0.2f)
         {
-            maxPercentage += 0.02f;
-            Debug.Log(maxPercentage);
+            bombMaxPercentage += 0.02f;
+            Debug.Log(bombMaxPercentage);
         }
     }
     private void SpawnBomb(float min)
     {
-        float percentage = Mathf.Pow(Random.Range(0f, 1f), 2f);
+        float percentage = Random.Range(0f, 1f);
+        Debug.Log("Bomb, per: " + percentage);
         if(percentage < min)
         {
             int spawnAmount = Random.Range(1, 3);
@@ -92,6 +97,18 @@ public class FruitSpawner : MonoBehaviour
             }
         }
     }
+    private void SpawnSpecialFruit(float min)
+    {
+        float percentage = Random.Range(0f, 1f);
+        Debug.Log("Special, per: " + percentage);
+        if(percentage < min)
+        {
+            var _sFruit = GetSpecialFruit();
+            _sFruit.SetActive(true);
+        }
+    }
+
+
     #region Fruit Pool
     //Spawns objects for pool
     private void CreateFruits()
@@ -153,6 +170,35 @@ public class FruitSpawner : MonoBehaviour
         newBomb.transform.SetParent(_fruitParent.transform);
         _bombList.Add(newBomb);
         return newBomb;
+    }
+    #endregion
+    #region Special Fruit Pool
+    //Spawns objects for pool
+    private void CreateSpecialFruit()
+    {
+        for (int i = 0; i < _fruitPrefabs.Length; i++)
+        {
+            var fruit = Instantiate(_fruitPrefabs[i]);
+            fruit.transform.SetParent(_fruitParent.transform);
+            fruit.SetActive(false);
+            _fruitList.Add(fruit);
+        }
+    }
+    //Get fruit from the pool
+    private GameObject GetSpecialFruit()
+    {
+        foreach (var sFruit in _specialFruitList)
+        {
+            if(!sFruit.activeInHierarchy)
+            {
+                return sFruit;
+            }
+        }
+        var _sFruit = Instantiate(_specialFruitPrefab);
+        _sFruit.transform.SetParent(_fruitParent.transform);
+        _sFruit.SetActive(false);
+        _specialFruitList.Add(_sFruit);
+        return _sFruit;
     }
     #endregion
 }
