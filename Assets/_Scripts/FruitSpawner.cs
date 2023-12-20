@@ -27,7 +27,7 @@ public class FruitSpawner : MonoBehaviour
         CreateSpecialFruit();
     }
     private void Start() {
-        // SpawnTimer();
+        SpawnTimer();
     }
     private void Update() {
         //Spawn new fruit

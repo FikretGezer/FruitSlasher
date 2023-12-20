@@ -120,7 +120,6 @@ public class Blade : MonoBehaviour
             }
         }
     }
-
     private void CutTheFruit(Fruit fruit)
     {
         if(fruit.cutable)//Assign a bool variable rather than checking childcount, it's much more safer
@@ -149,17 +148,11 @@ public class Blade : MonoBehaviour
                 comboCount++;
                 lastHitFruitPos = cam.WorldToScreenPoint(fruit.transform.position);
             }
-
-            /*
-            This is open for some minor adjustments
-            • When players swipe down to up, if start x > end x, fruit rotates other side
-            */
         }
     }
     private int comboCount = 1;
     private Vector3 lastHitFruitPos;
     private bool comboStart = false;
-
     private void RotateFruitInCuttingAxis(GameObject fruit)
     {
         var up = Vector2.up;
@@ -239,8 +232,6 @@ public class Blade : MonoBehaviour
         splashEf.SetActive(true);
         splashEf.GetComponent<Animator>().SetTrigger("reduceAlpha");
     }
-
-
     private IEnumerator ComboCor(float time)
     {
         comboStart = true;
@@ -252,8 +243,5 @@ public class Blade : MonoBehaviour
             EffectSpawner.Instance.GetComboTextEffect(lastHitFruitPos, comboCount);
         }
         comboStart = false;
-    }
-    private void OnDrawGizmos() {
-        Gizmos.DrawLine(startPos, endPos);
     }
 }

@@ -109,7 +109,7 @@ public class EffectSpawner : MonoBehaviour
     }
     public void SpawnBigText()
     {
-        if(_tIndividual.gameObject.activeInHierarchy)
+        if(_tIndividual != null && _tIndividual.gameObject.activeInHierarchy)
         {
             _tIndividual.gameObject.SetActive(false);
             _tTotal.text = $"+{hitCount}";

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,7 @@ namespace Runtime
                 var pos = transform.position;
                 pos.x = pos.y = 0f;
                 transform.position = pos;
+                elapsedTime = 0f;
             }
         }
         private void ChangeSize(Transform obj)
@@ -52,6 +54,19 @@ namespace Runtime
 
             transform.position = pos;
             Time.timeScale = 0.5f;
+            Timer(3f, obj.gameObject);
+        }
+        private float elapsedTime = 0f;
+        private void Timer(float time, GameObject sFruit)
+        {
+            if(elapsedTime < time)
+            {
+                elapsedTime += Time.unscaledDeltaTime;;
+            }
+            else
+            {
+                sFruit.SetActive(false);
+            }
         }
     }
 }
