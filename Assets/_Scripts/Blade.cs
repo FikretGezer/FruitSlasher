@@ -24,10 +24,15 @@ public class Blade : MonoBehaviour
             trailEffect.SetActive(false);
     }
     private void Update() {
+        RenderTrailEffect();
         if(GameManager.Situation == GameSituation.Play)
         {
-            RenderTrailEffect();
             Slash();
+            GetComponent<BladeUI>().enabled = false;
+        }
+        else
+        {
+            GetComponent<BladeUI>().enabled = true;
         }
     }
     private bool started;

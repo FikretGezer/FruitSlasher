@@ -79,9 +79,9 @@ public class UIUpdater : MonoBehaviour
         yield return new WaitForSeconds(2f);
         EventManager.Broadcasting(GameEvents.OnFinishGame);
     }
-    private void LoadSceneAgain()
+    public void LoadSceneAgain()
     {
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     private void DisableUI()
     {
@@ -96,16 +96,16 @@ public class UIUpdater : MonoBehaviour
         endScreenUI.GetChild(2).GetComponent<Animator>().SetTrigger("slideLeft");
         endScreenUI.GetChild(3).GetComponent<Animator>().SetTrigger("slideUp");
         endScreenUI.GetChild(4).GetComponent<Animator>().SetTrigger("pop");
+
         endScreenUI.GetChild(4).GetChild(0).GetComponent<Animator>().SetTrigger("rotateF");
+        endScreenUI.GetChild(4).GetChild(1).GetComponent<Animator>().SetTrigger("rotateC");
 
     }
     private void OnEnable() {
-        EventManager.AddHandler(GameEvents.OnFinishGame, LoadSceneAgain);
         EventManager.AddHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.AddHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
     }
     private void OnDisable() {
-        EventManager.RemoveHandler(GameEvents.OnFinishGame, LoadSceneAgain);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
     }
