@@ -6,21 +6,25 @@ namespace Runtime
 {
     public class BladeUI : MonoBehaviour
     {
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
+        private Camera cam;
+        [SerializeField] private GameObject trailEffect;
+        private void Awake() {
+            cam = Camera.main;
         }
-
-        // Update is called once per frame
-        void Update()
+        private void Update() {
+            RenderTrailEffect();
+        }
+        private void RenderTrailEffect()
         {
-            var origin = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-            RaycastHit2D hit = Physics2D.Raycast(origin, Vector3.forward);
-            if(hit.collider != null)
+            if(trailEffect != null)
             {
-                Debug.Log(hit.collider.name);
+                trailEffect.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+                if(Input.GetMouseButton(0))
+                {
+                    trailEffect.SetActive(true);
+                }
+                if(Input.GetMouseButtonUp(0))
+                    trailEffect.SetActive(false);
             }
         }
     }

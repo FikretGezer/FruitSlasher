@@ -3,12 +3,15 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace Runtime
 {
     public class UIRaycaster : MonoBehaviour
     {
+        [SerializeField] private GameObject _cutEffect;
+        [SerializeField] private bool isItOnMenu;
+
         GraphicRaycaster _Raycaster;
         PointerEventData _PointerEventData;
         EventSystem _EventSystem;
@@ -50,6 +53,8 @@ namespace Runtime
                         // Detect Continue Button
                         if(!continueButtonClicked && result.gameObject.CompareTag("continueButton")){
                             continueButtonClicked = true;
+                            _cutEffect.SetActive(true);
+                            _cutEffect.transform.position = result.gameObject.transform.position;
                             StartCoroutine(nameof(ContinueCor));
                         }
                     }
@@ -59,7 +64,11 @@ namespace Runtime
         IEnumerator ContinueCor()
         {
             yield return new WaitForSeconds(0.15f);
-            UIUpdater.Instance.LoadSceneAgain();
+            if(!isItOnMenu)
+                UIUpdater.Instance.LoadSceneAgain();
+            else{
+                SceneManager.LoadScene("MainScene");
+            }
         }
     }
 }

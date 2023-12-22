@@ -28,11 +28,6 @@ public class Blade : MonoBehaviour
         if(GameManager.Situation == GameSituation.Play)
         {
             Slash();
-            GetComponent<BladeUI>().enabled = false;
-        }
-        else
-        {
-            GetComponent<BladeUI>().enabled = true;
         }
     }
     private bool started;

@@ -13,7 +13,12 @@ public class UIUpdater : MonoBehaviour
     [SerializeField] private TMP_Text _tScore;
     [SerializeField] private Transform healthHolder;
     [SerializeField] private Transform scoreHolder;
+    [SerializeField] private Transform pauseButton;
     [SerializeField] private Transform endScreenUI;
+    [Header("Upper Board Variables")]
+    [SerializeField] private TMP_Text _highestScore;
+    [Header("Left Board Variables")]
+    [SerializeField] private TMP_Text _currentScore;
 
     private List<GameObject> healths = new List<GameObject>();
 
@@ -87,6 +92,7 @@ public class UIUpdater : MonoBehaviour
     {
         healthHolder.GetComponent<Animator>().SetTrigger("disableUI");
         scoreHolder.GetComponent<Animator>().SetTrigger("disableUI");
+        pauseButton.GetComponent<Animator>().SetTrigger("disableUI");
     }
     private void ActivateEndScreenUI()
     {
@@ -99,14 +105,25 @@ public class UIUpdater : MonoBehaviour
 
         endScreenUI.GetChild(4).GetChild(0).GetComponent<Animator>().SetTrigger("rotateF");
         endScreenUI.GetChild(4).GetChild(1).GetComponent<Animator>().SetTrigger("rotateC");
+    }
+    private void UltimateEndGameScreenUpdate()
+    {
+        #region Upper Board
+        _highestScore.text = scoreCount.ToString();
+        #endregion
 
+        #region Left Board
+        _currentScore.text = scoreCount.ToString();
+        #endregion
     }
     private void OnEnable() {
         EventManager.AddHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.AddHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
+        EventManager.AddHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
     }
     private void OnDisable() {
         EventManager.RemoveHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
+        EventManager.RemoveHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
     }
 }
