@@ -1,459 +1,383 @@
-using System.Collections;
-using System.Collections.Generic;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SocialPlatforms;
 using TMPro;
 using System;
 
-[System.Serializable]
-public class PlayerData {
-    public int highestScore;
-    public int level;
-    public int experience;
-    public bool[] achievements;
-    public bool[] blades;
-    public bool[] backgrounds;
-}
-public class GPGSManager : MonoBehaviour
+namespace Runtime
 {
-    // #region Default GPGS Save and Load
-
-    // public TMP_Text statusTxt;
-    // public TMP_Text descriptionTxt;
-    // public GameObject achievementButton;
-    // public GameObject leaderboardButton;
-    // public SavedGamesUI _savedGamesUI;
-
-    // private void Start() {
-    //     SignInToGPGS();
-    // }
-    // internal void SignInToGPGS()
-    // {
-    //     PlayGamesPlatform.Activate();
-    //     PlayGamesPlatform.Instance.Authenticate(code => {
-    //         statusTxt.text = "Autenticating...";
-    //         if(code == SignInStatus.Success)
-    //         {
-    //             statusTxt.text = "Successfully Authenticated.";
-    //             descriptionTxt.text = "Hello " + Social.localUser.userName + ". You have an ID of " + Social.localUser.id;
-    //             achievementButton.SetActive(true);
-    //             leaderboardButton.SetActive(true);
-    //         }
-    //         else{
-    //             statusTxt.text = "Failed to Authenticate";
-    //             descriptionTxt.text = "Failed to Authenticate, reason for failure is " + code;
-    //         }
-    //     });
-    // }
-
-    // #region SavedGames
-    // private bool isSaving;
-    // public void OpenSave(bool _isSaving)
-    // {
-    //     _savedGamesUI.logTxt.text += "\n";
-    //     _savedGamesUI.logTxt.text += "Open Saved Clicked\n";
-    //     if(Social.localUser.authenticated)
-    //     {
-    //         this.isSaving = _isSaving;
-    //         _savedGamesUI.logTxt.text += "User is authenticated\n";
-    //         ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
-    //             "MyFileName",
-    //             DataSource.ReadCacheOrNetwork,
-    //             ConflictResolutionStrategy.UseLongestPlaytime,
-    //             SaveGameOpen
-    //         );
-    //     }
-    // }
-    // private void SaveGameOpen(SavedGameRequestStatus _status, ISavedGameMetadata _metaData)
-    // {
-    //     if(_status == SavedGameRequestStatus.Success)
-    //     {
-    //         if(isSaving) // Saving
-    //         {
-    //             // covert datatypes to a byte array
-    //             _savedGamesUI.logTxt.text += "Status successful, attempting to save...\n";
-    //             byte[] myData = System.Text.ASCIIEncoding.ASCII.GetBytes(GetSaveString());
-
-    //             // update metadata
-    //             SavedGameMetadataUpdate UpdateForMetaData = new SavedGameMetadataUpdate.Builder()
-    //             .WithUpdatedDescription( "I have updated my game at: " + DateTime.Now.ToString()).Build();
-
-    //             // commit the save
-    //             ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(
-    //                 _metaData,
-    //                 UpdateForMetaData,
-    //                 myData,
-    //                 SaveCallBack
-    //             );
-    //         }
-    //         else // Loading
-    //         {
-    //             _savedGamesUI.logTxt.text += "Status successful, attempting to load...\n";
-    //             ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(_metaData, LoadCallBack);
-    //         }
-    //     }
-    // }
-    // private void LoadCallBack(SavedGameRequestStatus _status, byte[] _data)
-    // {
-    //     if(_status == SavedGameRequestStatus.Success)
-    //     {
-    //         _savedGamesUI.logTxt.text += "Load successful, attemting to read the data\n";
-    //         string loadedData = System.Text.ASCIIEncoding.ASCII.GetString(_data);
-
-    //         LoadSavedString(loadedData);
-    //     }
-    // }
-    // public void LoadSavedString(string _cloudData)
-    // {
-    //     string[] cloudStringArr = _cloudData.Split('|');
-
-    //     _savedGamesUI.name = cloudStringArr[0];
-    //     _savedGamesUI.age = int.Parse(cloudStringArr[1]);
-
-    //     _savedGamesUI.outputTxt.text = "";
-    //     _savedGamesUI.outputTxt.text = "Name: " + _savedGamesUI.name + ", Age: " + _savedGamesUI.age;
-    // }
-    // public string GetSaveString()
-    // {
-    //     string dataToSave = "";
-
-    //     dataToSave += _savedGamesUI.name;
-    //     dataToSave += "|" + _savedGamesUI.age;
-
-    //     return dataToSave;
-    // }
-    // private void SaveCallBack(SavedGameRequestStatus _status, ISavedGameMetadata _metaData)
-    // {
-    //     if(_status == SavedGameRequestStatus.Success)
-    //     {
-    //         _savedGamesUI.logTxt.text += "File successfully saved to the cloud...\n";
-    //     }
-    //     else
-    //     {
-    //         _savedGamesUI.logTxt.text += "File failed to saved to the cloud...\n";
-    //     }
-    // }
-    // #endregion
-
-    // #endregion
-
-    private TMP_Text descriptionTxt;
-    private PlayerData _playerData;
-    private string dataKey = "player_data";
-    private void Start()
-    {
-        SignInToGPGS();
+    [Serializable]
+    public class PlayerData {
+        public long highestScore = 0;
+        public int level = 1;
+        public int experience = 0;
+        public bool[] achievements;
+        public bool[] blades;
+        public bool[] backgrounds;
     }
-    private void SignInToGPGS()
+    public class GPGSManager : MonoBehaviour
     {
-        PlayGamesPlatform.Activate();
-        PlayGamesPlatform.Instance.Authenticate(status => {
+        public TMP_Text statusTxt;
+        public TMP_Text descriptionTxt;
+        public GameObject achievementButton;
+        public GameObject leaderboardButton;
+        public GameObject savePanelButton;
+        public GameObject authenticateButton;
+        public SavedGamesUI _savedGamesUI;
+
+        public static GPGSManager Instance;
+        private void Awake() {
+            if(Instance == null) Instance = this;
+        }
+        private void Start() {
+            SignInToGPGS();
+        }
+        private void OnEnable() {
+            OpenSave(false);
+        }
+        #region Authentication
+        private void SignInToGPGS()
+        {
+            PlayGamesPlatform.Activate();
+
+            if(!Social.localUser.authenticated)
+            {
+                PlayGamesPlatform.Instance.Authenticate(SignInCallback);
+            }
+        }
+        private void SignInCallback(SignInStatus status)
+        {
             if(status == SignInStatus.Success)
             {
-                Debug.Log("Signed in");
-            }
-            else
-                Debug.Log("Signed in failed...");
-        });
-    }
-    #region Saving
-    public void SavePlayerDataToCloud()
-    {
-        if(Social.localUser.authenticated)
-        {
-            string jsonData = JsonUtility.ToJson(_playerData);
-            SaveDataToCloud(dataKey, jsonData);
-        }
-    }
-    private void SaveDataToCloud(string key, string data)
-    {
-        ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
-            key,
-            DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            (status, metadata) => OnSaveGameOpenForWriting(status, metadata, data)
-        );
-    }
-    private void OnSaveGameOpenForWriting(SavedGameRequestStatus status, ISavedGameMetadata metadata, string data)
-    {
-        if(status == SavedGameRequestStatus.Success)
-        {
-            byte[] bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(data);
-            SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
-            builder.WithUpdatedDescription("Data saved at " + System.DateTime.Now);
-
-            ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(
-                metadata,
-                builder.Build(),
-                bytes,
-                OnSavedGameWritten
-            );
-        }
-    }
-    private void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata metadata)
-    {
-        if(status == SavedGameRequestStatus.Success)
-        {
-            Debug.Log("Data saved successfully");
-        }
-    }
-    #endregion
-    #region Loading
-    public void LoadPlayerDataFromCloud()
-    {
-        if(Social.localUser.authenticated)
-        {
-            LoadDataFromCloud(dataKey, OnDataLoaded);
-        }
-    }
-    private void LoadDataFromCloud(string key, Action<string> onDataLoaded)
-    {
-        ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
-            key,
-            DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            (status, metadata) => OnSaveGameOpenForReading(status, metadata, onDataLoaded)
-        );
-    }
-    private void OnSaveGameOpenForReading(SavedGameRequestStatus status, ISavedGameMetadata metadata, Action<string> onDataLoaded)
-    {
-        if(status == SavedGameRequestStatus.Success)
-        {
-            ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(
-                metadata,
-                (loadStatus, bytes) => OnSavedGameDataLoaded(loadStatus, bytes, onDataLoaded)
-            );
-        }
-    }
-    private void OnDataLoaded(string jsonData)
-    {
-        // Deserialize the data
-        _playerData = JsonUtility.FromJson<PlayerData>(jsonData);
-
-        descriptionTxt.text = $"Highest Score: {_playerData.highestScore}"+
-                              $"Level : {_playerData.level}"+
-                              $"Experience: {_playerData.experience}";
-    }
-    private void OnSavedGameDataLoaded(SavedGameRequestStatus status, byte[] bytes, Action<string> onDataLoaded)
-    {
-        if(status == SavedGameRequestStatus.Success)
-        {
-            string jsonData = System.Text.ASCIIEncoding.ASCII.GetString(bytes);
-            onDataLoaded?.Invoke(jsonData);
-        }
-    }
-    #endregion
-}
-
-/*
-public PlayerData _playerData;
-
-    public TMP_Text statusTxt;
-    public TMP_Text descriptionTxt;
-    public GameObject achievementButton;
-    public GameObject leaderboardButton;
-    private string dataKey = "player_data";
-
-    private void Start() {
-        SignInToGPGS();
-    }
-    internal void SignInToGPGS()
-    {
-        PlayGamesPlatform.Activate();
-        PlayGamesPlatform.Instance.Authenticate(code => {
-            statusTxt.text = "Autenticating...";
-            if(code == SignInStatus.Success)
-            {
-                statusTxt.text = "Successfully Authenticated.";
-                descriptionTxt.text = "Hello " + Social.localUser.userName + ". You have an ID of " + Social.localUser.id;
+                statusTxt.text = "Signed in successfully";
+                descriptionTxt.text = "Account Name: " + Social.localUser.userName;
                 achievementButton.SetActive(true);
                 leaderboardButton.SetActive(true);
+                savePanelButton.SetActive(true);
             }
-            else{
-                statusTxt.text = "Failed to Authenticate";
-                descriptionTxt.text = "Failed to Authenticate, reason for failure is " + code;
-            }
-        });
-    }
-    #region Saving
-    public void SaveThePlayerDataToCloud()
-    {
-        // Serialize the data
-        string jsonData = JsonUtility.ToJson(_playerData);
-        SaveDataToTheCloud(dataKey, jsonData);
-    }
-    private void SaveDataToTheCloud(string key, string data)
-    {
-        ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
-            key,
-            DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            (status, metadata) => OnSaveGameOpenForWriting(status, metadata, data)
-        );
-    }
-    private void OnSaveGameOpenForWriting(SavedGameRequestStatus status, ISavedGameMetadata metadata, string data)
-    {
-        if(status == SavedGameRequestStatus.Success)
-        {
-            byte[] bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(data);
-            SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
-            builder.WithUpdatedDescription("Saved game at " + System.DateTime.Now);
+            else
+            {
+                statusTxt.text = "Signing in failed...";
 
-            ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(
-                metadata,
-                builder.Build(),
-                bytes,
-                OnSavedGameWritten
-            );
+                // Activate manually signing in
+                authenticateButton.SetActive(true);
+            }
         }
-    }
-    private void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata metadata)
-    {
-        if(status == SavedGameRequestStatus.Success)
+        public void AuthenticateButton()
         {
-            Debug.Log("Game data saved to the cloud");
+            PlayGamesPlatform.Instance.ManuallyAuthenticate(ManuallyAuthenticateCallback);
         }
-    }
-    #endregion
-    #region Loading
-    public void LoadThePlayerDataFromCloud()
-    {
-        if(Social.localUser.authenticated)
+        private void ManuallyAuthenticateCallback(SignInStatus status)
         {
-            LoadDataFromCloud(dataKey, OnDataLoaded);
+            if(status == SignInStatus.Success)
+            {
+                statusTxt.text = "Signed in successfully";
+                descriptionTxt.text = "Account Name: " + Social.localUser.userName;
+                achievementButton.SetActive(true);
+                leaderboardButton.SetActive(true);
+                savePanelButton.SetActive(true);
+                authenticateButton.SetActive(false);
+            }
+            else
+            {
+                statusTxt.text = "Signing in failed...";
+            }
         }
-    }
-    private void LoadDataFromCloud(string key, Action<string> onDataLoaded)
-    {
-        ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
-            key,
-            DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            (status, metadata) => OnSaveGameOpenForReading(status, metadata, onDataLoaded)
-        );
-    }
-    private void OnSaveGameOpenForReading(SavedGameRequestStatus status, ISavedGameMetadata metadata, Action<string> onDataLoaded)
-    {
-        if(status == SavedGameRequestStatus.Success)
+        #endregion
+
+        #region SavedGames
+
+        private bool isSaving;
+        public void OpenSave(bool input) // If input true, activate SAVING otherwise activate LOADING
         {
-            ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(
-                metadata,
-                (loadStatus, bytes) => {
-                    OnSavedGameDataLoaded(loadStatus, bytes, onDataLoaded);
+            if(Social.localUser.authenticated)
+            {
+                isSaving = input;
+
+                _savedGamesUI.logTxt.text = "File Opened For Saving/Loading. ";
+
+                // Open to file to read data
+                _savedGamesUI.logTxt.text += Social.localUser.userName + " is authenticated. ";
+                ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
+                    "MyFileName",
+                    DataSource.ReadCacheOrNetwork,
+                    ConflictResolutionStrategy.UseLongestPlaytime,
+                    SaveOrLoadGameFile
+                );
+            }
+        }
+        private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)
+        {
+            if(status == SavedGameRequestStatus.Success)
+            {
+                if(isSaving) // Saving
+                {
+                    _savedGamesUI.logTxt.text += "Saving started... ";
+                    byte[] byteData = System.Text.ASCIIEncoding.ASCII.GetBytes(GetSaveString());
+
+                    SavedGameMetadataUpdate updateForMetadata = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Player Data Updated at " + DateTime.Now.ToString()).Build();
+
+                    ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(
+                        meta,
+                        updateForMetadata,
+                        byteData,
+                        CallbackSave
+                    );
                 }
-            );
+                else // Loading
+                {
+                    _savedGamesUI.logTxt.text += "Loading started... ";
+                    ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(meta, CallbackLoad);
+                }
+            }
+            else
+            {
+                _savedGamesUI.logTxt.text += "Unable to load/save... ";
+            }
         }
-    }
-    private void OnDataLoaded(string jsonData)
-    {
-        // Deserialize the data
-        _playerData = JsonUtility.FromJson<PlayerData>(jsonData);
-
-        descriptionTxt.text = $"Highest Score: {_playerData.highestScore}"+
-                              $"Level : {_playerData.level}"+
-                              $"Experience: {_playerData.experience}";
-    }
-    private void OnSavedGameDataLoaded(SavedGameRequestStatus status, byte[] bytes, Action<string> onDataLoaded)
-    {
-        if(status == SavedGameRequestStatus.Success)
+        private void CallbackLoad(SavedGameRequestStatus status, byte[] data)
         {
-            string jsonData = System.Text.ASCIIEncoding.ASCII.GetString(bytes);
-            onDataLoaded?.Invoke(jsonData);
+            if(status == SavedGameRequestStatus.Success)
+            {
+                _savedGamesUI.logTxt.text += "Load successful, trying read the loaded data. ";
+                string playerDataString = System.Text.ASCIIEncoding.ASCII.GetString(data);
+
+                LoadSavedData(playerDataString);
+            }
+            else
+            {
+                _savedGamesUI.logTxt.text += "Unable to load the data. ";
+            }
         }
+        private void LoadSavedData(string data)
+        {
+            _savedGamesUI.logTxt.text += "Player Data is readed successfully. ";
+
+            var _playerData = JsonUtility.FromJson<PlayerData>(data);
+            _savedGamesUI._playerData = _playerData;
+            _savedGamesUI.outputTxt.text = "High Score: " + _playerData.highestScore.ToString() + "Level: " + _playerData.level.ToString();
+
+            // string[] playerData = data.Split('-');
+            // _savedGamesUI.name = playerData[0];
+            // _savedGamesUI.age = int.Parse(playerData[0]);
+
+            // _savedGamesUI.outputTxt.text = "Name: "+ _savedGamesUI.name + ", Age: " + _savedGamesUI.age;
+        }
+        private void CallbackSave(SavedGameRequestStatus status, ISavedGameMetadata meta)
+        {
+            if(status == SavedGameRequestStatus.Success)
+            {
+                _savedGamesUI.logTxt.text += "Player data saved successfully. ";
+            }
+            else
+            {
+                _savedGamesUI.logTxt.text += "Player data saving failed. ";
+            }
+        }
+        private string GetSaveString()
+        {
+            string stringData = JsonUtility.ToJson(_savedGamesUI._playerData);
+            // string stringData = _savedGamesUI.name + "-" + _savedGamesUI.age;
+
+            return stringData;
+        }
+        private void OnDisable() {
+            OpenSave(true);
+        }
+        private void OnApplicationQuit() {
+            OpenSave(true);
+        }
+        #endregion
     }
-    #endregion
-*/
-// public void SaveClassToCloud(bool _isSaving)
-    // {
-    //     if(Social.localUser.authenticated)
-    //     {
-    //         isSaving = _isSaving;
-    //         string jsonData = JsonUtility.ToJson(_playerData);
-    //         SaveDataToCloud("player_data", jsonData);
-    //     }
-    // }
-    // private void SaveDataToCloud(string key, string data)
-    // {
-    //     ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(key,
-    //         DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime,
-    //         (status, metadata) => OnSaveGameOpenedForWriting(status, metadata, data));
-    // }
-    // private void OnSaveGameOpenedForWriting(SavedGameRequestStatus status, ISavedGameMetadata game, string data)
-    // {
-    //     if (status == SavedGameRequestStatus.Success)
-    //     {
-    //         byte[] bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(data);
-    //         SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
-    //         builder = builder.WithUpdatedDescription("Saved game at " + System.DateTime.Now);
+}
+// using GooglePlayGames;
+// using GooglePlayGames.BasicApi;
+// using GooglePlayGames.BasicApi.SavedGame;
+// using UnityEngine;
+// using TMPro;
+// using System;
 
-    //         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-    //         savedGameClient.CommitUpdate(game, builder.Build(), bytes, OnSavedGameWritten);
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("Failed to open saved game for writing.");
-    //     }
-    // }
-    // private void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
-    // {
-    //     if (status == SavedGameRequestStatus.Success)
-    //     {
-    //         Debug.Log("Game data saved to the cloud.");
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("Failed to write saved game data.");
-    //     }
-    // }
-    // #endregion
+// namespace Runtime
+// {
+//     [Serializable]
+//     public class PlayerData {
+//         public long highestScore = 0;
+//         public int level = 1;
+//         public int experience = 0;
+//         public bool[] achievements;
+//         public bool[] blades;
+//         public bool[] backgrounds;
+//     }
+//     public class GPGSManager : MonoBehaviour
+//     {
+//         public TMP_Text statusTxt;
+//         public TMP_Text descriptionTxt;
+//         public GameObject achievementButton;
+//         public GameObject leaderboardButton;
+//         public GameObject savePanelButton;
+//         public GameObject authenticateButton;
+//         public SavedGamesUI _savedGamesUI;
 
-    // #region Loading
-    // public void LoadClassFromCloud()
-    // {
-    //     if (Social.localUser.authenticated)
-    //     {
-    //         // Load the JSON string from the cloud
-    //         LoadDataFromCloud("player_data", OnClassDataLoaded);
-    //     }
-    // }
-    // private void LoadDataFromCloud(string key, Action<string> onDataLoaded)
-    // {
-    //     ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(key,
-    //         DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime,
-    //         (status, metadata) => OnSaveGameOpenedForReading(status, metadata, onDataLoaded));
-    // }
-    // private void OnClassDataLoaded(string jsonData)
-    // {
-    //     // Deserialize JSON string back into class instance
-    //     _playerData = JsonUtility.FromJson<PlayerData>(jsonData);
+//         public static GPGSManager Instance;
+//         private void Awake() {
+//             if(Instance == null) Instance = this;
+//         }
+//         private void Start() {
+//             SignInToGPGS();
+//         }
+//         private void OnEnable() {
+//             OpenSave(false);
+//         }
+//         #region Authentication
+//         private void SignInToGPGS()
+//         {
+//             PlayGamesPlatform.Activate();
 
-    //     // Use the loaded class instance as needed
-    //     Debug.Log("Loaded Player Data - Score: " + _playerData.highestScore + ", Experience: " + _playerData.experience);
-    // }
-    // private void OnSaveGameOpenedForReading(SavedGameRequestStatus status, ISavedGameMetadata game, Action<string> onDataLoaded)
-    // {
-    //     if (status == SavedGameRequestStatus.Success)
-    //     {
-    //         ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(game, (loadStatus, bytes) => OnSavedGameDataLoaded(loadStatus, bytes, onDataLoaded));
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("Failed to open saved game for reading.");
-    //     }
-    // }
-    // private void OnSavedGameDataLoaded(SavedGameRequestStatus status, byte[] bytes, Action<string> onDataLoaded)
-    // {
-    //     if (status == SavedGameRequestStatus.Success)
-    //     {
-    //         string jsonData = System.Text.ASCIIEncoding.ASCII.GetString(bytes);
-    //         onDataLoaded?.Invoke(jsonData);
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("Failed to load saved game data.");
-    //     }
-    // }
+//             if(!Social.localUser.authenticated)
+//             {
+//                 PlayGamesPlatform.Instance.Authenticate(SignInCallback);
+//             }
+//         }
+//         private void SignInCallback(SignInStatus status)
+//         {
+//             if(status == SignInStatus.Success)
+//             {
+//                 statusTxt.text = "Signed in successfully";
+//                 descriptionTxt.text = "Account Name: " + Social.localUser.userName;
+//                 achievementButton.SetActive(true);
+//                 leaderboardButton.SetActive(true);
+//                 savePanelButton.SetActive(true);
+//             }
+//             else
+//             {
+//                 statusTxt.text = "Signing in failed...";
+
+//                 // Activate manually signing in
+//                 authenticateButton.SetActive(true);
+//             }
+//         }
+//         public void AuthenticateButton()
+//         {
+//             PlayGamesPlatform.Instance.ManuallyAuthenticate(ManuallyAuthenticateCallback);
+//         }
+//         private void ManuallyAuthenticateCallback(SignInStatus status)
+//         {
+//             if(status == SignInStatus.Success)
+//             {
+//                 statusTxt.text = "Signed in successfully";
+//                 descriptionTxt.text = "Account Name: " + Social.localUser.userName;
+//                 achievementButton.SetActive(true);
+//                 leaderboardButton.SetActive(true);
+//                 savePanelButton.SetActive(true);
+//                 authenticateButton.SetActive(false);
+//             }
+//             else
+//             {
+//                 statusTxt.text = "Signing in failed...";
+//             }
+//         }
+//         #endregion
+
+//         #region SavedGames
+
+//         private bool isSaving;
+//         public void OpenSave(bool input) // If input true, activate SAVING otherwise activate LOADING
+//         {
+//             if(Social.localUser.authenticated)
+//             {
+//                 isSaving = input;
+
+//                 _savedGamesUI.logTxt.text = "File Opened For Saving/Loading. ";
+
+//                 // Open to file to read data
+//                 _savedGamesUI.logTxt.text += Social.localUser.userName + " is authenticated. ";
+//                 ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
+//                     "MyFileName",
+//                     DataSource.ReadCacheOrNetwork,
+//                     ConflictResolutionStrategy.UseLongestPlaytime,
+//                     SaveOrLoadGameFile
+//                 );
+//             }
+//         }
+//         private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)
+//         {
+//             if(status == SavedGameRequestStatus.Success)
+//             {
+//                 if(isSaving) // Saving
+//                 {
+//                     _savedGamesUI.logTxt.text += "Saving started... ";
+//                     byte[] byteData = System.Text.ASCIIEncoding.ASCII.GetBytes(GetSaveString());
+
+//                     SavedGameMetadataUpdate updateForMetadata = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Player Data Updated at " + DateTime.Now.ToString()).Build();
+
+//                     ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(
+//                         meta,
+//                         updateForMetadata,
+//                         byteData,
+//                         CallbackSave
+//                     );
+//                 }
+//                 else // Loading
+//                 {
+//                     _savedGamesUI.logTxt.text += "Loading started... ";
+//                     ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(meta, CallbackLoad);
+//                 }
+//             }
+//             else
+//             {
+//                 _savedGamesUI.logTxt.text += "Unable to load/save... ";
+//             }
+//         }
+//         private void CallbackLoad(SavedGameRequestStatus status, byte[] data)
+//         {
+//             if(status == SavedGameRequestStatus.Success)
+//             {
+//                 _savedGamesUI.logTxt.text += "Load successful, trying read the loaded data. ";
+//                 string playerDataString = System.Text.ASCIIEncoding.ASCII.GetString(data);
+
+//                 LoadSavedData(playerDataString);
+//             }
+//             else
+//             {
+//                 _savedGamesUI.logTxt.text += "Unable to load the data. ";
+//             }
+//         }
+//         private void LoadSavedData(string data)
+//         {
+//             _savedGamesUI.logTxt.text += "Player Data is readed successfully. ";
+//             // var _playerData = JsonUtility.FromJson<PlayerData>(data);
+//             // _savedGamesUI.outputTxt.text = "High Score: " + _playerData.highestScore.ToString();
+//             string[] playerData = data.Split('-');
+//             _savedGamesUI.name = playerData[0];
+//             _savedGamesUI.age = int.Parse(playerData[0]);
+
+//             _savedGamesUI.outputTxt.text = "Name: "+ _savedGamesUI.name + ", Age: " + _savedGamesUI.age;
+//         }
+//         private void CallbackSave(SavedGameRequestStatus status, ISavedGameMetadata meta)
+//         {
+//             if(status == SavedGameRequestStatus.Success)
+//             {
+//                 _savedGamesUI.logTxt.text += "Player data saved successfully. ";
+//             }
+//             else
+//             {
+//                 _savedGamesUI.logTxt.text += "Player data saving failed. ";
+//             }
+//         }
+//         private string GetSaveString()
+//         {
+//             // string stringData = JsonUtility.ToJson(_savedGamesUI._playerData);
+//             string stringData = _savedGamesUI.name + "-" + _savedGamesUI.age;
+
+//             return stringData;
+//         }
+//         private void OnDisable() {
+//             OpenSave(true);
+//         }
+//         private void OnApplicationQuit() {
+//             OpenSave(true);
+//         }
+//         #endregion
+//     }
+// }

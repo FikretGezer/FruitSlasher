@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace Runtime
 {
     public enum GameEvents{
+        OnStartGame,
         OnFinishGame,
         OnCuttingBomb,
         OnCuttingFruit,

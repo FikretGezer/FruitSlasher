@@ -24,7 +24,7 @@ public class UIUpdater : MonoBehaviour
 
     public bool gameEnded;
     private int maxHealth;
-    private int scoreCount;
+    private long scoreCount;
     private Animator _imageAnimator;
 
 
@@ -108,20 +108,36 @@ public class UIUpdater : MonoBehaviour
     }
     private void UltimateEndGameScreenUpdate()
     {
-        #region Upper Board
-        _highestScore.text = scoreCount.ToString();
-        #endregion
-
         #region Left Board
         _currentScore.text = scoreCount.ToString();
         #endregion
     }
+    private void SetBeginningParameters()
+    {
+
+    }
+    private void EndGameUpdateCloud()
+    {
+        #region Score Update
+        if(FindObjectOfType<VSavedGamesUI>() != null)
+        {
+            VSavedGamesUI.Instance.UpdateHighestScore(scoreCount);
+        }
+
+        #endregion
+    }
+    public void LeaderboardButton()
+    {
+        // Leaderboard.Instance.ShowLeaderboardUI();
+    }
     private void OnEnable() {
+        EventManager.AddHandler(GameEvents.OnFinishGame, EndGameUpdateCloud);
         EventManager.AddHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.AddHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
         EventManager.AddHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
     }
     private void OnDisable() {
+        EventManager.RemoveHandler(GameEvents.OnFinishGame, EndGameUpdateCloud);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
