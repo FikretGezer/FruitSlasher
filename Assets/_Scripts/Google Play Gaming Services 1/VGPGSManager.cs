@@ -9,7 +9,7 @@ namespace Runtime
 {
     [Serializable]
     public class VPlayerData {
-        public long highestScore = 0;
+        public int highestScore = 0;
         public int level = 1;
         public int experience = 0;
         public bool[] achievements;

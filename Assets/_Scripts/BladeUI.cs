@@ -16,7 +16,7 @@ namespace Runtime
         }
         private void RenderTrailEffect()
         {
-            if(trailEffect != null)
+            if(trailEffect != null && Time.timeScale > 0.1f)
             {
                 trailEffect.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
                 if(Input.GetMouseButton(0))
@@ -26,6 +26,8 @@ namespace Runtime
                 if(Input.GetMouseButtonUp(0))
                     trailEffect.SetActive(false);
             }
+            else
+                trailEffect.SetActive(false);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Runtime
 {
     public class VAchievement : MonoBehaviour
     {
-        public TMP_Text logTxt;
         internal void ShowAchievementsUI()
         {
             Social.ShowAchievementsUI();
@@ -19,12 +18,12 @@ namespace Runtime
             Social.ReportProgress(_achievement, 100.0f, (bool success) => {
                 if(success)
                 {
-                    logTxt.text = _achievement + " : " + success.ToString();
+                    Debug.Log(_achievement + " : " + success.ToString());
                     //perform new actions on success
                 }
                 else
                 {
-                    logTxt.text = _achievement + " : " + success.ToString();
+                    Debug.Log(_achievement + " : " + success.ToString());
                 }
             });
         }
@@ -35,12 +34,12 @@ namespace Runtime
             platform.IncrementAchievement(_achievement, 1, (bool success) => {
                 if(success)
                 {
-                    logTxt.text = _achievement + " : " + success.ToString();
+                    Debug.Log(_achievement + " : " + success.ToString());
                     //perform new actions on success
                 }
                 else
                 {
-                    logTxt.text = _achievement + " : " + success.ToString();
+                    Debug.Log(_achievement + " : " + success.ToString());
                 }
             });
         }
@@ -49,32 +48,32 @@ namespace Runtime
             Social.ReportProgress(_achievement, 0f, (bool success) => {
                 if(success)
                 {
-                    logTxt.text = _achievement + " : " + success.ToString();
+                    Debug.Log(_achievement + " : " + success.ToString());
                     //perform new actions on success
                 }
                 else
                 {
-                    logTxt.text = _achievement + " : " + success.ToString();
+                    Debug.Log(_achievement + " : " + success.ToString());
                 }
             });
         }
         internal void ListAchievements()
         {
             Social.LoadAchievements(achievements => {
-                logTxt.text = "Loaded Achievements " + achievements.Length;
+                Debug.Log("Loaded Achievements " + achievements.Length);
                 foreach (IAchievement ach in achievements)
                 {
-                    logTxt.text += "/n" + ach.id + " " + ach.completed;
+                    Debug.Log( "/n" + ach.id + " " + ach.completed);
                 }
             });
         }
         internal void ListDescriptions()
         {
             Social.LoadAchievementDescriptions(achievements => {
-                logTxt.text = "Loaded Achievements " + achievements.Length;
+                Debug.Log("Loaded Achievements " + achievements.Length);
                 foreach (IAchievementDescription ach in achievements)
                 {
-                    logTxt.text += "/n" + ach.id + " " + ach.title;
+                    Debug.Log( "/n" + ach.id + " " + ach.title);
                 }
             });
         }

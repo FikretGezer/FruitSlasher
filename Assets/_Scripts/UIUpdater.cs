@@ -19,12 +19,13 @@ public class UIUpdater : MonoBehaviour
     [SerializeField] private TMP_Text _highestScore;
     [Header("Left Board Variables")]
     [SerializeField] private TMP_Text _currentScore;
+    [SerializeField] private EndGameMenu _endGameMenu;
 
     private List<GameObject> healths = new List<GameObject>();
 
     public bool gameEnded;
     private int maxHealth;
-    private long scoreCount;
+    private int scoreCount;
     private Animator _imageAnimator;
 
 
@@ -97,24 +98,26 @@ public class UIUpdater : MonoBehaviour
     private void ActivateEndScreenUI()
     {
         endScreenUI.gameObject.SetActive(true);
-        endScreenUI.GetChild(0).GetComponent<Animator>().SetTrigger("slideDown");
-        endScreenUI.GetChild(1).GetComponent<Animator>().SetTrigger("slideRight");
-        endScreenUI.GetChild(2).GetComponent<Animator>().SetTrigger("slideLeft");
-        endScreenUI.GetChild(3).GetComponent<Animator>().SetTrigger("slideUp");
-        endScreenUI.GetChild(4).GetComponent<Animator>().SetTrigger("pop");
+        _endGameMenu.upperBoard.SetActive(true);
+        _endGameMenu.leftBoard.SetActive(true);
+        _endGameMenu.rightBoard.SetActive(true);
+        _endGameMenu.bottomBoard.SetActive(true);
+        _endGameMenu.playAgainButton.SetActive(true);
 
-        endScreenUI.GetChild(4).GetChild(0).GetComponent<Animator>().SetTrigger("rotateF");
-        endScreenUI.GetChild(4).GetChild(1).GetComponent<Animator>().SetTrigger("rotateC");
+        _endGameMenu.upperBoard.GetComponent<Animator>().SetBool("slideDown", true);
+        _endGameMenu.leftBoard.GetComponent<Animator>().SetTrigger("slideRight");
+        _endGameMenu.rightBoard.GetComponent<Animator>().SetTrigger("slideLeft");
+        _endGameMenu.bottomBoard.GetComponent<Animator>().SetTrigger("slideUp");
+        _endGameMenu.playAgainButton.GetComponent<Animator>().SetTrigger("pop");
+
+        _endGameMenu.playAgainButton.transform.GetChild(0).GetComponent<Animator>().SetTrigger("rotateF");
+        _endGameMenu.playAgainButton.transform.GetChild(1).GetComponent<Animator>().SetTrigger("rotateC");
     }
     private void UltimateEndGameScreenUpdate()
     {
         #region Left Board
         _currentScore.text = scoreCount.ToString();
         #endregion
-    }
-    private void SetBeginningParameters()
-    {
-
     }
     private void EndGameUpdateCloud()
     {
@@ -125,10 +128,6 @@ public class UIUpdater : MonoBehaviour
         }
 
         #endregion
-    }
-    public void LeaderboardButton()
-    {
-        // Leaderboard.Instance.ShowLeaderboardUI();
     }
     private void OnEnable() {
         EventManager.AddHandler(GameEvents.OnFinishGame, EndGameUpdateCloud);
@@ -142,4 +141,12 @@ public class UIUpdater : MonoBehaviour
         EventManager.RemoveHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
     }
+}
+[System.Serializable]
+public class EndGameMenu {
+    public GameObject upperBoard;
+    public GameObject leftBoard;
+    public GameObject rightBoard;
+    public GameObject bottomBoard;
+    public GameObject playAgainButton;
 }

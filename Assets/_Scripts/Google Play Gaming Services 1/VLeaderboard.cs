@@ -1,38 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
-using GooglePlayGames;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SocialPlatforms;
-using TMPro;
 
 namespace Runtime
 {
     public class VLeaderboard : MonoBehaviour
     {
-        public TMP_Text logTxt;
-        public TMP_InputField scoreInput;
-
+        public static VLeaderboard Instance;
+        private void Awake() {
+            if(Instance == null) Instance = this;
+        }
         public void ShowLeaderboardUI()
         {
-            Social.ShowLeaderboardUI();
+            if(Social.localUser.authenticated)
+            {
+                Social.ShowLeaderboardUI();
+            }
         }
         private void DoLeaderboardPost(int _score)
         {
             Social.ReportScore(_score, GPGSIds.leaderboard_leaderboard, (bool success) => {
                 if(success)
                 {
-                    logTxt.text = "Score posted of: " + _score;
+                    Debug.Log("Score posted of: " + _score);
                 }
                 else
                 {
-                    logTxt.text = "Score failed to post";
+                    Debug.Log("Score failed to post");
                 }
             });
         }
-        public void LeaderboardPostBtn()
+        public void PostScoreLeaderboard(int _scoreToPost)
         {
-            DoLeaderboardPost(int.Parse(scoreInput.text));
+            if(Social.localUser.authenticated)
+            {
+                DoLeaderboardPost(_scoreToPost);
+            }
         }
     }
 }

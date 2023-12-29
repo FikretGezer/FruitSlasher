@@ -31,7 +31,8 @@ namespace Runtime
         private void Awake() {
             if(Instance == null) Instance = this;
         }
-        public void UpdateHighestScore(long currentScore)
+        #region In Game Updates
+        public void UpdateHighestScore(int currentScore)
         {
             if(Social.localUser.authenticated)
             {
@@ -42,6 +43,7 @@ namespace Runtime
                     playerData.highestScore = currentScore;
                     _tHighestScore.text = currentScore.ToString();
                     VGPGSManager.Instance.OpenSave(true);
+                    ButtonManager.PostScoreToLeaderboard(currentScore);
                 }
                 else
                 {
@@ -49,5 +51,6 @@ namespace Runtime
                 }
             }
         }
+        #endregion
     }
 }
