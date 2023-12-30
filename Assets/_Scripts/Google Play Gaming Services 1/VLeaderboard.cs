@@ -30,10 +30,7 @@ namespace Runtime
         }
         public void PostScoreLeaderboard(int _scoreToPost)
         {
-            if(Social.localUser.authenticated)
-            {
-                DoLeaderboardPost(_scoreToPost);
-            }
+            DoLeaderboardPost(_scoreToPost);
         }
     }
 }

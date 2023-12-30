@@ -24,6 +24,7 @@ public class Fruit : MonoBehaviour
     //For splitting
     private GameObject upPart;
     private GameObject downPart;
+    private Color reducedColor; // This is to differentiate fruits got cut and not
     private void Awake() {
         //Caching
         rigid = GetComponent<Rigidbody2D>();
@@ -33,6 +34,7 @@ public class Fruit : MonoBehaviour
         downPart = transform.GetChild(1).gameObject;//Down Part
         upPart = transform.GetChild(2).gameObject;//Upper Part
 
+        reducedColor = new Color(0.7f, 0.7f, 0.7f);
         cutable = true;
 
         //Assign min and max values of the screen
@@ -52,7 +54,7 @@ public class Fruit : MonoBehaviour
         rotateSpeed = Random.Range(50f, 90f);
     }
     private void Update() {
-        //Rotate fruit randomly
+        //Rotate fruit randomly on launch
         if(cutable)
         {
             rot += Vector3.forward * rotateSpeed * multiplier * Time.deltaTime;
@@ -114,6 +116,9 @@ public class Fruit : MonoBehaviour
 
             downPart.transform.parent = null;
             upPart.transform.parent = null;
+
+            downPart.GetComponent<SpriteRenderer>().color = reducedColor;
+            upPart.GetComponent<SpriteRenderer>().color = reducedColor;
 
             downPart.GetComponent<Rigidbody2D>().AddForce(-transform.up * splitSpeed, ForceMode2D.Impulse);
             upPart.GetComponent<Rigidbody2D>().AddForce(transform.up * splitSpeed, ForceMode2D.Impulse);

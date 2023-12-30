@@ -11,7 +11,10 @@ namespace Runtime
     public class VPlayerData {
         public int highestScore = 0;
         public int level = 1;
-        public int experience = 0;
+        public int baseExperience = 500;
+        public float experienceMultiplier = 1.2f;
+        public int neededExperience = 0;
+        public int currentExperience = 0;
         public bool[] achievements;
         public bool[] blades;
         public bool[] backgrounds;
@@ -43,6 +46,10 @@ namespace Runtime
                     ConflictResolutionStrategy.UseLongestPlaytime,
                     SaveOrLoadGameFile
                 );
+            }
+            else
+            {
+                _playerData = new VPlayerData();
             }
         }
         private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)
@@ -96,6 +103,8 @@ namespace Runtime
         {
             var _playerData = JsonUtility.FromJson<VPlayerData>(data);
             this._playerData = _playerData;
+
+            _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
 
             if(output != null)
             {

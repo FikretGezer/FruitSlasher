@@ -67,7 +67,8 @@ namespace Runtime
             if(!isItOnMenu)
                 UIUpdater.Instance.LoadSceneAgain();
             else{
-                SceneManager.LoadScene("MainScene");
+                // SceneManager.LoadScene("MainScene");
+                AsyncLoader.Instance.LoadSceneAsync("MainScene");
             }
         }
     }

@@ -27,6 +27,7 @@ namespace Runtime
         //     VGPGSManager.Instance.OpenSave(true);
         // }
         [SerializeField] private TMP_Text _tHighestScore;
+        [SerializeField] private TMP_Text _tLevel;
         public static VSavedGamesUI Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
@@ -34,22 +35,48 @@ namespace Runtime
         #region In Game Updates
         public void UpdateHighestScore(int currentScore)
         {
-            if(Social.localUser.authenticated)
-            {
-                var playerData = VGPGSManager.Instance._playerData;
+            var playerData = VGPGSManager.Instance._playerData;
 
-                if(currentScore > playerData.highestScore)
-                {
-                    playerData.highestScore = currentScore;
-                    _tHighestScore.text = currentScore.ToString();
-                    VGPGSManager.Instance.OpenSave(true);
-                    ButtonManager.PostScoreToLeaderboard(currentScore);
-                }
-                else
-                {
-                    _tHighestScore.text = playerData.highestScore.ToString();
-                }
+            if(currentScore > playerData.highestScore)
+            {
+                playerData.highestScore = currentScore;
+                _tHighestScore.text = currentScore.ToString();
+
+                VGPGSManager.Instance.OpenSave(true);
+                PostScoreToLeaderboard(currentScore);
             }
+            else
+            {
+                _tHighestScore.text = playerData.highestScore.ToString();
+                PostScoreToLeaderboard(currentScore);
+            }
+        }
+        public void CalculateExperience(int fruitCutAmount)
+        {
+            int experience = fruitCutAmount;
+
+            IncreaseXP(experience);
+        }
+        private void IncreaseXP(int experience)
+        {
+            var _playerData = VGPGSManager.Instance._playerData;
+            _playerData.currentExperience += experience;
+
+            if(_playerData.currentExperience >= _playerData.neededExperience)
+            {
+                _playerData.currentExperience = _playerData.currentExperience % _playerData.neededExperience;
+
+                _playerData.level++;
+                _tLevel.text = _playerData.level.ToString();
+                _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
+            }
+
+            VGPGSManager.Instance.OpenSave(true);
+        }
+        private void PostScoreToLeaderboard(int scoreToPost)
+        {
+            if(FindObjectOfType<VLeaderboard>() != null)
+                VLeaderboard.Instance.PostScoreLeaderboard(scoreToPost);
         }
         #endregion
     }

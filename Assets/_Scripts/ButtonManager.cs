@@ -9,19 +9,22 @@ namespace Runtime
     {
         private bool isPaused;
         [SerializeField] private TMP_Text _tcountDown;
-
         [SerializeField] private InGameUIElements _uiElements;
+
+
+        public static ButtonManager Instance;
+        private void Awake() {
+            if(Instance == null) Instance = this;
+        }
         public void ShowLeaderboardBTN()
         {
             if(FindObjectOfType<VLeaderboard>() != null)
+            {
                 VLeaderboard.Instance.ShowLeaderboardUI();
+
+            }
         }
         #region In Game
-        public static void PostScoreToLeaderboard(int scoreToPost)
-        {
-            if(FindObjectOfType<VLeaderboard>() != null)
-                VLeaderboard.Instance.PostScoreLeaderboard(scoreToPost);
-        }
         public void LoadAScene(string sceneName)
         {
             Time.timeScale = 1f;

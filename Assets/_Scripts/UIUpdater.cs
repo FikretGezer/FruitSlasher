@@ -39,6 +39,9 @@ public class UIUpdater : MonoBehaviour
         foreach(Transform healthImage in healthHolder)
             healths.Add(healthImage.gameObject);
         _imageAnimator = _imageScore.GetComponent<Animator>();
+
+        if(FindObjectOfType<VGPGSManager>() != null)
+            _highestScore.text = VGPGSManager.Instance._playerData.highestScore.ToString();
     }
     public void IncreaseScore(int count)
     {

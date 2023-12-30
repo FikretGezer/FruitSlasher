@@ -4,6 +4,7 @@ public class Piece : MonoBehaviour
 {
     private GameObject parentFruit;
     private Vector3 basePosition;
+    private SpriteRenderer _renderer;
     private Vector3 rot;
     private float rotateSpeed = 50f;
     private float multiplier = 1f;
@@ -13,12 +14,17 @@ public class Piece : MonoBehaviour
     private Camera cam;
     private float minX, maxX;
     private float minY, maxY;
+
+    private Color defaultColor;
     private void Awake() {
         if(transform.parent != null)
             parentFruit = transform.parent.gameObject;
 
         cam = Camera.main;
+        _renderer = GetComponent<SpriteRenderer>();
+
         basePosition = transform.localPosition;
+        defaultColor = new Color(1f, 1f, 1f);
 
         //Assign min and max values of the screen
         minX = cam.ScreenToWorldPoint(new Vector2(0f, 0f)).x;
@@ -35,6 +41,7 @@ public class Piece : MonoBehaviour
     }
     private void OnDisable() {
         gameObject.SetActive(false);
+        _renderer.color = defaultColor;
     }
     private void Update() {
         if(DidGetCut)

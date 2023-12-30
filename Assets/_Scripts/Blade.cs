@@ -16,9 +16,11 @@ public class Blade : MonoBehaviour
     private Camera cam;
     private Vector2 startPos;
     private Vector2 endPos;
+    private int _fruitAmountThatGotCut;
     private void Awake() {
         cam = Camera.main;
         Cursor.lockState = CursorLockMode.Confined;
+        _fruitAmountThatGotCut = 0;
 
         if(trailEffect != null)
             trailEffect.SetActive(false);
@@ -128,6 +130,7 @@ public class Blade : MonoBehaviour
             //Fruit was being rotated
             //Do rotating
             fruit.cutable = false;
+            _fruitAmountThatGotCut++;
 
             // Rotate Fruit
             RotateFruitInCuttingAxis(fruit.gameObject);
@@ -245,5 +248,15 @@ public class Blade : MonoBehaviour
             EffectSpawner.Instance.GetComboTextEffect(lastHitFruitPos, comboCount);
         }
         comboStart = false;
+    }
+    private void IncreaseXP()
+    {
+        VSavedGamesUI.Instance.CalculateExperience(_fruitAmountThatGotCut);
+    }
+    private void OnEnable() {
+        EventManager.AddHandler(GameEvents.OnFinishGame, IncreaseXP);
+    }
+    private void OnDisable() {
+        EventManager.RemoveHandler(GameEvents.OnFinishGame, IncreaseXP);
     }
 }
