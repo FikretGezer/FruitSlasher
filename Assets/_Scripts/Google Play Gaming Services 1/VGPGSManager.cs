@@ -11,8 +11,8 @@ namespace Runtime
     public class VPlayerData {
         public int highestScore = 0;
         public int level = 1;
-        public int baseExperience = 500;
         public float experienceMultiplier = 1.2f;
+        public int baseExperience = 500;
         public int neededExperience = 0;
         public int currentExperience = 0;
         public bool[] achievements;
@@ -50,6 +50,7 @@ namespace Runtime
             else
             {
                 _playerData = new VPlayerData();
+                _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
             }
         }
         private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)

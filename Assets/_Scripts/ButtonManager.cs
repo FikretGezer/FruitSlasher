@@ -88,6 +88,18 @@ namespace Runtime
 
         }
         #endregion
+        #region Menu
+        public void ResetAndSave()
+        {
+            var _playerData = new VPlayerData();
+            VGPGSManager.Instance._playerData = _playerData;
+            VGPGSManager.Instance.OpenSave(true);
+        }
+        public void LoadSave()
+        {
+            VGPGSManager.Instance.OpenSave(false);
+        }
+        #endregion
     }
 
     [System.Serializable]

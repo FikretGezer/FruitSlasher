@@ -17,16 +17,19 @@ namespace Runtime
         }
         private void DoLeaderboardPost(int _score)
         {
-            Social.ReportScore(_score, GPGSIds.leaderboard_leaderboard, (bool success) => {
-                if(success)
-                {
-                    Debug.Log("Score posted of: " + _score);
-                }
-                else
-                {
-                    Debug.Log("Score failed to post");
-                }
-            });
+            if(Social.localUser.authenticated)
+            {
+                Social.ReportScore(_score, GPGSIds.leaderboard_leaderboard, (bool success) => {
+                    if(success)
+                    {
+                        Debug.Log("Score posted of: " + _score);
+                    }
+                    else
+                    {
+                        Debug.Log("Score failed to post");
+                    }
+                });
+            }
         }
         public void PostScoreLeaderboard(int _scoreToPost)
         {
