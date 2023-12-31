@@ -50,8 +50,11 @@ namespace Runtime
             }
             else
             {
-                _playerData = new VPlayerData();
-                _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
+                if(_playerData == null)
+                {
+                    _playerData = new VPlayerData();
+                    _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
+                }
             }
         }
         private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)

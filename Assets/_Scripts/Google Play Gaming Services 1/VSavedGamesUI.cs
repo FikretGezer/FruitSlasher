@@ -36,7 +36,13 @@ namespace Runtime
         [SerializeField] private TMP_Text _tTotalStars;
         [SerializeField] private TMP_Text _tStars;
         [SerializeField] private Image _levelSlider;
+        [SerializeField] private Transform _totalStarsImageTransform;
+        [SerializeField] private Transform _sessionStarsImageTransform;
         [SerializeField] private float speedController = 1f;
+        [SerializeField] private GameObject _starsTrailEffect;
+        [SerializeField] private GameObject _starsPopEffect;
+        [SerializeField] private GameObject _starsPopEffectSecond;
+
 
         #region Time Params
         private float seconds = 0;
@@ -48,6 +54,12 @@ namespace Runtime
         private bool _expDone;
         private bool _starsDone;
         public bool _scoreDone;
+
+        // Star Trail
+        private bool _sendTrail;
+        private float current = 0f, target = 1f;
+        [SerializeField] private float _trailSpeed = 1f;
+
 
         public static VSavedGamesUI Instance;
         private void Awake() {
@@ -69,6 +81,22 @@ namespace Runtime
             {
                 CalculateGameTime();
             }
+            if(_sendTrail)
+            {
+                current = Mathf.MoveTowards(current, target, _trailSpeed * Time.unscaledDeltaTime);
+
+                var trailPos = _starsTrailEffect.transform.position;
+                trailPos = Vector3.Lerp(trailPos, _totalStarsImageTransform.position, current);
+                _starsTrailEffect.transform.position = trailPos;
+
+                if((trailPos - _totalStarsImageTransform.position).magnitude < 0.1f)
+                {
+                    _starsPopEffectSecond.transform.position = _totalStarsImageTransform.position;
+                    _starsPopEffectSecond.SetActive(true);
+                    _tTotalStars.text = VGPGSManager.Instance._playerData.stars.ToString();
+                    _sendTrail = false;
+                }
+            }
         }
         private void LoadedDatasOfThePlayer()
         {
@@ -84,6 +112,8 @@ namespace Runtime
 
             _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
             _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
+
+            // _starsTrailEffect.transform.position = _starsPopEffect.transform.position = _sessionStarsImageTransform.position;
         }
         private void CalculateGameTime()
         {
@@ -252,9 +282,15 @@ namespace Runtime
             }
 
             _playerData.stars += stars;
-            _tTotalStars.text = _playerData.stars.ToString();
-
             VGPGSManager.Instance.OpenSave(true);
+
+            if(stars > 0)
+            {
+                _starsPopEffect.SetActive(true);
+                _starsTrailEffect.SetActive(true);
+                _sendTrail = true;
+            }
+
             _starsDone = true;
             CheckEverythingIsDone();
         }
