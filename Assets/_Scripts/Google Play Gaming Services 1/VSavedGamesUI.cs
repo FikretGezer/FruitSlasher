@@ -33,9 +33,9 @@ namespace Runtime
         [SerializeField] private TMP_Text _tExpNeeded;
         [SerializeField] private TMP_Text _tExpCurrent;
         [SerializeField] private TMP_Text _tTime;
+        [SerializeField] private TMP_Text _tTotalStars;
+        [SerializeField] private TMP_Text _tStars;
         [SerializeField] private Image _levelSlider;
-        [Range(0, 600)]
-        [SerializeField] private int controller;
         [SerializeField] private float speedController = 1f;
 
         #region Time Params
@@ -45,13 +45,14 @@ namespace Runtime
 
 
         private Animator _tLevelAnimator;
-
+        private bool _expDone;
+        private bool _starsDone;
+        public bool _scoreDone;
 
         public static VSavedGamesUI Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
 
-            LoadedDatasOfThePlayer();
 
             // neededExperience = (int)(baseExperience * (experienceMultiplier * level));
 
@@ -60,14 +61,13 @@ namespace Runtime
             // _tExpCurrent.text = "Current: " + currentExperience.ToString();
             // _tExpNeeded.text = "Needed: " + neededExperience.ToString();
         }
+        private void Start() {
+            LoadedDatasOfThePlayer();
+        }
         private void Update() {
             if(_calculateGameTime && GameManager.Situation == GameSituation.Play)
             {
                 CalculateGameTime();
-            }
-            else if(GameManager.Situation == GameSituation.Stop)
-            {
-
             }
         }
         private void LoadedDatasOfThePlayer()
@@ -76,12 +76,14 @@ namespace Runtime
             _tLevelAnimator = _tLevel.GetComponent<Animator>();
 
             _tLevel.text = _playerData.level.ToString();
-            _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
-            _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
+            _tTotalStars.text = _playerData.stars.ToString();
 
             // Level XP Bar
             var fillAmount = Mathf.Clamp01((float)_playerData.currentExperience / _playerData.neededExperience);
             _levelSlider.fillAmount = fillAmount;
+
+            _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
+            _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
         }
         private void CalculateGameTime()
         {
@@ -161,18 +163,20 @@ namespace Runtime
             {
                 currentXP += Time.unscaledDeltaTime * speedController;
                 _levelSlider.fillAmount = Mathf.Clamp01((float)currentXP / neededExperience);
+                _tExpCurrent.text = "Current: " + ((int)currentXP).ToString();
                 yield return null;
             }
             currentXP = increasedXP;
 
             var _playerData = VGPGSManager.Instance._playerData;
 
-            _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
             _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
 
             if(currentXP < neededExperience)// XP loaded max
             {
                 VGPGSManager.Instance.OpenSave(true);
+                _expDone = true;
+                CheckEverythingIsDone();
             }
             else
             {
@@ -226,7 +230,41 @@ namespace Runtime
         */
         #endregion
 
+        #region Stars
+        public void CalculateStars(int uniqueFruitAmount/*this could be max 10(there is 10 diff. fruits)*/, int specialFruitAmount, int comboCount)
+        {
+            int stars = uniqueFruitAmount + specialFruitAmount + comboCount + (int)(seconds * 0.1f);
+
+            StartCoroutine(IncreaseStarsCor(stars));
+        }
+        IEnumerator IncreaseStarsCor(int sessionStars)
+        {
+            var _playerData = VGPGSManager.Instance._playerData;
+
+            int stars = 0;
+
+            while(stars < sessionStars)
+            {
+                stars += 1;
+                _tStars.text = "+" + stars.ToString();
+
+                yield return new WaitForSeconds(0.01f);
+            }
+
+            _playerData.stars += stars;
+            _tTotalStars.text = _playerData.stars.ToString();
+
+            VGPGSManager.Instance.OpenSave(true);
+            _starsDone = true;
+            CheckEverythingIsDone();
+        }
         #endregion
 
+        #endregion
+        public void CheckEverythingIsDone()
+        {
+            if(_expDone && _starsDone && _scoreDone)
+                GameManager.Situation = GameSituation.EverythingDone;
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace Runtime
     public enum GameEvents{
         OnStartGame,
         OnFinishGame,
+        OnPlayerValuesChanges,
         OnCuttingBomb,
         OnCuttingFruit,
         OnCuttingSpecialFruit

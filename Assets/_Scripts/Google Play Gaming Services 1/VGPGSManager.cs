@@ -15,6 +15,7 @@ namespace Runtime
         public int baseExperience = 500;
         public int neededExperience = 0;
         public int currentExperience = 0;
+        public int stars = 500;
         public bool[] achievements;
         public bool[] blades;
         public bool[] backgrounds;

@@ -6,7 +6,8 @@ namespace Runtime
 {
     public enum GameSituation{
         Play,
-        Stop
+        Stop,
+        EverythingDone
     }
     public class GameManager : MonoBehaviour
     {

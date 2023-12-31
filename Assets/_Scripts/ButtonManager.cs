@@ -27,8 +27,11 @@ namespace Runtime
         #region In Game
         public void LoadAScene(string sceneName)
         {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(sceneName);
+            if(GameManager.Situation == GameSituation.Play || GameManager.Situation == GameSituation.EverythingDone)
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(sceneName);
+            }
         }
         public void OpenSoundBTN()
         {

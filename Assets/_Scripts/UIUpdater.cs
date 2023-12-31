@@ -18,7 +18,7 @@ public class UIUpdater : MonoBehaviour
     [Header("Upper Board Variables")]
     [SerializeField] private TMP_Text _highestScore;
     [Header("Left Board Variables")]
-    [SerializeField] private TMP_Text _currentScore;
+    [SerializeField] private TMP_Text _tCurrentScore;
     [SerializeField] private EndGameMenu _endGameMenu;
 
     private List<GameObject> healths = new List<GameObject>();
@@ -87,6 +87,8 @@ public class UIUpdater : MonoBehaviour
         GameManager.Situation = GameSituation.Stop;
         yield return new WaitForSeconds(2f);
         EventManager.Broadcasting(GameEvents.OnFinishGame);
+        yield return new WaitForSeconds(1f);
+        EventManager.Broadcasting(GameEvents.OnPlayerValuesChanges);
     }
     public void LoadSceneAgain()
     {
@@ -119,8 +121,20 @@ public class UIUpdater : MonoBehaviour
     private void UltimateEndGameScreenUpdate()
     {
         #region Left Board
-        _currentScore.text = scoreCount.ToString();
+        StartCoroutine(IncreaseSessionScoreCor());
         #endregion
+    }
+    IEnumerator IncreaseSessionScoreCor()
+    {
+        int score = 0;
+        while(score < scoreCount)
+        {
+            score += 1;
+            _tCurrentScore.text = score.ToString();
+            yield return new WaitForSeconds(0.01f);
+        }
+        VSavedGamesUI.Instance._scoreDone = true;
+        VSavedGamesUI.Instance.CheckEverythingIsDone();
     }
     private void EndGameUpdateCloud()
     {
@@ -133,16 +147,18 @@ public class UIUpdater : MonoBehaviour
         #endregion
     }
     private void OnEnable() {
-        EventManager.AddHandler(GameEvents.OnFinishGame, EndGameUpdateCloud);
+        EventManager.AddHandler(GameEvents.OnPlayerValuesChanges, EndGameUpdateCloud);
+        EventManager.AddHandler(GameEvents.OnPlayerValuesChanges, UltimateEndGameScreenUpdate);
+
         EventManager.AddHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.AddHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
-        EventManager.AddHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
     }
     private void OnDisable() {
-        EventManager.RemoveHandler(GameEvents.OnFinishGame, EndGameUpdateCloud);
+        EventManager.RemoveHandler(GameEvents.OnPlayerValuesChanges, EndGameUpdateCloud);
+        EventManager.RemoveHandler(GameEvents.OnPlayerValuesChanges, UltimateEndGameScreenUpdate);
+
         EventManager.RemoveHandler(GameEvents.OnFinishGame, DisableUI);
         EventManager.RemoveHandler(GameEvents.OnFinishGame, ActivateEndScreenUI);
-        EventManager.RemoveHandler(GameEvents.OnFinishGame, UltimateEndGameScreenUpdate);
     }
 }
 [System.Serializable]

@@ -16,7 +16,22 @@ public class Blade : MonoBehaviour
     private Camera cam;
     private Vector2 startPos;
     private Vector2 endPos;
+
+    #region Player Data Params
     private int _fruitAmountThatGotCut;
+    private int _comboAmount;
+    private int _specialFruitAmount;
+    private List<string> _uniqueList = new List<string>();
+
+    private void CalculateUniques(string tag)
+    {
+        if(!_uniqueList.Contains(tag) && Array.IndexOf(tags, tag) != -1)
+        {
+            _uniqueList.Add(tag);
+        }
+    }
+    #endregion
+
     private void Awake() {
         cam = Camera.main;
         Cursor.lockState = CursorLockMode.Confined;
@@ -130,7 +145,10 @@ public class Blade : MonoBehaviour
             //Fruit was being rotated
             //Do rotating
             fruit.cutable = false;
+
+            // Player Data Stars And XP Params
             _fruitAmountThatGotCut++;
+            CalculateUniques(fruit.tag);
 
             // Rotate Fruit
             RotateFruitInCuttingAxis(fruit.gameObject);
@@ -246,6 +264,7 @@ public class Blade : MonoBehaviour
         if(comboCount > 1)
         {
             EffectSpawner.Instance.GetComboTextEffect(lastHitFruitPos, comboCount);
+            _comboAmount++;
         }
         comboStart = false;
     }
@@ -253,10 +272,16 @@ public class Blade : MonoBehaviour
     {
         VSavedGamesUI.Instance.CalculateExperience(_fruitAmountThatGotCut);
     }
+    private void IncreaseStars()
+    {
+        VSavedGamesUI.Instance.CalculateStars(_uniqueList.Count, _specialFruitAmount, _comboAmount);
+    }
     private void OnEnable() {
-        EventManager.AddHandler(GameEvents.OnFinishGame, IncreaseXP);
+        EventManager.AddHandler(GameEvents.OnPlayerValuesChanges, IncreaseXP);
+        EventManager.AddHandler(GameEvents.OnPlayerValuesChanges, IncreaseStars);
     }
     private void OnDisable() {
-        EventManager.RemoveHandler(GameEvents.OnFinishGame, IncreaseXP);
+        EventManager.RemoveHandler(GameEvents.OnPlayerValuesChanges, IncreaseXP);
+        EventManager.RemoveHandler(GameEvents.OnPlayerValuesChanges, IncreaseStars);
     }
 }
