@@ -17,10 +17,16 @@ public class Blade : MonoBehaviour
     private Vector2 startPos;
     private Vector2 endPos;
 
+    private int comboCount = 1;
+    private Vector3 lastHitFruitPos;
+    private bool comboStart = false;
+
     #region Player Data Params
     private int _fruitAmountThatGotCut;
     private int _comboAmount;
     private int _specialFruitAmount;
+    private bool isSpecialFruit;
+    private bool started;
     private List<string> _uniqueList = new List<string>();
 
     private void CalculateUniques(string tag)
@@ -32,7 +38,10 @@ public class Blade : MonoBehaviour
     }
     #endregion
 
+    public static Blade Instance;
     private void Awake() {
+        if(Instance == null) Instance = this;
+
         cam = Camera.main;
         Cursor.lockState = CursorLockMode.Confined;
         _fruitAmountThatGotCut = 0;
@@ -47,7 +56,6 @@ public class Blade : MonoBehaviour
             Slash();
         }
     }
-    private bool started;
     private void ChangeJuiceColor(int idx, Vector3 pos)
     {
         var juice = EffectSpawner.Instance.GetEffect(EffectType.JuiceEffect);
@@ -72,7 +80,6 @@ public class Blade : MonoBehaviour
         }
         return default;
     }
-    private bool isSpecialFruit;
     private void Slash()
     {
         if(Input.GetMouseButtonDown(0))
@@ -123,7 +130,11 @@ public class Blade : MonoBehaviour
                 {
                     var _bomb = hit.collider.GetComponent<Bomb>();
                     if(_bomb != null)
+                    {
+                        CameraController.Instance.IsActive = false;
+                        if(Time.timeScale < 0.9f) Time.timeScale = 1f;
                         ExploadTheBomb(_bomb);
+                    }
                     else
                     {
                         isSpecialFruit = false;
@@ -171,9 +182,6 @@ public class Blade : MonoBehaviour
             }
         }
     }
-    private int comboCount = 1;
-    private Vector3 lastHitFruitPos;
-    private bool comboStart = false;
     private void RotateFruitInCuttingAxis(GameObject fruit)
     {
         var up = Vector2.up;
@@ -189,7 +197,7 @@ public class Blade : MonoBehaviour
         var targetRot = Quaternion.FromToRotation(up, upR);
         fruit.transform.rotation = Quaternion.Euler(targetRot.eulerAngles);
     }
-    private void SpawnCutEffect(Vector2 pos)
+    public void SpawnCutEffect(Vector2 pos)
     {
         // cut effect
         var hitEf = EffectSpawner.Instance.GetEffect(EffectType.HitEffect);
@@ -222,7 +230,7 @@ public class Blade : MonoBehaviour
         else
             trailEffect.SetActive(false);
     }
-    private void SpawnSplash(string fruitTag, Vector3 pos)
+    public void SpawnSplash(string fruitTag, Vector3 pos)
     {
         // Get splash from the pool
         var splashEf = EffectSpawner.Instance.GetEffect(EffectType.SplashEffect);
@@ -266,6 +274,7 @@ public class Blade : MonoBehaviour
             EffectSpawner.Instance.GetComboTextEffect(lastHitFruitPos, comboCount);
             _comboAmount++;
         }
+        StopCoroutine(ComboCor(time));
         comboStart = false;
     }
     private void IncreaseXP()

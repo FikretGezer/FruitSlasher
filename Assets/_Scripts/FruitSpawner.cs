@@ -15,13 +15,17 @@ public class FruitSpawner : MonoBehaviour
     private List<GameObject> _fruitList = new List<GameObject>();
     private List<GameObject> _bombList = new List<GameObject>();
     private List<GameObject> _specialFruitList = new List<GameObject>();
+    public List<Fruit> _activeFruits = new List<Fruit>();
 
     public float bombMaxPercentage = 0.25f;
 
     public static FruitSpawner Instance;
     private void Awake() {
         if(Instance == null) Instance = this;
+
         bombMaxPercentage = 0.1f;
+
+        // Create Pools
         CreateFruits();
         CreateBombs();
         CreateSpecialFruit();
@@ -30,28 +34,32 @@ public class FruitSpawner : MonoBehaviour
         SpawnTimer();
     }
     private void Update() {
+        #region Manual Spawning
         //Spawn new fruit
         if(Input.GetKeyDown(KeyCode.A))
         {
             var fruit = GetFruit();
             fruit.SetActive(true);
         }
+        //Spawn new bomb
         if(Input.GetKeyDown(KeyCode.S))
         {
             var bomb = GetBomb();
             bomb.SetActive(true);
         }
+        //Spawn new fruit
         if(Input.GetKeyDown(KeyCode.D))
         {
             var sFruit = GetSpecialFruit();
             sFruit.SetActive(true);
         }
+        #endregion
     }
     private void SpawnTimer()
     {
         // Random delay time
         float rndDelayTime = Random.Range(2f, 3f);
-        // Call cor
+        // Start spawning fruits, bombs and special fruits
         StartCoroutine(SpawnTimerCor(rndDelayTime));
     }
     IEnumerator SpawnTimerCor(float delayTime)
@@ -68,6 +76,7 @@ public class FruitSpawner : MonoBehaviour
             for (int i = 0; i < rndSpawnCount; i++)
             {
                 var fruit = GetFruit();
+                _activeFruits.Add(fruit.GetComponent<Fruit>());
                 fruit.SetActive(true);
             }
             SpawnBomb(bombMaxPercentage);
@@ -158,7 +167,7 @@ public class FruitSpawner : MonoBehaviour
             _bombList.Add(hit);
         }
     }
-    public GameObject GetBomb()
+    private GameObject GetBomb()
     {
         foreach(var bomb in _bombList)
         {

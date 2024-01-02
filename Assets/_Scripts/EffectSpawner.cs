@@ -141,7 +141,7 @@ public class EffectSpawner : MonoBehaviour
         {
             _tCombo.text = $"Combo x{count}";
             _tCombo.transform.position = pos;
-            UIUpdater.Instance.IncreaseScore(3*count);
+            UIUpdater.Instance.IncreaseScore(count);
             StartCoroutine(ResetComboTextCor());
         }
     }

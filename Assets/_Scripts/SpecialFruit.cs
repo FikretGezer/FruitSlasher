@@ -67,6 +67,7 @@ namespace Runtime
             rigid.angularVelocity = 0f;
             jump = false;
             isItAppearedFirst = false;
+
             CameraController.Instance.IsActive = false;
             Time.timeScale = 1f;
             EffectSpawner.Instance.SpawnBigText();

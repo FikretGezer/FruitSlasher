@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace Runtime
 {
@@ -7,12 +8,35 @@ namespace Runtime
         public static VLeaderboard Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
+            CompareLeaderboardScores();
         }
         public void ShowLeaderboardUI()
         {
             if(Social.localUser.authenticated)
             {
                 Social.ShowLeaderboardUI();
+            }
+        }
+        private void CompareLeaderboardScores()
+        {
+            if(Social.localUser.authenticated)
+            {
+                ILeaderboard leaderboard = Social.CreateLeaderboard();
+                leaderboard.timeScope = TimeScope.AllTime;
+
+                leaderboard.id = GPGSIds.leaderboard_leaderboard;
+                leaderboard.LoadScores(success => {
+                    if(success)
+                    {
+                        long userLeaderboardScore = leaderboard.localUserScore.value;
+                        var userLocalScore = VGPGSManager.Instance._playerData.highestScore;
+
+                        if(userLocalScore > (int)userLeaderboardScore)
+                        {
+                            DoLeaderboardPost(userLocalScore);
+                        }
+                    }
+                });
             }
         }
         private void DoLeaderboardPost(int _score)

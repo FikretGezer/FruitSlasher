@@ -17,10 +17,12 @@ namespace Runtime
         [SerializeField] private Vector2 min, max;
         [SerializeField] private float lerpSpeed = 1f;
 
+        Blade blade;
         public static CameraController Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
             cam = GetComponent<Camera>();
+            blade = FindObjectOfType<Blade>();
         }
         private void Update() {
             if(Input.GetKeyDown(KeyCode.W))
@@ -53,7 +55,7 @@ namespace Runtime
             pos.y = Mathf.Clamp(pos.y, min.y, max.y);
 
             transform.position = pos;
-            Time.timeScale = 0.5f;
+            Time.timeScale = 0.2f;
             Timer(3f, obj.gameObject);
         }
         private float elapsedTime = 0f;
@@ -66,6 +68,15 @@ namespace Runtime
             else
             {
                 sFruit.SetActive(false);
+                blade.SpawnCutEffect(sFruit.transform.position);
+                blade.SpawnSplash("redApple", sFruit.transform.position);
+
+                foreach(var fruit in FruitSpawner.Instance._activeFruits)
+                {
+                    fruit.cutIt = true;
+                    blade.SpawnCutEffect(fruit.transform.position);
+                    blade.SpawnSplash(fruit.tag, fruit.transform.position);
+                }
             }
         }
     }

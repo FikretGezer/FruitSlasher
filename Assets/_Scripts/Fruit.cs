@@ -143,6 +143,12 @@ public class Fruit : MonoBehaviour
 
     //Set default parameters when fruit returns to the pool
     private void OnDisable() {
+        // var list = FruitSpawner.Instance._activeFruits;
+        if(FruitSpawner.Instance._activeFruits.Contains(this))
+        {
+            FruitSpawner.Instance._activeFruits.Remove(this);
+        }
+
         rigid.velocity = Vector3.zero;
         rigid.angularVelocity = 0f;
         rot = Vector3.zero;

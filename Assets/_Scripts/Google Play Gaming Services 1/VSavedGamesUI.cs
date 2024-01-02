@@ -101,17 +101,26 @@ namespace Runtime
         private void LoadedDatasOfThePlayer()
         {
             var _playerData = VGPGSManager.Instance._playerData;
-            _tLevelAnimator = _tLevel.GetComponent<Animator>();
 
-            _tLevel.text = _playerData.level.ToString();
+            if(_tLevel != null)
+            {
+                _tLevel.text = _playerData.level.ToString();
+                _tLevelAnimator = _tLevel.GetComponent<Animator>();
+            }
+            if(_tTotalStars != null)
             _tTotalStars.text = _playerData.stars.ToString();
 
             // Level XP Bar
-            var fillAmount = Mathf.Clamp01((float)_playerData.currentExperience / _playerData.neededExperience);
-            _levelSlider.fillAmount = fillAmount;
+            if(_levelSlider != null)
+            {
+                var fillAmount = Mathf.Clamp01((float)_playerData.currentExperience / _playerData.neededExperience);
+                _levelSlider.fillAmount = fillAmount;
+            }
 
-            _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
-            _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
+            if(_tExpCurrent != null)
+                _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
+            if(_tExpNeeded != null)
+                _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
 
             // _starsTrailEffect.transform.position = _starsPopEffect.transform.position = _sessionStarsImageTransform.position;
         }
