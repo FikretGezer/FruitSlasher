@@ -18,6 +18,8 @@ public class FruitSpawner : MonoBehaviour
     public List<Fruit> _activeFruits = new List<Fruit>();
 
     public float bombMaxPercentage = 0.25f;
+    private float randomDelayForEachFruit;
+    private bool isFirstWayOfSpawningFruits;
 
     public static FruitSpawner Instance;
     private void Awake() {
@@ -67,18 +69,39 @@ public class FruitSpawner : MonoBehaviour
         // Delay
         yield return new WaitForSeconds(delayTime);
 
-        // Is Game Over?
+        // Is Game Over? If it's not spawn new fruits
         if(GameManager.Situation == GameSituation.Play)
         {
             // Random fruit spawn amount
             int rndSpawnCount = Random.Range(1, 11);
+            isFirstWayOfSpawningFruits = Random.Range(0, 2) == 0 ? true : false;
 
-            for (int i = 0; i < rndSpawnCount; i++)
+            #region First way of spawning fruits
+            if(isFirstWayOfSpawningFruits)
             {
-                var fruit = GetFruit();
-                _activeFruits.Add(fruit.GetComponent<Fruit>());
-                fruit.SetActive(true);
+                for (int i = 0; i < rndSpawnCount; i++)
+                {
+                    var fruit = GetFruit();
+                    _activeFruits.Add(fruit.GetComponent<Fruit>());
+                    fruit.SetActive(true);
+                }
             }
+            #endregion
+
+            #region Second way of spawning fruits
+            else
+            {
+                for (int i = 0; i < rndSpawnCount; i++)
+                {
+                    var fruit = GetFruit();
+                    _activeFruits.Add(fruit.GetComponent<Fruit>());
+                    fruit.SetActive(true);
+
+                    randomDelayForEachFruit = Random.Range(0.1f, 0.5f);
+                    yield return new WaitForSeconds(randomDelayForEachFruit);
+                }
+            }
+            #endregion
             SpawnBomb(bombMaxPercentage);
             SpawnSpecialFruit(0.1f);
             StartCoroutine(SpawnTimerCor(delayTime));
