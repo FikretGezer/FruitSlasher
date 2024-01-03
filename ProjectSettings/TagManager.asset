@@ -19,6 +19,7 @@ TagManager:
   - bomb
   - redApple
   - continueButton
+  - startButton
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,7 @@ namespace Runtime
         EventSystem _EventSystem;
 
         private bool continueButtonClicked;
+        private bool startPlayerButtonClicked;
         private Vector3 startPos, endPos;
         void Awake()
         {
@@ -57,6 +58,13 @@ namespace Runtime
                             _cutEffect.transform.position = result.gameObject.transform.position;
                             StartCoroutine(nameof(ContinueCor));
                         }
+                        if(!startPlayerButtonClicked && result.gameObject.CompareTag("startButton"))
+                        {
+                            startPlayerButtonClicked = true;
+                            _cutEffect.SetActive(true);
+                            _cutEffect.transform.position = result.gameObject.transform.position;
+                            StartCoroutine(nameof(ContinueCor));
+                        }
                     }
                 }
             }
@@ -65,10 +73,16 @@ namespace Runtime
         {
             yield return new WaitForSeconds(0.15f);
             if(!isItOnMenu)
-                UIUpdater.Instance.LoadSceneAgain();
+            {
+                if(continueButtonClicked)
+                    UIUpdater.Instance.LoadSceneAgain();
+                else if(startPlayerButtonClicked){
+                    AsyncLoader.Instance.LoadSceneAsync("MainScene");
+                }
+
+            }
             else{
-                // SceneManager.LoadScene("MainScene");
-                AsyncLoader.Instance.LoadSceneAsync("MainScene");
+                AsyncLoader.Instance.LoadSceneAsync("PreGameScene");
             }
         }
     }

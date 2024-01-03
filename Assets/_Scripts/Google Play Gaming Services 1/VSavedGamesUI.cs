@@ -122,7 +122,6 @@ namespace Runtime
             if(_tExpNeeded != null)
                 _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
 
-            // _starsTrailEffect.transform.position = _starsPopEffect.transform.position = _sessionStarsImageTransform.position;
         }
         private void CalculateGameTime()
         {

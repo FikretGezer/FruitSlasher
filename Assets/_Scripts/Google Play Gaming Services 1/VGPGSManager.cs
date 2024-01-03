@@ -19,6 +19,8 @@ namespace Runtime
         public bool[] achievements;
         public bool[] blades;
         public bool[] backgrounds;
+        public bool _areMenuTipsDone = false;
+        public bool _arePreGameTipsDone = false;
     }
     public class VGPGSManager : MonoBehaviour
     {
