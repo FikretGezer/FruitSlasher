@@ -24,6 +24,10 @@ namespace Runtime
             // Start async loading
             StartCoroutine(LoadAsync(sceneToLoad));
         }
+        public void LoadAScene(string sceneToLoad)
+        {
+            SceneManager.LoadScene(sceneToLoad);
+        }
         IEnumerator LoadAsync(string sceneToLoad)
         {
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneToLoad);

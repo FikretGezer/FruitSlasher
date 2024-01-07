@@ -25,7 +25,7 @@ public class FruitSpawner : MonoBehaviour
     private void Awake() {
         if(Instance == null) Instance = this;
 
-        bombMaxPercentage = 0.1f;
+        bombMaxPercentage = 0.2f;
 
         // Create Pools
         CreateFruits();
@@ -74,7 +74,7 @@ public class FruitSpawner : MonoBehaviour
         {
             // Random fruit spawn amount
             int rndSpawnCount = Random.Range(1, 11);
-            isFirstWayOfSpawningFruits = Random.Range(0, 2) == 0 ? true : false;
+            // isFirstWayOfSpawningFruits = Random.Range(0, 2) == 0 ? true : false;
 
             #region First way of spawning fruits
             if(isFirstWayOfSpawningFruits)
@@ -96,6 +96,7 @@ public class FruitSpawner : MonoBehaviour
                     var fruit = GetFruit();
                     _activeFruits.Add(fruit.GetComponent<Fruit>());
                     fruit.SetActive(true);
+                    SoundManager.Instance.PlayFruitPop();
 
                     randomDelayForEachFruit = Random.Range(0.1f, 0.5f);
                     yield return new WaitForSeconds(randomDelayForEachFruit);
@@ -192,6 +193,7 @@ public class FruitSpawner : MonoBehaviour
     }
     private GameObject GetBomb()
     {
+        SoundManager.Instance.PlayBombPop();
         foreach(var bomb in _bombList)
         {
             if(!bomb.activeSelf)

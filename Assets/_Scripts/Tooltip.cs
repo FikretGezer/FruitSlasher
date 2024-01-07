@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace Runtime
@@ -22,7 +23,7 @@ namespace Runtime
         };
         private int _tooltipIndex = 0;
 
-        private void Awake() {
+        private void Start() {
             switch(_tooltipScene)
             {
                 case TooltipScenes.Menu:
@@ -60,9 +61,6 @@ namespace Runtime
         }
         private void ShowTooltip(TooltipScenes tooltipScene)
         {
-            if(_tooltipMenuTexts.Length > _tooltipIndex)
-                _tTooltip.text = _tooltipMenuTexts[_tooltipIndex];
-
             if(_animParams.Length > _tooltipIndex)
             {
                 _tooltipAnimator.SetTrigger(_animParams[_tooltipIndex]);
@@ -77,6 +75,10 @@ namespace Runtime
                         VGPGSManager.Instance._playerData._arePreGameTipsDone = true;
                 }
             }
+
+            if(_tooltipMenuTexts.Length > _tooltipIndex)
+                _tTooltip.text = _tooltipMenuTexts[_tooltipIndex];
+
 
             if(_tooltipIndex + 1 < _animParams.Length)
                 _tooltipIndex++;

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 651af2dbcd9b0e34c9634885bc4e740f, type: 3}
+  m_Name: Blades Holder
+  m_EditorClassIdentifier: 
+  blades:
+  - {fileID: 11400000, guid: 000f53b411d625b48a3417ac39c77500, type: 2}
+  - {fileID: 11400000, guid: 04e2c97a9159ca94fb72851c754e4d15, type: 2}
+  - {fileID: 11400000, guid: 2d5d8e6d7d88ee9479305fb92b6c6c9d, type: 2}
+  - {fileID: 11400000, guid: da306630c6fee294eb18740107c64dba, type: 2}

@@ -10,6 +10,8 @@ namespace Runtime
         private bool isPaused;
         [SerializeField] private TMP_Text _tcountDown;
         [SerializeField] private InGameUIElements _uiElements;
+        [SerializeField] private MenuUIElements _menuUIElements;
+        [SerializeField] private StoreUIElements _storeUIElements;
 
 
         public static ButtonManager Instance;
@@ -21,7 +23,6 @@ namespace Runtime
             if(FindObjectOfType<VLeaderboard>() != null)
             {
                 VLeaderboard.Instance.ShowLeaderboardUI();
-
             }
         }
         #region In Game
@@ -102,6 +103,40 @@ namespace Runtime
         {
             VGPGSManager.Instance.OpenSave(false);
         }
+        public void SetNewBlade(int index)
+        {
+            if(VGPGSManager.Instance._playerData.currentBladeIndex != index)
+            {
+                if(VGPGSManager.Instance._playerData.unlockedBlades[index])
+                {
+                    VGPGSManager.Instance._playerData.currentBladeIndex = index;
+                    BladesAndDojos.Instance.SelectABlade();
+                    VGPGSManager.Instance.OpenSave(true);
+                }
+            }
+        }
+        public void OpenStore()
+        {
+            _menuUIElements.menuUI.SetActive(false);
+            _menuUIElements.storeUI.SetActive(true);
+        }
+        public void GetBackStore()
+        {
+            _menuUIElements.menuUI.SetActive(true);
+            _menuUIElements.storeUI.SetActive(false);
+        }
+        #endregion
+        #region Store
+        public void StoreOpenBlades()
+        {
+            _storeUIElements.bladesUI.SetActive(true);
+            _storeUIElements.dojosUI.SetActive(false);
+        }
+        public void StoreOpenDojos()
+        {
+            _storeUIElements.dojosUI.SetActive(true);
+            _storeUIElements.bladesUI.SetActive(false);
+        }
         #endregion
     }
 
@@ -112,5 +147,15 @@ namespace Runtime
         public GameObject endGameUpperBoard;
         public GameObject healthHolder;
         public GameObject scoreHolder;
+    }
+    [System.Serializable]
+    public class MenuUIElements{
+        public GameObject menuUI;
+        public GameObject storeUI;
+    }
+    [System.Serializable]
+    public class StoreUIElements{
+        public GameObject bladesUI;
+        public GameObject dojosUI;
     }
 }

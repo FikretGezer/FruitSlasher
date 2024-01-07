@@ -56,6 +56,7 @@ namespace Runtime
                             continueButtonClicked = true;
                             _cutEffect.SetActive(true);
                             _cutEffect.transform.position = result.gameObject.transform.position;
+                            SoundManager.Instance.PlayKnifeSlicing();
                             StartCoroutine(nameof(ContinueCor));
                         }
                         if(!startPlayerButtonClicked && result.gameObject.CompareTag("startButton"))
@@ -63,6 +64,7 @@ namespace Runtime
                             startPlayerButtonClicked = true;
                             _cutEffect.SetActive(true);
                             _cutEffect.transform.position = result.gameObject.transform.position;
+                            SoundManager.Instance.PlayKnifeSlicing();
                             StartCoroutine(nameof(ContinueCor));
                         }
                     }
@@ -75,7 +77,11 @@ namespace Runtime
             if(!isItOnMenu)
             {
                 if(continueButtonClicked)
-                    UIUpdater.Instance.LoadSceneAgain();
+                {
+                    SoundManager.Instance.PlayMusicBeginningSFX();
+                    AsyncLoader.Instance.LoadAScene("PreGameScene");
+                    // UIUpdater.Instance.LoadSceneAgain();
+                }
                 else if(startPlayerButtonClicked){
                     AsyncLoader.Instance.LoadSceneAsync("MainScene");
                 }
@@ -83,6 +89,7 @@ namespace Runtime
             }
             else{
                 AsyncLoader.Instance.LoadSceneAsync("PreGameScene");
+                SoundManager.Instance.PlayMusicBeginningSFX();
             }
         }
     }

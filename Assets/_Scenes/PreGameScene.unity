@@ -2917,6 +2917,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2908973164394381508, guid: 605c05fb19fb13b42a82957ec94d6843, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2908973164394381508, guid: 605c05fb19fb13b42a82957ec94d6843, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2908973164394381508, guid: 605c05fb19fb13b42a82957ec94d6843, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4709123813155777833, guid: 605c05fb19fb13b42a82957ec94d6843, type: 3}
       propertyPath: m_Controller
       value: 
@@ -3087,9 +3099,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8295551437765383712, guid: 605c05fb19fb13b42a82957ec94d6843, type: 3}
       propertyPath: m_text
-      value: 'Tap to open blade list and select a dojo
+      value: 'Tap to open blade list and select a blade
 
-        you want to use'
+        you want to use!'
       objectReference: {fileID: 0}
     - target: {fileID: 8295551437765383712, guid: 605c05fb19fb13b42a82957ec94d6843, type: 3}
       propertyPath: m_HorizontalAlignment

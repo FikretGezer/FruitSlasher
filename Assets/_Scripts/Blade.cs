@@ -13,6 +13,7 @@ public class Blade : MonoBehaviour
     [SerializeField] private GameObject trailEffect;
     [SerializeField] private Sprite[] splashes;
 
+    private GameObject trailEffectSecond;
     private Camera cam;
     private Vector2 startPos;
     private Vector2 endPos;
@@ -48,6 +49,10 @@ public class Blade : MonoBehaviour
 
         if(trailEffect != null)
             trailEffect.SetActive(false);
+    }
+    private void Start() {
+        trailEffectSecond = Instantiate(BladesAndDojos.Instance._selectedBlade.bladeObj);
+        trailEffectSecond.transform.SetParent(transform);
     }
     private void Update() {
         RenderTrailEffect();
@@ -106,6 +111,7 @@ public class Blade : MonoBehaviour
                 var specialFruit = hit.collider.GetComponent<SpecialFruit>();
                 if(fruit != null)
                 {
+                    SoundManager.Instance.PlayKnifeSlicing();
                     CutTheFruit(fruit);
                 }
                 else if(specialFruit != null)
@@ -133,6 +139,9 @@ public class Blade : MonoBehaviour
                     {
                         CameraController.Instance.IsActive = false;
                         if(Time.timeScale < 0.9f) Time.timeScale = 1f;
+                        SoundManager.Instance.StopBombPop();
+                        SoundManager.Instance.PlayBombCut();
+                        SoundManager.Instance.PlayBombExplode();
                         ExploadTheBomb(_bomb);
                     }
                     else
@@ -217,18 +226,24 @@ public class Blade : MonoBehaviour
     }
     private void RenderTrailEffect()
     {
-        if(trailEffect != null && Time.timeScale > 0.1f)
+        // if(trailEffect != null && Time.timeScale > 0.1f)
+        // {
+        //     trailEffect.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+        //     if(Input.GetMouseButton(0))
+        //     {
+        //         trailEffect.SetActive(true);
+        //     }
+        //     if(Input.GetMouseButtonUp(0))
+        //         trailEffect.SetActive(false);
+        // }
+        if(trailEffectSecond != null && Time.timeScale > 0.1f)
         {
-            trailEffect.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-            if(Input.GetMouseButton(0))
-            {
-                trailEffect.SetActive(true);
-            }
+            trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+            if(Input.GetMouseButtonDown(0))
+                trailEffectSecond.SetActive(true);
             if(Input.GetMouseButtonUp(0))
-                trailEffect.SetActive(false);
+                trailEffectSecond.SetActive(false);
         }
-        else
-            trailEffect.SetActive(false);
     }
     public void SpawnSplash(string fruitTag, Vector3 pos)
     {

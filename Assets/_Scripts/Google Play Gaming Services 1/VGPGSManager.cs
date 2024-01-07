@@ -9,22 +9,54 @@ namespace Runtime
 {
     [Serializable]
     public class VPlayerData {
-        public int highestScore = 0;
-        public int level = 1;
-        public float experienceMultiplier = 1.2f;
-        public int baseExperience = 500;
-        public int neededExperience = 0;
-        public int currentExperience = 0;
-        public int stars = 500;
-        public bool[] achievements;
-        public bool[] blades;
-        public bool[] backgrounds;
-        public bool _areMenuTipsDone = false;
-        public bool _arePreGameTipsDone = false;
+        public int highestScore;
+        public int level;
+        public int stars;
+
+        public float experienceMultiplier;
+        public int baseExperience;
+        public int neededExperience;
+        public int currentExperience;
+
+        public int currentBladeIndex;
+        public int currentDojoIndex;
+
+        public bool[] UnlockedAchievements;
+        public bool[] unlockedBlades;
+        public bool[] unlockedDojos;
+
+        public bool _areMenuTipsDone;
+        public bool _arePreGameTipsDone;
+
+        public VPlayerData() {
+            highestScore = 0;
+            level = 1;
+            stars = 500;
+
+            experienceMultiplier = 1.2f;
+            baseExperience = 80;
+            neededExperience = (int)(baseExperience * (experienceMultiplier * level));
+            currentExperience = 0;
+
+            currentBladeIndex = 0;
+            currentDojoIndex = 0;
+
+            UnlockedAchievements = new bool[20];
+            unlockedBlades = new bool[20];
+            unlockedDojos = new bool[20];
+
+            unlockedBlades[0] = true;
+            unlockedBlades[1] = true;
+
+            _areMenuTipsDone = false;
+            _arePreGameTipsDone = false;
+        }
+
+
     }
     public class VGPGSManager : MonoBehaviour
     {
-        public VPlayerData _playerData { get; set; }
+        public VPlayerData _playerData {get;set;}
 
         public static VGPGSManager Instance;
         private void Awake() {
@@ -55,7 +87,7 @@ namespace Runtime
                 if(_playerData == null)
                 {
                     _playerData = new VPlayerData();
-                    _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
+                    Debug.Log("Index: " + _playerData.unlockedBlades[_playerData.currentBladeIndex]);
                 }
             }
         }
@@ -111,7 +143,7 @@ namespace Runtime
             var _playerData = JsonUtility.FromJson<VPlayerData>(data);
             this._playerData = _playerData;
 
-            _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
+            // _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
 
             if(output != null)
             {
@@ -133,6 +165,12 @@ namespace Runtime
         private void LogOutput(TMP_Text outputTxt)
         {
             outputTxt.text = "High Score: " + _playerData.highestScore + ", Level: " + _playerData.level;
+        }
+        private void OnDisable() {
+            OpenSave(true);
+        }
+        private void OnApplicationQuit() {
+            OpenSave(true);
         }
         #endregion
     }

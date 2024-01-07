@@ -57,6 +57,7 @@ namespace Runtime
         //Check is fruit outside of the screen before return it to the fruit pool
         if(IsOutsideOfTheCamera() && isItAppearedFirst)
         {
+            SoundManager.Instance.StopBombPop();
             gameObject.SetActive(false);
         }
         if(!IsOutsideOfTheCamera())

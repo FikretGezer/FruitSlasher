@@ -102,13 +102,16 @@ namespace Runtime
         {
             var _playerData = VGPGSManager.Instance._playerData;
 
+            if(_tHighestScore != null)
+                _tHighestScore.text = _playerData.highestScore.ToString();
+
             if(_tLevel != null)
             {
                 _tLevel.text = _playerData.level.ToString();
                 _tLevelAnimator = _tLevel.GetComponent<Animator>();
             }
             if(_tTotalStars != null)
-            _tTotalStars.text = _playerData.stars.ToString();
+                _tTotalStars.text = _playerData.stars.ToString();
 
             // Level XP Bar
             if(_levelSlider != null)
