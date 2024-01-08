@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dojos:
   - {fileID: 11400000, guid: 402291ef2dc5b2a4abd57d3d407f8a02, type: 2}
+  - {fileID: 11400000, guid: 82ad095e38ef67a4594b1eddc001718e, type: 2}
+  - {fileID: 11400000, guid: 7e804231e989a2d419c39fbcf7ba0677, type: 2}
+  - {fileID: 11400000, guid: e0c852f2101a2584d9e35f13964956a0, type: 2}

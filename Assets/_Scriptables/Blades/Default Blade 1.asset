@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
   m_Name: Default Blade 1
   m_EditorClassIdentifier: 
-  bladeSprite: {fileID: 21300000, guid: bb3c2d4f4742cca45804c9d51f85e6f1, type: 3}
+  bladeSprite: {fileID: 21300000, guid: a55b272f07dc2ab44b21b4b6013773ec, type: 3}
   bladeName: Basic Blade 2
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeObj: {fileID: 7826519999363582306, guid: d0f62314553bd054d9360c40f2b3c408, type: 3}

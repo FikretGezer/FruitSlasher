@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd473561c4b5d914e8d10bece70c439f, type: 3}
-  m_Name: Default Dojo
+  m_Name: Default Dojo 3
   m_EditorClassIdentifier: 
-  dojoSprite: {fileID: 21300000, guid: 43b02feadc731394daa62651dac3fc16, type: 3}
-  dojoName: Basic Dojo 1
+  dojoSprite: {fileID: 21300000, guid: 82ff8747f4428424dac59069d59bee0a, type: 3}
+  dojoName: Basic Dojo 4
   dojoExplanation: A humble dojo but Sensei started here

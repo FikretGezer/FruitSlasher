@@ -10,6 +10,7 @@ namespace Runtime
         [SerializeField] private Transform _bladesContainerUI;
         [SerializeField] private Sprite _bladeLockedSprite;
         [SerializeField] private Sprite _bladeUnlockedSprite;
+        [SerializeField] private SpriteRenderer _dojoRenderer;
 
 
 
@@ -59,6 +60,17 @@ namespace Runtime
         {
             if(_playerData.unlockedBlades.Length > _playerData.level)
                 _playerData.unlockedBlades[_playerData.level] = true;
+        }
+        public void SelectADojo()
+        {
+            if(_playerData != null)
+            {
+                if(_playerData.unlockedDojos[_playerData.currentDojoIndex])
+                {
+                    _selectedDojo = _dojosHolder.dojos[_playerData.currentDojoIndex];
+                    _dojoRenderer.sprite = _selectedDojo.dojoSprite;
+                }
+            }
         }
     }
 }

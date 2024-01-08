@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 namespace Runtime
@@ -124,6 +125,7 @@ namespace Runtime
         {
             _menuUIElements.menuUI.SetActive(true);
             _menuUIElements.storeUI.SetActive(false);
+            _storeUIElements.container.SetActive(false);
         }
         #endregion
         #region Store
@@ -136,6 +138,38 @@ namespace Runtime
         {
             _storeUIElements.dojosUI.SetActive(true);
             _storeUIElements.bladesUI.SetActive(false);
+        }
+        public void SetItemBlade(int index)
+        {
+            VPlayerData _playerData = VGPGSManager.Instance._playerData;
+            if(_playerData.unlockedBlades[index])
+            {
+                _playerData.currentBladeIndex = index;
+                BladesAndDojos.Instance.SelectABlade();
+                VGPGSManager.Instance.OpenSave(true);
+
+                BladeScriptable currentBlade = BladesAndDojos.Instance._selectedBlade;
+                _storeUIElements.container.SetActive(true);
+                _storeUIElements.itemImage.sprite = currentBlade.bladeSprite;
+                _storeUIElements.itemName.text = currentBlade.bladeName;
+                _storeUIElements.itemExp.text = currentBlade.bladeExplanation;
+            }
+        }
+        public void SetItemDojo(int index)
+        {
+            VPlayerData _playerData = VGPGSManager.Instance._playerData;
+            if(_playerData.unlockedDojos[index])
+            {
+                _playerData.currentDojoIndex = index;
+                BladesAndDojos.Instance.SelectADojo();
+                VGPGSManager.Instance.OpenSave(true);
+
+                DojoScriptable currentDojo = BladesAndDojos.Instance._selectedDojo;
+                _storeUIElements.container.SetActive(true);
+                _storeUIElements.itemImage.sprite = currentDojo.dojoSprite;
+                _storeUIElements.itemName.text = currentDojo.dojoName;
+                _storeUIElements.itemExp.text = currentDojo.dojoExplanation;//
+            }
         }
         #endregion
     }
@@ -157,5 +191,11 @@ namespace Runtime
     public class StoreUIElements{
         public GameObject bladesUI;
         public GameObject dojosUI;
+        [Header("Item Explanation Container")]
+        public Image itemImage;
+        public TMP_Text itemName;
+        public TMP_Text itemExp;
+        public GameObject container;
+
     }
 }

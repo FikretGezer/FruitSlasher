@@ -47,6 +47,13 @@ namespace Runtime
 
             unlockedBlades[0] = true;
             unlockedBlades[1] = true;
+            unlockedBlades[2] = true;
+            unlockedBlades[3] = true;
+
+            unlockedDojos[0] = true;
+            unlockedDojos[1] = true;
+            unlockedDojos[2] = true;
+            unlockedDojos[3] = true;
 
             _areMenuTipsDone = false;
             _arePreGameTipsDone = false;
