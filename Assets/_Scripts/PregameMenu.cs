@@ -8,10 +8,13 @@ namespace Runtime
     {
         [SerializeField] private Transform _startButton;
 
-        private void Awake() {
+        // private void Awake() {
+        //     _startButton.GetChild(0).GetComponent<Animator>().SetTrigger("rotateF");
+        //     _startButton.GetChild(1).GetComponent<Animator>().SetTrigger("rotateC");
+        // }
+        private void OnEnable() {
             _startButton.GetChild(0).GetComponent<Animator>().SetTrigger("rotateF");
             _startButton.GetChild(1).GetComponent<Animator>().SetTrigger("rotateC");
         }
-
     }
 }

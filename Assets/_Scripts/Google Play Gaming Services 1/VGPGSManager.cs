@@ -28,6 +28,9 @@ namespace Runtime
         public bool _areMenuTipsDone;
         public bool _arePreGameTipsDone;
 
+        public bool areNewBladesUnlocked;
+        public bool areNewDojosUnlocked;
+
         public VPlayerData() {
             highestScore = 0;
             level = 1;
@@ -46,17 +49,13 @@ namespace Runtime
             unlockedDojos = new bool[20];
 
             unlockedBlades[0] = true;
-            unlockedBlades[1] = true;
-            unlockedBlades[2] = true;
-            unlockedBlades[3] = true;
-
             unlockedDojos[0] = true;
-            unlockedDojos[1] = true;
-            unlockedDojos[2] = true;
-            unlockedDojos[3] = true;
 
             _areMenuTipsDone = false;
             _arePreGameTipsDone = false;
+
+            areNewBladesUnlocked = false;
+            areNewDojosUnlocked = false;
         }
 
 

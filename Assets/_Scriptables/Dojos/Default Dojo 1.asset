@@ -15,3 +15,4 @@ MonoBehaviour:
   dojoSprite: {fileID: 21300000, guid: 82ff8747f4428424dac59069d59bee0a, type: 3}
   dojoName: Basic Dojo 2
   dojoExplanation: A humble dojo but Sensei started here
+  dojoLevel: 5

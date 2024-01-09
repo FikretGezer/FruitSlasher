@@ -9,6 +9,7 @@ namespace Runtime
         public string bladeName;
         [TextArea(1,5)]
         public string bladeExplanation;
+        public int bladeLevel;
         public GameObject bladeObj;
     }
 }

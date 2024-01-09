@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Runtime
 {
@@ -11,7 +12,9 @@ namespace Runtime
         [SerializeField] private Sprite _bladeLockedSprite;
         [SerializeField] private Sprite _bladeUnlockedSprite;
         [SerializeField] private SpriteRenderer _dojoRenderer;
-
+        [SerializeField] private GameObject _newBladesText;
+        [SerializeField] private GameObject _newDojosText;
+        [SerializeField] private bool _isOnMenu;
 
 
         private VPlayerData _playerData;
@@ -22,12 +25,17 @@ namespace Runtime
         public static BladesAndDojos Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
-        }
-        private void Start() {
             _playerData = VGPGSManager.Instance._playerData;
             SelectABlade();
-            UnlockNewBlades();
-            DefineUnlockedBlades();
+        }
+        private void Start() {
+            // if(_isOnMenu)
+            // {
+            //     UnlockNewBlades();
+            // }
+            AreNewBladesOn();
+            AreNewDojosOn();
+            // DefineUnlockedBlades();
         }
         public void SelectABlade()
         {
@@ -35,32 +43,32 @@ namespace Runtime
             {
                 if(_playerData.unlockedBlades[_playerData.currentBladeIndex])
                 {
-                    Debug.Log(_bladesHolder.blades[_playerData.currentBladeIndex].bladeObj.name);
+                    // Debug.Log(_bladesHolder.blades[_playerData.currentBladeIndex].bladeObj.name);
                     _selectedBlade = _bladesHolder.blades[_playerData.currentBladeIndex];
                 }
             }
         }
-        private void DefineUnlockedBlades()
-        {
-            if(_bladesContainerUI != null)
-            {
-                for (int i = 0; i < _bladesContainerUI.childCount; i++)
-                {
-                    if(_playerData.unlockedBlades[i])
-                    {
-                        _bladesContainerUI.GetChild(i).GetComponent<Image>().sprite = _bladeUnlockedSprite;
-                        continue;
-                    }
-                    _bladesContainerUI.GetChild(i).GetComponent<Image>().sprite = _bladeLockedSprite;
-                    _bladesContainerUI.GetChild(i).transform.GetChild(0).gameObject.SetActive(false); // Disable Text
-                }
-            }
-        }
-        private void UnlockNewBlades()
-        {
-            if(_playerData.unlockedBlades.Length > _playerData.level)
-                _playerData.unlockedBlades[_playerData.level] = true;
-        }
+        // private void DefineUnlockedBlades()
+        // {
+        //     if(_bladesContainerUI != null)
+        //     {
+        //         for (int i = 0; i < _bladesContainerUI.childCount; i++)
+        //         {
+        //             if(_playerData.unlockedBlades[i])
+        //             {
+        //                 _bladesContainerUI.GetChild(i).GetComponent<Image>().sprite = _bladeUnlockedSprite;
+        //                 continue;
+        //             }
+        //             _bladesContainerUI.GetChild(i).GetComponent<Image>().sprite = _bladeLockedSprite;
+        //             _bladesContainerUI.GetChild(i).transform.GetChild(0).gameObject.SetActive(false); // Disable Text
+        //         }
+        //     }
+        // }
+        // private void UnlockNewBlades()
+        // {
+        //     if(_playerData.unlockedBlades.Length > _playerData.level)
+        //         _playerData.unlockedBlades[_playerData.level] = true;
+        // }
         public void SelectADojo()
         {
             if(_playerData != null)
@@ -70,6 +78,44 @@ namespace Runtime
                     _selectedDojo = _dojosHolder.dojos[_playerData.currentDojoIndex];
                     _dojoRenderer.sprite = _selectedDojo.dojoSprite;
                 }
+            }
+        }
+        private void AreNewBladesOn()
+        {
+            if(FindObjectOfType<VGPGSManager>() != null)
+            {
+                if(_playerData.areNewBladesUnlocked)
+                {
+                    if(_newBladesText != null)
+                        _newBladesText.SetActive(true);
+                }
+            }
+        }
+        private void AreNewDojosOn()
+        {
+            if(FindObjectOfType<VGPGSManager>() != null)
+            {
+                if(_playerData.areNewDojosUnlocked)
+                {
+                    if(_newDojosText != null)
+                        _newDojosText.SetActive(true);
+                }
+            }
+        }
+        public void SetInactiveNewBladeText() {
+            if(_newBladesText != null)
+            {
+                _newBladesText.SetActive(false);
+                _playerData.areNewBladesUnlocked = false;
+
+            }
+        }
+        public void SetInactiveNewDojoText()
+        {
+            if(_newDojosText != null)
+            {
+                _newDojosText.SetActive(false);
+                _playerData.areNewDojosUnlocked = false;
             }
         }
     }
