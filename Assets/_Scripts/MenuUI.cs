@@ -12,6 +12,10 @@ namespace Runtime
         [SerializeField] private Image _levelSlider;
 
         private VPlayerData _playerData;
+        public static MenuUI Instance;
+        private void Awake() {
+            if(Instance == null) Instance = this;
+        }
         private void Start() {
             _playerData = VGPGSManager.Instance._playerData;
             LoadMenuItems();
@@ -30,6 +34,10 @@ namespace Runtime
                 if(_tPlayerTag != null)
                     _tPlayerTag.text = Social.localUser.userName.ToString();
             }
+            SetStars();
+        }
+        public void SetStars()
+        {
             if(_tStars != null)
                 _tStars.text = _playerData.stars.ToString();
         }

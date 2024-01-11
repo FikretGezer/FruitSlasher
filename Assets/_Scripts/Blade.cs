@@ -21,6 +21,7 @@ public class Blade : MonoBehaviour
     private int comboCount = 1;
     private Vector3 lastHitFruitPos;
     private bool comboStart = false;
+    private BladeScriptable _currentBlade;
 
     #region Player Data Params
     private int _fruitAmountThatGotCut;
@@ -244,6 +245,25 @@ public class Blade : MonoBehaviour
             if(Input.GetMouseButtonUp(0))
                 trailEffectSecond.SetActive(false);
         }
+        else
+            {
+                if(BladesAndDojos.Instance._selectedBlade != null)
+                {
+                    if(trailEffectSecond == null)
+                    {
+                        _currentBlade = BladesAndDojos.Instance._selectedBlade;
+                        Debug.Log(_currentBlade.bladeObj.name);
+                        trailEffectSecond = Instantiate(_currentBlade.bladeObj);
+                        trailEffectSecond.transform.SetParent(transform);
+                        trailEffectSecond.SetActive(false);
+                    }
+                }
+            }
+            if(_currentBlade != BladesAndDojos.Instance._selectedBlade)
+            {
+                Destroy(trailEffectSecond);
+                trailEffectSecond = null;
+            }
     }
     public void SpawnSplash(string fruitTag, Vector3 pos)
     {

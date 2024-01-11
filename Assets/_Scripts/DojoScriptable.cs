@@ -12,5 +12,6 @@ namespace Runtime
         [TextArea(1,5)]
         public string dojoExplanation;
         public int dojoLevel;
+        public int dojoPrice;
     }
 }

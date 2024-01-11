@@ -8,12 +8,28 @@ namespace Runtime
 {
     public class ButtonManager : MonoBehaviour
     {
-        private bool isPaused;
+        private enum ItemTypeToBuy {
+            None,
+            Blade,
+            Dojo
+        }
+
         [SerializeField] private TMP_Text _tcountDown;
         [SerializeField] private InGameUIElements _uiElements;
         [SerializeField] private MenuUIElements _menuUIElements;
         [SerializeField] private StoreUIElements _storeUIElements;
+        [SerializeField] private PreGameStoreUIElements _preGameStoreUIElements;
+        [SerializeField] private bool isOnMenuStore;
 
+        private int selectedBladeIndex; // For Buy Option
+        private int selectedDojoIndex; // For Buy Option
+        private bool isPaused;
+
+        // Pre Game Store
+        private bool didBladesMenuOpen;
+        private bool didDojosMenuOpen;
+
+        private ItemTypeToBuy _itemTypeToBuy;
 
         public static ButtonManager Instance;
         private void Awake() {
@@ -123,6 +139,9 @@ namespace Runtime
             // Store.Instance.CheckUnlockedBlades();
             // Store.Instance.CheckUnlockedDojos();
             Store.Instance.ResetPositionOfScroll();
+
+            if(VGPGSManager.Instance._playerData.areNewBladesUnlocked)
+                VGPGSManager.Instance._playerData.areNewBladesUnlocked = false;
         }
         public void GetBackStore()
         {
@@ -148,6 +167,9 @@ namespace Runtime
                 _storeUIElements.dojosUI.SetActive(true);
                 _storeUIElements.bladesUI.SetActive(false);
                 Store.Instance.ResetPositionOfScroll();
+
+                if(VGPGSManager.Instance._playerData.areNewDojosUnlocked)
+                    VGPGSManager.Instance._playerData.areNewDojosUnlocked = false;
             }
         }
         public void SetItemBlade(int index)
@@ -155,20 +177,34 @@ namespace Runtime
             VPlayerData _playerData = VGPGSManager.Instance._playerData;
             if(_playerData.unlockedBlades[index])
             {
-                Debug.Log("It's unlocked");
-                _playerData.currentBladeIndex = index;
-                BladesAndDojos.Instance.SelectABlade();
-                VGPGSManager.Instance.OpenSave(true);
+                // BladeScriptable currentBlade = BladesAndDojos.Instance._selectedBlade;
+                BladeScriptable currentBlade = _storeUIElements.bladeHolder.blades[index];
 
-                BladeScriptable currentBlade = BladesAndDojos.Instance._selectedBlade;
+                //Set Explanation Box
                 _storeUIElements.container.SetActive(true);
                 _storeUIElements.itemImage.sprite = currentBlade.bladeSprite;
                 _storeUIElements.itemName.text = currentBlade.bladeName;
                 _storeUIElements.itemExp.text = currentBlade.bladeExplanation;
 
-                _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
-                // _storeUIElements.itemBuyButton.enabled = false;
-                _storeUIElements.itemBuyText.text = "BOUGHT";
+                // Set Actual Dojo
+                if(_playerData.boughtBlades[index])
+                {
+                    _playerData.currentBladeIndex = index;
+                    BladesAndDojos.Instance.SelectABlade();
+                    VGPGSManager.Instance.OpenSave(true);
+
+                    _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
+                    _storeUIElements.itemBuyText.text = "BOUGHT";
+                    _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                }
+                else
+                {
+                    _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.buySprite;
+                    _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = true;
+                    _storeUIElements.itemBuyText.text = "BUY";
+                    selectedBladeIndex = index;
+                    _itemTypeToBuy = ItemTypeToBuy.Blade;
+                }
             }
             // else
             // {
@@ -181,20 +217,34 @@ namespace Runtime
             VPlayerData _playerData = VGPGSManager.Instance._playerData;
             if(_playerData.unlockedDojos[index])
             {
-                Debug.Log("It's unlocked");
-                _playerData.currentDojoIndex = index;
-                BladesAndDojos.Instance.SelectADojo();
-                VGPGSManager.Instance.OpenSave(true);
+                // DojoScriptable currentDojo = BladesAndDojos.Instance._selectedDojo;
+                DojoScriptable currentDojo = _storeUIElements.dojoHolder.dojos[index];
 
-                DojoScriptable currentDojo = BladesAndDojos.Instance._selectedDojo;
+                //Set Explanation Box
                 _storeUIElements.container.SetActive(true);
                 _storeUIElements.itemImage.sprite = currentDojo.dojoSprite;
                 _storeUIElements.itemName.text = currentDojo.dojoName;
                 _storeUIElements.itemExp.text = currentDojo.dojoExplanation;
 
-                _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
-                // _storeUIElements.itemBuyButton.enabled = false;
-                _storeUIElements.itemBuyText.text = "BOUGHT";
+                // Set Actual Dojo
+                if(_playerData.boughtDojos[index])
+                {
+                    _playerData.currentDojoIndex = index;
+                    BladesAndDojos.Instance.SelectADojo();
+                    VGPGSManager.Instance.OpenSave(true);
+
+                    _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
+                    _storeUIElements.itemBuyText.text = "BOUGHT";
+                    _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                }
+                else
+                {
+                    _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.buySprite;
+                    _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = true;
+                    _storeUIElements.itemBuyText.text = "BUY";
+                    selectedDojoIndex = index;
+                    _itemTypeToBuy = ItemTypeToBuy.Dojo;
+                }
             }
             // else
             // {
@@ -202,15 +252,134 @@ namespace Runtime
             //     _storeUIElements.itemBuyText.text = "BUY";
             // }
         }
+        public void StoreBuyBlade()
+        {
+        }
+        public void StoreBuyDojo()
+        {
+            var _playerData = VGPGSManager.Instance._playerData;
+            if(_itemTypeToBuy == ItemTypeToBuy.Dojo)
+            {
+                var price = _storeUIElements.dojoHolder.dojos[selectedDojoIndex].dojoPrice;
+
+                if(_playerData.stars >= price)
+                {
+                    _playerData.stars -= price;
+                    _playerData.boughtDojos[selectedDojoIndex] = true;
+
+                    _playerData.currentDojoIndex = selectedDojoIndex;
+                    BladesAndDojos.Instance.SelectADojo();
+                    MenuUI.Instance.SetStars();
+                    VGPGSManager.Instance.OpenSave(true);
+
+                    _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
+                    _storeUIElements.itemBuyText.text = "BOUGHT";
+                    _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                }
+            }
+            else if(_itemTypeToBuy == ItemTypeToBuy.Blade)
+            {
+                var price = _storeUIElements.bladeHolder.blades[selectedBladeIndex].bladePrice;
+
+                if(_playerData.stars >= price)
+                {
+                    _playerData.stars -= price;
+                    _playerData.boughtBlades[selectedBladeIndex] = true;
+
+                    _playerData.currentBladeIndex = selectedBladeIndex;
+                    BladesAndDojos.Instance.SelectABlade();
+                    MenuUI.Instance.SetStars();
+                    VGPGSManager.Instance.OpenSave(true);
+
+                    _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
+                    _storeUIElements.itemBuyText.text = "BOUGHT";
+                    _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                }
+            }
+            _itemTypeToBuy = ItemTypeToBuy.None;
+        }
         #endregion
         #region Pre Game Store
         public void PreGameNewBlades()
         {
             BladesAndDojos.Instance.SetInactiveNewBladeText();
+            OpenPreGameBladesMenu();
         }
         public void PreGameNewDojos()
         {
             BladesAndDojos.Instance.SetInactiveNewDojoText();
+            OpenPreGameDojosMenu();
+        }
+        private void OpenPreGameBladesMenu()
+        {
+            didBladesMenuOpen = !didBladesMenuOpen;
+            _preGameStoreUIElements.bladesAnimator.SetBool("openBladesMenu", didBladesMenuOpen);
+        }
+        private void OpenPreGameDojosMenu()
+        {
+            didDojosMenuOpen = !didDojosMenuOpen;
+            _preGameStoreUIElements.dojosAnimator.SetBool("openDojosMenu", didDojosMenuOpen);
+
+            if(didDojosMenuOpen)
+                _preGameStoreUIElements.playButton.SetActive(false);
+            else
+                _preGameStoreUIElements.playButton.SetActive(true);
+        }
+        public void SetPreGameItemBlade(int index)
+        {
+            VPlayerData _playerData = VGPGSManager.Instance._playerData;
+            if(_playerData.unlockedBlades[index])
+            {
+                BladeScriptable currentBlade = _storeUIElements.bladeHolder.blades[index];
+
+                // Set Actual Dojo
+                if(_playerData.boughtBlades[index])
+                {
+                    _playerData.currentBladeIndex = index;
+                    BladesAndDojos.Instance.SelectABlade();
+                    VGPGSManager.Instance.OpenSave(true);
+
+                    // _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
+                    // _storeUIElements.itemBuyText.text = "BOUGHT";
+                    // _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                }
+                else
+                {
+                    // _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.buySprite;
+                    // _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = true;
+                    // _storeUIElements.itemBuyText.text = "BUY";
+                    // selectedBladeIndex = index;
+                    // _itemTypeToBuy = ItemTypeToBuy.Blade;
+                }
+            }
+        }
+        public void SetPreGameItemDojo(int index)
+        {
+            VPlayerData _playerData = VGPGSManager.Instance._playerData;
+            if(_playerData.unlockedDojos[index])
+            {
+                DojoScriptable currentDojo = _storeUIElements.dojoHolder.dojos[index];
+
+                // Set Actual Dojo
+                if(_playerData.boughtDojos[index])
+                {
+                    _playerData.currentDojoIndex = index;
+                    BladesAndDojos.Instance.SelectADojo();
+                    VGPGSManager.Instance.OpenSave(true);
+
+                    // _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
+                    // _storeUIElements.itemBuyText.text = "BOUGHT";
+                    // _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                }
+                else
+                {
+                    // _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.buySprite;
+                    // _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = true;
+                    // _storeUIElements.itemBuyText.text = "BUY";
+                    // selectedDojoIndex = index;
+                    // _itemTypeToBuy = ItemTypeToBuy.Dojo;
+                }
+            }
         }
         #endregion
     }
@@ -232,6 +401,8 @@ namespace Runtime
     public class StoreUIElements{
         public GameObject bladesUI;
         public GameObject dojosUI;
+        public BladesHolder bladeHolder;
+        public DojosHolder dojoHolder;
         [Header("Item Explanation Container")]
         public GameObject container;
         public Image itemImage;
@@ -243,5 +414,11 @@ namespace Runtime
         public Sprite boughtSprite;
         public TMP_Text itemBuyText;
 
+    }
+    [System.Serializable]
+    public class PreGameStoreUIElements {
+        public Animator bladesAnimator;
+        public Animator dojosAnimator;
+        public GameObject playButton;
     }
 }

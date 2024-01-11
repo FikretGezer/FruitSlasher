@@ -1,49 +1,38 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Runtime
 {
-    public class Store : MonoBehaviour
+    public class PreGameStore : MonoBehaviour
     {
+        [Header("Pre Game")]
         [SerializeField] private BladesHolder _bladesHolder;
         [SerializeField] private DojosHolder _dojosHolder;
-        [SerializeField] private GameObject _itemBoxPrefab;
+        [SerializeField] private GameObject _preGameItemBoxPrefab;
         [SerializeField] private Transform _bladesContainer;
-        [SerializeField] private Transform _dojosContainer;//
-        [SerializeField] private bool isOnMenu;
+        [SerializeField] private Transform _dojosContainer;
 
         private List<GameObject> bladesObjList = new List<GameObject>();
         private List<GameObject> dojosObjList = new List<GameObject>();
 
-        public static Store Instance;
+        public static PreGameStore Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
         }
-
-        private void Start() {
-            if(isOnMenu)
-            {
-                AddBlades();
-                AddDojos();
-                CheckUnlockedBlades();
-                CheckUnlockedDojos();
-            }
-        }
         private void OnEnable() {
-            if(!isOnMenu)
-            {
-                CheckUnlockedBlades();
-                CheckUnlockedDojos();
-            }
+            AddBlades();
+            AddDojos();
+            CheckUnlockedBlades();
+            CheckUnlockedDojos();
         }
         private void AddBlades()
         {
             for (int i = 0; i < _bladesHolder.blades.Length; i++)
             {
                 int current = i;
-                var newItem = Instantiate(_itemBoxPrefab);
+                var newItem = Instantiate(_preGameItemBoxPrefab);
                 newItem.transform.GetChild(0).GetComponent<Image>().sprite = _bladesHolder.blades[i].bladeSprite;
                 if(!VGPGSManager.Instance._playerData.unlockedBlades[current])
                 {
@@ -53,7 +42,7 @@ namespace Runtime
 
                 newItem.transform.SetParent(_bladesContainer);
                 newItem.transform.localScale = Vector3.one;
-                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetItemBlade(current));
+                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemBlade(current));
                 bladesObjList.Add(newItem);
             }
         }
@@ -62,7 +51,7 @@ namespace Runtime
             for (int i = 0; i < _dojosHolder.dojos.Length; i++)
             {
                 int current = i;
-                var newItem = Instantiate(_itemBoxPrefab);
+                var newItem = Instantiate(_preGameItemBoxPrefab);
                 newItem.transform.GetChild(0).GetComponent<Image>().sprite = _dojosHolder.dojos[i].dojoSprite;
 
                 if(!VGPGSManager.Instance._playerData.unlockedDojos[current])
@@ -73,7 +62,7 @@ namespace Runtime
 
                 newItem.transform.SetParent(_dojosContainer);
                 newItem.transform.localScale = Vector3.one;
-                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetItemDojo(current));
+                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemDojo(current));
                 dojosObjList.Add(newItem);
             }
         }
@@ -85,8 +74,7 @@ namespace Runtime
                 {
                     VGPGSManager.Instance._playerData.unlockedBlades[i] = true;
 
-                    if(/*i < bladesObjList.Count && bladesObjList[i] != null*/ isOnMenu)
-                        bladesObjList[i].transform.GetChild(2).gameObject.SetActive(false);
+                    bladesObjList[i].transform.GetChild(2).gameObject.SetActive(false);
 
                     VGPGSManager.Instance._playerData.areNewBladesUnlocked = true;
                 }
@@ -100,22 +88,11 @@ namespace Runtime
                 {
                     VGPGSManager.Instance._playerData.unlockedDojos[i] = true;
 
-                    if(/*i < dojosObjList.Count && dojosObjList[i] != null*/isOnMenu)
-                        dojosObjList[i].transform.GetChild(2).gameObject.SetActive(false);
+                    dojosObjList[i].transform.GetChild(2).gameObject.SetActive(false);
 
                     VGPGSManager.Instance._playerData.areNewDojosUnlocked = true;
                 }
             }
-        }
-        public void ResetPositionOfScroll()
-        {
-            void ResetX(Transform t) {
-                var pos = t.position;
-                pos.x = 0f;
-                t.position = pos;
-            }
-            ResetX(_dojosContainer.transform);
-            ResetX(_bladesContainer.transform);
         }
     }
 }

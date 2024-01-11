@@ -23,7 +23,9 @@ namespace Runtime
 
         public bool[] UnlockedAchievements;
         public bool[] unlockedBlades;
+        public bool[] boughtBlades;
         public bool[] unlockedDojos;
+        public bool[] boughtDojos;
 
         public bool _areMenuTipsDone;
         public bool _arePreGameTipsDone;
@@ -47,9 +49,13 @@ namespace Runtime
             UnlockedAchievements = new bool[20];
             unlockedBlades = new bool[20];
             unlockedDojos = new bool[20];
+            boughtBlades = new bool[20];
+            boughtDojos = new bool[20];
 
             unlockedBlades[0] = true;
+            boughtBlades[0] = true;
             unlockedDojos[0] = true;
+            boughtDojos[0] = true;
 
             _areMenuTipsDone = false;
             _arePreGameTipsDone = false;

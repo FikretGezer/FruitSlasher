@@ -2302,6 +2302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 410237406}
   - component: {fileID: 410237405}
+  - component: {fileID: 410237407}
   m_Layer: 0
   m_Name: BG
   m_TagString: Untagged
@@ -2376,6 +2377,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &410237407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410237404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65115ded31c2b404eb05c6cd54f1ff8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &412849999
 GameObject:
   m_ObjectHideFlags: 0
@@ -2898,6 +2911,8 @@ MonoBehaviour:
   _storeUIElements:
     bladesUI: {fileID: 1827460517}
     dojosUI: {fileID: 1064917481}
+    bladeHolder: {fileID: 11400000, guid: 4b51b3ee81122054e9ee7bbd30f17799, type: 2}
+    dojoHolder: {fileID: 11400000, guid: e6af29cd8315b9947898045a980d1693, type: 2}
     container: {fileID: 1979294085}
     itemImage: {fileID: 1265946853}
     itemName: {fileID: 1632021930}
@@ -2906,6 +2921,7 @@ MonoBehaviour:
     buySprite: {fileID: 1581093474, guid: 7bb12e1a1363c514bb9ee72a9acafce2, type: 3}
     boughtSprite: {fileID: -833692556, guid: 7bb12e1a1363c514bb9ee72a9acafce2, type: 3}
     itemBuyText: {fileID: 1664840600}
+  isOnMenuStore: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4439,7 +4455,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 863942696}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 517154828}
+        m_TargetAssemblyTypeName: Runtime.ButtonManager, Runtime
+        m_MethodName: StoreBuyDojo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &863942696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5192,11 +5220,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2073960723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 90.500824, y: 0.000028664215}
-  m_SizeDelta: {x: 1315, y: 400}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0.0007324219, y: -0.0000019073486}
+  m_SizeDelta: {x: 20, y: 400}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &987153744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5230,7 +5258,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   m_StartCorner: 0
-  m_StartAxis: 0
+  m_StartAxis: 1
   m_CellSize: {x: 165, y: 165}
   m_Spacing: {x: 20, y: 15}
   m_Constraint: 2
@@ -5588,19 +5616,7 @@ MonoBehaviour:
   m_VerticalScrollbarSpacing: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 332464614}
-        m_TargetAssemblyTypeName: Runtime.Store, Runtime
-        m_MethodName: StoreScroll
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1068859006
 MonoBehaviour:
   m_ObjectHideFlags: 0

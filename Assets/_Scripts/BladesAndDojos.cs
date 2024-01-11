@@ -14,7 +14,6 @@ namespace Runtime
         [SerializeField] private SpriteRenderer _dojoRenderer;
         [SerializeField] private GameObject _newBladesText;
         [SerializeField] private GameObject _newDojosText;
-        [SerializeField] private bool _isOnMenu;
 
 
         private VPlayerData _playerData;
@@ -27,6 +26,7 @@ namespace Runtime
             if(Instance == null) Instance = this;
             _playerData = VGPGSManager.Instance._playerData;
             SelectABlade();
+            SelectADojo();
         }
         private void Start() {
             // if(_isOnMenu)
@@ -76,7 +76,8 @@ namespace Runtime
                 if(_playerData.unlockedDojos[_playerData.currentDojoIndex])
                 {
                     _selectedDojo = _dojosHolder.dojos[_playerData.currentDojoIndex];
-                    _dojoRenderer.sprite = _selectedDojo.dojoSprite;
+                    if(_dojoRenderer != null)
+                        _dojoRenderer.sprite = _selectedDojo.dojoSprite;
                 }
             }
         }

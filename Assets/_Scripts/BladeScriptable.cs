@@ -10,6 +10,7 @@ namespace Runtime
         [TextArea(1,5)]
         public string bladeExplanation;
         public int bladeLevel;
+        public int bladePrice;
         public GameObject bladeObj;
     }
 }
