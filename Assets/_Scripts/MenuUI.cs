@@ -23,7 +23,7 @@ namespace Runtime
         }
         private void LoadMenuItems()
         {
-            if(_tLevel.text != null)
+            if(_tLevel != null)
                 _tLevel.text = _playerData.level.ToString();
             if(_levelSlider != null)
             {

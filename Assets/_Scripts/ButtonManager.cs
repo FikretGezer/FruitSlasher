@@ -30,6 +30,7 @@ namespace Runtime
         // Pre Game Store
         private bool didBladesMenuOpen;
         private bool didDojosMenuOpen;
+        private GameObject _selectedItem;
 
         private ItemTypeToBuy _itemTypeToBuy;
 
@@ -198,11 +199,16 @@ namespace Runtime
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                    _storeUIElements.itemPriceContainer.SetActive(false);
                 }
                 else
                 {
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.buySprite;
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = true;
+
+                    _storeUIElements.itemPriceContainer.SetActive(true);
+                    _storeUIElements.itemPrice.text = currentBlade.bladePrice.ToString();
+
                     _storeUIElements.itemBuyText.text = "BUY";
                     selectedBladeIndex = index;
                     _itemTypeToBuy = ItemTypeToBuy.Blade;
@@ -238,12 +244,18 @@ namespace Runtime
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                    _storeUIElements.itemPriceContainer.SetActive(false);
                 }
                 else
                 {
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.buySprite;
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = true;
+
+                    _storeUIElements.itemPriceContainer.SetActive(true);
+                    _storeUIElements.itemPrice.text = currentDojo.dojoPrice.ToString();
+
                     _storeUIElements.itemBuyText.text = "BUY";
+
                     selectedDojoIndex = index;
                     _itemTypeToBuy = ItemTypeToBuy.Dojo;
                 }
@@ -254,7 +266,7 @@ namespace Runtime
             //     _storeUIElements.itemBuyText.text = "BUY";
             // }
         }
-        public void StoreBuyDojo()
+        public void StoreBuyItem()
         {
             var _playerData = VGPGSManager.Instance._playerData;
             if(_itemTypeToBuy == ItemTypeToBuy.Dojo)
@@ -274,6 +286,7 @@ namespace Runtime
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                    _storeUIElements.itemPriceContainer.SetActive(false);
                 }
             }
             else if(_itemTypeToBuy == ItemTypeToBuy.Blade)
@@ -293,6 +306,7 @@ namespace Runtime
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
+                    _storeUIElements.itemPriceContainer.SetActive(false);
                 }
             }
             _itemTypeToBuy = ItemTypeToBuy.None;
@@ -324,7 +338,7 @@ namespace Runtime
             else
                 _preGameStoreUIElements.playButton.SetActive(true);
         }
-        public void SetPreGameItemBlade(Transform t, int index)
+        public void SetPreGameItemBlade(GameObject priceContainer, Transform t, int index)
         {
             VPlayerData _playerData = VGPGSManager.Instance._playerData;
             if(_playerData.unlockedBlades[index])
@@ -348,11 +362,12 @@ namespace Runtime
                     _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(true);
 
                     selectedBladeIndex = index;
+                    _selectedItem = priceContainer;
                     _itemTypeToBuy = ItemTypeToBuy.Blade;
                 }
             }
         }
-        public void SetPreGameItemDojo(Transform t, int index)
+        public void SetPreGameItemDojo(GameObject priceContainer, Transform t, int index)
         {
             VPlayerData _playerData = VGPGSManager.Instance._playerData;
             if(_playerData.unlockedDojos[index])
@@ -376,6 +391,7 @@ namespace Runtime
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(true);
 
                     selectedDojoIndex = index;
+                    _selectedItem = priceContainer;
                     _itemTypeToBuy = ItemTypeToBuy.Dojo;
                 }
             }
@@ -397,6 +413,11 @@ namespace Runtime
                     MenuUI.Instance.SetStars();
                     VGPGSManager.Instance.OpenSave(true);
 
+                    if(_selectedItem != null)
+                    {
+                        _selectedItem.SetActive(false);
+                        _selectedItem = null;
+                    }
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
                 }
             }
@@ -414,6 +435,11 @@ namespace Runtime
                     MenuUI.Instance.SetStars();
                     VGPGSManager.Instance.OpenSave(true);
 
+                    if(_selectedItem != null)
+                    {
+                        _selectedItem.SetActive(false);
+                        _selectedItem = null;
+                    }
                     _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(false);
                 }
             }
@@ -447,6 +473,8 @@ namespace Runtime
         public TMP_Text itemName;
         public TMP_Text itemExp;
         public Button itemBuyButton;
+        public GameObject itemPriceContainer;
+        public TMP_Text itemPrice;
         [Header("Buy Buttons")]
         public Sprite buySprite;
         public Sprite boughtSprite;

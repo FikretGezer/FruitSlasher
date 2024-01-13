@@ -22,27 +22,39 @@ namespace Runtime
             if(Instance == null) Instance = this;
         }
         private void OnEnable() {
-            AddBlades();
-            AddDojos();
             CheckUnlockedBlades();
             CheckUnlockedDojos();
+            AddBlades();
+            AddDojos();
         }
         private void AddBlades()
         {
             for (int i = 0; i < _bladesHolder.blades.Length; i++)
             {
                 int current = i;
+                var _blade = _bladesHolder.blades[i];
                 var newItem = Instantiate(_preGameItemBoxPrefab);
-                newItem.transform.GetChild(0).GetComponent<Image>().sprite = _bladesHolder.blades[i].bladeSprite;
+
+                newItem.transform.GetChild(0).GetComponent<Image>().sprite = _blade.bladeSprite;
+                newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = _blade.bladeName;
+                newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = _blade.bladeExplanation;
+
                 if(!VGPGSManager.Instance._playerData.unlockedBlades[current])
                 {
                     newItem.transform.GetChild(2).gameObject.SetActive(true);
                     newItem.transform.GetChild(2).GetChild(1).GetComponent<TMP_Text>().text = _bladesHolder.blades[i].bladeLevel.ToString() + "\nLevel";
                 }
+                else if(!VGPGSManager.Instance._playerData.boughtBlades[current])
+                {
+                    newItem.transform.GetChild(2).gameObject.SetActive(false);
+                    newItem.transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(true);
+                    newItem.transform.GetChild(3).transform.GetChild(2).transform.GetChild(1).GetComponent<TMP_Text>().text = _blade.bladePrice.ToString();
+                }
 
                 newItem.transform.SetParent(_bladesContainer);
                 newItem.transform.localScale = Vector3.one;
-                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemBlade(newItem.transform, current));
+                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemBlade(newItem.transform.GetChild(3).transform.GetChild(2).gameObject, newItem.transform, current));
+
                 bladesObjList.Add(newItem);
             }
         }
@@ -51,18 +63,28 @@ namespace Runtime
             for (int i = 0; i < _dojosHolder.dojos.Length; i++)
             {
                 int current = i;
+                var _dojo = _dojosHolder.dojos[i];
                 var newItem = Instantiate(_preGameItemBoxPrefab);
-                newItem.transform.GetChild(0).GetComponent<Image>().sprite = _dojosHolder.dojos[i].dojoSprite;
+
+                newItem.transform.GetChild(0).GetComponent<Image>().sprite = _dojo.dojoSprite;
+                newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = _dojo.dojoName;
+                newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = _dojo.dojoExplanation;
 
                 if(!VGPGSManager.Instance._playerData.unlockedDojos[current])
                 {
                     newItem.transform.GetChild(2).gameObject.SetActive(true);
                     newItem.transform.GetChild(2).GetChild(1).GetComponent<TMP_Text>().text = _dojosHolder.dojos[i].dojoLevel.ToString() + "\nLevel";
                 }
+                else if(!VGPGSManager.Instance._playerData.boughtBlades[current])
+                {
+                    newItem.transform.GetChild(2).gameObject.SetActive(false);
+                    newItem.transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(true);
+                    newItem.transform.GetChild(3).transform.GetChild(2).transform.GetChild(1).GetComponent<TMP_Text>().text = _dojo.dojoPrice.ToString();
+                }
 
                 newItem.transform.SetParent(_dojosContainer);
                 newItem.transform.localScale = Vector3.one;
-                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemDojo(newItem.transform, current));
+                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemDojo(newItem.transform.GetChild(3).transform.GetChild(2).gameObject, newItem.transform, current));
                 dojosObjList.Add(newItem);
             }
         }
@@ -73,9 +95,6 @@ namespace Runtime
                 if(_bladesHolder.blades[i].bladeLevel <= VGPGSManager.Instance._playerData.level && !VGPGSManager.Instance._playerData.unlockedBlades[i])
                 {
                     VGPGSManager.Instance._playerData.unlockedBlades[i] = true;
-
-                    bladesObjList[i].transform.GetChild(2).gameObject.SetActive(false);
-
                     VGPGSManager.Instance._playerData.areNewBladesUnlocked = true;
                 }
             }
@@ -87,9 +106,6 @@ namespace Runtime
                 if(_dojosHolder.dojos[i].dojoLevel <= VGPGSManager.Instance._playerData.level && !VGPGSManager.Instance._playerData.unlockedDojos[i])
                 {
                     VGPGSManager.Instance._playerData.unlockedDojos[i] = true;
-
-                    dojosObjList[i].transform.GetChild(2).gameObject.SetActive(false);
-
                     VGPGSManager.Instance._playerData.areNewDojosUnlocked = true;
                 }
             }
