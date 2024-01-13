@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace Runtime
 {
@@ -29,9 +30,9 @@ namespace Runtime
                 var fillAmount = Mathf.Clamp01((float)_playerData.currentExperience / _playerData.neededExperience);
                 _levelSlider.fillAmount = fillAmount;
             }
-            if(Social.localUser.authenticated)
+            if(_tPlayerTag != null)
             {
-                if(_tPlayerTag != null)
+                if(Social.localUser.authenticated)
                     _tPlayerTag.text = Social.localUser.userName.ToString();
             }
             SetStars();

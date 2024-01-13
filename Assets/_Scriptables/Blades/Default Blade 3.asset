@@ -15,5 +15,6 @@ MonoBehaviour:
   bladeSprite: {fileID: 21300000, guid: a55b272f07dc2ab44b21b4b6013773ec, type: 3}
   bladeName: Basic Blade 2
   bladeExplanation: Your first blade giving to you by your Sensei
-  bladeLevel: 15
+  bladeLevel: 1
+  bladePrice: 400
   bladeObj: {fileID: 7826519999363582306, guid: d0f62314553bd054d9360c40f2b3c408, type: 3}

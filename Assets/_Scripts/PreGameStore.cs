@@ -42,7 +42,7 @@ namespace Runtime
 
                 newItem.transform.SetParent(_bladesContainer);
                 newItem.transform.localScale = Vector3.one;
-                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemBlade(current));
+                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemBlade(newItem.transform, current));
                 bladesObjList.Add(newItem);
             }
         }
@@ -62,7 +62,7 @@ namespace Runtime
 
                 newItem.transform.SetParent(_dojosContainer);
                 newItem.transform.localScale = Vector3.one;
-                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemDojo(current));
+                newItem.GetComponent<Button>().onClick.AddListener(() => ButtonManager.Instance.SetPreGameItemDojo(newItem.transform, current));
                 dojosObjList.Add(newItem);
             }
         }
