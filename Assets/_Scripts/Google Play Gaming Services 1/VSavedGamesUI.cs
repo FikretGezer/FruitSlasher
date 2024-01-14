@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GooglePlayGames;
 using UnityEngine;
 using TMPro;
@@ -42,8 +43,6 @@ namespace Runtime
         [SerializeField] private GameObject _starsTrailEffect;
         [SerializeField] private GameObject _starsPopEffect;
         [SerializeField] private GameObject _starsPopEffectSecond;
-        [SerializeField] private GameObject _continueButton;
-
 
         #region Time Params
         private float seconds = 0;
@@ -55,18 +54,41 @@ namespace Runtime
         private Animator _tLevelAnimator;
         private bool _expDone;
         private bool _starsDone;
-        private bool _continueClicked;
+
 
         // Star Trail
         private bool _sendTrail;
         private float current = 0f, target = 1f;
         [SerializeField] private float _trailSpeed = 1f;
 
+        [Header("Reward Animation")]
+        [SerializeField] private GameObject _rewardsBoard;
+        [SerializeField] private TMP_Text _tCurrentLevel;
+        [SerializeField] private TMP_Text _tStarsReward;
+        [SerializeField] private AnimationClip closingRewardClip;
+        [SerializeField] private AnimationClip closingRewardLongClip;
+        [SerializeField] private AnimationClip rewardItemsClip;
+
+        [SerializeField] private Transform rewardItemContainer;
+        [SerializeField] private GameObject rewardItemPrefab;
+
+        [SerializeField] private BladesHolder _bladesHolder;
+        [SerializeField] private DojosHolder _dojosHolder;
+
+        [SerializeField] private UIRaycaster _mainSceneCaster;
+
+        private Animator _rewardsContainerAnim;
+        private bool areItemsAdded;
+        private bool _continueClicked;
+        private bool _rewardItemsExist;
+        private bool isTrailSent;
 
         public static VSavedGamesUI Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
 
+            if(_rewardsBoard != null)
+                _rewardsContainerAnim = _rewardsBoard.transform.GetChild(0).GetComponent<Animator>();
 
             // neededExperience = (int)(baseExperience * (experienceMultiplier * level));
 
@@ -97,6 +119,7 @@ namespace Runtime
                     _starsPopEffectSecond.SetActive(true);
                     _tTotalStars.text = VGPGSManager.Instance._playerData.stars.ToString();
                     _sendTrail = false;
+                    isTrailSent = true;
                 }
             }
         }
@@ -219,11 +242,12 @@ namespace Runtime
             {
                 VGPGSManager.Instance.OpenSave(true);
                 _expDone = true;
-
+                _mainSceneCaster.enabled = true;
                 CheckEverythingIsDone();
             }
             else
             {
+                _mainSceneCaster.enabled = false;
                 _playerData.currentExperience = _playerData.currentExperience - _playerData.neededExperience;
                 _playerData.level++;
                 _tLevel.text = _playerData.level.ToString();
@@ -235,12 +259,40 @@ namespace Runtime
                 _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
                 _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
 
-                if(_continueButton != null)
+                if(_rewardsBoard != null)
                 {
-                    _continueButton.SetActive(true);
+                    _rewardsBoard.SetActive(true);
+                    _tCurrentLevel.text = _playerData.level.ToString();
+                    _tStarsReward.text = GenerateLevelUpCoinReward(_playerData);
+                    yield return new WaitUntil(() => isTrailSent);
+
+                    _rewardsContainerAnim.SetTrigger("triggerRewards");
+
+                    AddItemsToRewards(_playerData);
+                    yield return new WaitUntil(() => areItemsAdded);
+
+                    if(_rewardItemsExist)
+                    {
+                        yield return new WaitForSeconds(1f);
+                        _rewardsContainerAnim.SetBool("showItems", true);
+                        yield return new WaitForSeconds(rewardItemsClip.length);
+                    }
+
                     yield return new WaitUntil(() => _continueClicked);
 
-                    _continueButton.SetActive(false);
+                    if(_rewardItemsExist)
+                    {
+                        _rewardsContainerAnim.SetBool("showItems", false);
+                        yield return new WaitForSeconds(closingRewardLongClip.length);
+                    }
+                    else
+                    {
+                        _rewardsContainerAnim.SetTrigger("closeRewards");
+                        yield return new WaitForSeconds(closingRewardClip.length);
+                    }
+
+
+                    _rewardsBoard.SetActive(false);
                     _continueClicked = false;
                 }
 
@@ -282,7 +334,47 @@ namespace Runtime
             }
         }
         */
+        private string GenerateLevelUpCoinReward(VPlayerData _pData)
+        {
+            int reward = Random.Range(15, 21) * 10;
+            _pData.stars += reward;
+            return reward.ToString();
+        }
+        private void AddItemsToRewards(VPlayerData _pData)// This is gonna work on each level up
+        {
+            // Add Unlocked Items' Sprite to A List
+            var spriteList = new List<Sprite>();
+            foreach(var blade in _bladesHolder.blades)
+            {
+                if(blade.bladeLevel == _pData.level)
+                {
+                    spriteList.Add(blade.bladeSprite);
+                }
+            }
+            foreach(var dojo in _dojosHolder.dojos)
+            {
+                if(dojo.dojoLevel == _pData.level)
+                {
+                    spriteList.Add(dojo.dojoSprite);
+                }
+            }
+            // Instantiate Items for Rewards Container
+            if(spriteList.Count > 0)
+            {
+                _rewardItemsExist = true;
+                foreach(var sprite in spriteList)
+                {
+                    var item = Instantiate(rewardItemPrefab);
+                    item.GetComponent<Image>().sprite = sprite;
+                    item.transform.SetParent(rewardItemContainer);
+                    item.transform.localScale = Vector3.one;
+                }
+            }
+            else
+                _rewardItemsExist = false;
 
+            areItemsAdded = true;
+        }
         public void ClickContinue()
         {
             _continueClicked = true;
@@ -290,9 +382,11 @@ namespace Runtime
         #endregion
 
         #region Stars
+        private int sessionStars = 0;
         public void CalculateStars(int uniqueFruitAmount/*this could be max 10(there is 10 diff. fruits)*/, int specialFruitAmount, int comboCount)
         {
             int stars = uniqueFruitAmount + specialFruitAmount + comboCount + (int)(seconds * 0.1f);
+            sessionStars = stars;
 
             StartCoroutine(IncreaseStarsCor(stars));
         }

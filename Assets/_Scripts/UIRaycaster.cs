@@ -76,7 +76,7 @@ namespace Runtime
             yield return new WaitForSeconds(0.15f);
             if(!isItOnMenu)
             {
-                if(continueButtonClicked)
+                if(continueButtonClicked)/* && GameManager.Situation == GameSituation.EverythingDone*/
                 {
                     SoundManager.Instance.PlayMusicBeginningSFX();
                     AsyncLoader.Instance.LoadAScene("PreGameScene");
