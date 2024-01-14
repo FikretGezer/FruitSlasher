@@ -36,16 +36,21 @@ namespace Runtime
                 var newItem = Instantiate(_preGameItemBoxPrefab);
 
                 newItem.transform.GetChild(0).GetComponent<Image>().sprite = _blade.bladeSprite;
-                newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = _blade.bladeName;
-                newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = _blade.bladeExplanation;
 
                 if(!VGPGSManager.Instance._playerData.unlockedBlades[current])
                 {
                     newItem.transform.GetChild(2).gameObject.SetActive(true);
                     newItem.transform.GetChild(2).GetChild(1).GetComponent<TMP_Text>().text = _bladesHolder.blades[i].bladeLevel.ToString() + "\nLevel";
+
+                    newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = "Locked Blade";
+                    newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = $"This blade will be unlocked at level {_bladesHolder.blades[i].bladeLevel}";
                 }
                 else if(!VGPGSManager.Instance._playerData.boughtBlades[current])
                 {
+
+                    newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = _blade.bladeName;
+                    newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = _blade.bladeExplanation;
+
                     newItem.transform.GetChild(2).gameObject.SetActive(false);
                     newItem.transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(true);
                     newItem.transform.GetChild(3).transform.GetChild(2).transform.GetChild(1).GetComponent<TMP_Text>().text = _blade.bladePrice.ToString();
@@ -67,16 +72,20 @@ namespace Runtime
                 var newItem = Instantiate(_preGameItemBoxPrefab);
 
                 newItem.transform.GetChild(0).GetComponent<Image>().sprite = _dojo.dojoSprite;
-                newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = _dojo.dojoName;
-                newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = _dojo.dojoExplanation;
 
                 if(!VGPGSManager.Instance._playerData.unlockedDojos[current])
                 {
                     newItem.transform.GetChild(2).gameObject.SetActive(true);
                     newItem.transform.GetChild(2).GetChild(1).GetComponent<TMP_Text>().text = _dojosHolder.dojos[i].dojoLevel.ToString() + "\nLevel";
+
+                    newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = "Locked Dojo";
+                    newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = $"This dojo will be unlocked at level {_dojosHolder.dojos[i].dojoLevel}";
                 }
                 else if(!VGPGSManager.Instance._playerData.boughtBlades[current])
                 {
+                    newItem.transform.GetChild(3).transform.GetChild(0).GetComponent<TMP_Text>().text = _dojo.dojoName;
+                    newItem.transform.GetChild(3).transform.GetChild(1).GetComponent<TMP_Text>().text = _dojo.dojoExplanation;
+
                     newItem.transform.GetChild(2).gameObject.SetActive(false);
                     newItem.transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(true);
                     newItem.transform.GetChild(3).transform.GetChild(2).transform.GetChild(1).GetComponent<TMP_Text>().text = _dojo.dojoPrice.ToString();

@@ -42,6 +42,7 @@ namespace Runtime
         [SerializeField] private GameObject _starsTrailEffect;
         [SerializeField] private GameObject _starsPopEffect;
         [SerializeField] private GameObject _starsPopEffectSecond;
+        [SerializeField] private GameObject _continueButton;
 
 
         #region Time Params
@@ -50,10 +51,11 @@ namespace Runtime
         #endregion
 
 
+        public bool _scoreDone;
         private Animator _tLevelAnimator;
         private bool _expDone;
         private bool _starsDone;
-        public bool _scoreDone;
+        private bool _continueClicked;
 
         // Star Trail
         private bool _sendTrail;
@@ -217,6 +219,7 @@ namespace Runtime
             {
                 VGPGSManager.Instance.OpenSave(true);
                 _expDone = true;
+
                 CheckEverythingIsDone();
             }
             else
@@ -228,8 +231,18 @@ namespace Runtime
                 speedController *= _playerData.experienceMultiplier;
 
                 _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
+                _levelSlider.fillAmount = 0f;
                 _tExpCurrent.text = "Current: " + _playerData.currentExperience.ToString();
                 _tExpNeeded.text = "Needed: " + _playerData.neededExperience.ToString();
+
+                if(_continueButton != null)
+                {
+                    _continueButton.SetActive(true);
+                    yield return new WaitUntil(() => _continueClicked);
+
+                    _continueButton.SetActive(false);
+                    _continueClicked = false;
+                }
 
                 StartCoroutine(FillAnimationCor(0, _playerData.currentExperience, _playerData.neededExperience));
             }
@@ -269,6 +282,11 @@ namespace Runtime
             }
         }
         */
+
+        public void ClickContinue()
+        {
+            _continueClicked = true;
+        }
         #endregion
 
         #region Stars
