@@ -150,7 +150,7 @@ public class Blade : MonoBehaviour
                         isSpecialFruit = false;
                     }
                 }
-                startPos = hit.collider.transform.position;
+                startPos = endPos;
             }
             else
             {
