@@ -16,7 +16,7 @@ namespace Runtime
         [SerializeField] private TMP_Text _tTooltip;
         [SerializeField] private UIRaycaster _uiRaycaster;
         [SerializeField] private string[] _animParams = {"classic", "settings", "stars", "reset"};
-        [SerializeField] private string[] _tooltipMenuTexts = {
+        [SerializeField] [TextArea(1, 5)]private string[] _tooltipMenuTexts = {
             "You can start the game in classic mode\nby cutting the fruit by swiping.",
             "You can turn on/off the music and the sound effects or\nyou can adjust other settings by clicking\nthe clock icon.",
             "You'll earn stars by completing daily objectives, achievements.\nAlso you will earn some amount of stars end of the each round."

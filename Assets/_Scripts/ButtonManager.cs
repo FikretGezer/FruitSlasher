@@ -257,6 +257,7 @@ namespace Runtime
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
                     _storeUIElements.itemPriceContainer.SetActive(false);
+                    Background.Instance.FitBgToScreen();
                 }
                 else
                 {
@@ -305,6 +306,7 @@ namespace Runtime
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
                     _storeUIElements.itemPriceContainer.SetActive(false);
+                    Background.Instance.FitBgToScreen();
                 }
             }
             else if(_itemTypeToBuy == ItemTypeToBuy.Blade)
@@ -402,6 +404,7 @@ namespace Runtime
                     _playerData.currentDojoIndex = index;
                     BladesAndDojos.Instance.SelectADojo();
                     VGPGSManager.Instance.OpenSave(true);
+                    Background.Instance.FitBgToScreen();
 
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
                 }
@@ -438,6 +441,7 @@ namespace Runtime
                     BladesAndDojos.Instance.SelectADojo();
                     MenuUI.Instance.SetStars();
                     VGPGSManager.Instance.OpenSave(true);
+                    Background.Instance.FitBgToScreen();
 
                     if(_selectedItem != null)
                     {
