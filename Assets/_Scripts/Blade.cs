@@ -28,7 +28,7 @@ public class Blade : MonoBehaviour
     private int _comboAmount;
     private int _specialFruitAmount;
     private bool isSpecialFruit;
-    private bool started;
+
     private List<string> _uniqueList = new List<string>();
 
     private void CalculateUniques(string tag)
@@ -39,6 +39,7 @@ public class Blade : MonoBehaviour
         }
     }
     #endregion
+    private int totalComboCount;
 
     public static Blade Instance;
     private void Awake() {
@@ -47,6 +48,7 @@ public class Blade : MonoBehaviour
         cam = Camera.main;
         Cursor.lockState = CursorLockMode.Confined;
         _fruitAmountThatGotCut = 0;
+        totalComboCount = 0;
 
         if(trailEffect != null)
             trailEffect.SetActive(false);
@@ -99,7 +101,6 @@ public class Blade : MonoBehaviour
             if(endPos == startPos)
                 return;
 
-            started = true;
 
             var dir = endPos - startPos;
             var length = dir.magnitude;
@@ -113,6 +114,20 @@ public class Blade : MonoBehaviour
                 if(fruit != null)
                 {
                     SoundManager.Instance.PlayKnifeSlicing();
+                    VAchievement.Instance.AchievementJuicyStart();
+                    VAchievement.Instance.AchievementFruitNovice();
+                    VAchievement.Instance.UnlockFruitSalad(fruit.tag);
+                    VAchievement.Instance.UnlockFruitExtravaganza(fruit.tag);
+
+                    if(fruit.CompareTag("strawberry"))
+                    {
+                        VAchievement.Instance.AchievementBerryFan();
+                    }
+                    else if(fruit.CompareTag("strawberry"))
+                    {
+                        VAchievement.Instance.AchievementOrangeBlitz();
+                    }
+
                     CutTheFruit(fruit);
                 }
                 else if(specialFruit != null)
@@ -144,6 +159,8 @@ public class Blade : MonoBehaviour
                         SoundManager.Instance.PlayBombCut();
                         SoundManager.Instance.PlayBombExplode();
                         ExploadTheBomb(_bomb);
+
+                        VAchievement.Instance.AchievementPulpFiction();
                     }
                     else
                     {
@@ -251,6 +268,7 @@ public class Blade : MonoBehaviour
                 {
                     if(trailEffectSecond == null)
                     {
+                        BladesAndDojos.Instance.SelectABlade();
                         _currentBlade = BladesAndDojos.Instance._selectedBlade;
                         Debug.Log(_currentBlade.bladeObj.name);
                         trailEffectSecond = Instantiate(_currentBlade.bladeObj);
@@ -311,6 +329,23 @@ public class Blade : MonoBehaviour
         }
         StopCoroutine(ComboCor(time));
         comboStart = false;
+        totalComboCount++;
+
+        VAchievement.Instance.AchievementComboProdidy();
+        VAchievement.Instance.AchievementComboVirtuoso();
+
+        if(comboCount >= 4)
+        {
+            VAchievement.Instance.AchievementSliceMaster();
+        }
+        else if(comboCount >= 4)
+        {
+            VAchievement.Instance.AchievementTastyQuadro();
+        }
+        if(totalComboCount >= 5)
+        {
+            VAchievement.Instance.AchievementComboBeginner();
+        }
     }
     private void IncreaseXP()
     {

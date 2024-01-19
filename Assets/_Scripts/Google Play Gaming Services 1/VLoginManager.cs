@@ -34,7 +34,7 @@ namespace Runtime
 
                 // Activate manually signing in
                 authenticateButton.SetActive(true);
-                SignInToGPGS();
+                // SignInToGPGS();
             }
         }
         public void AuthenticateButton()

@@ -123,6 +123,10 @@ namespace Runtime
         {
             VGPGSManager.Instance.OpenSave(false);
         }
+        public void ShowAch()
+        {
+            VAchievement.Instance.ShowAchievements();
+        }
         public void SetNewBlade(int index)
         {
             if(VGPGSManager.Instance._playerData.currentBladeIndex != index)

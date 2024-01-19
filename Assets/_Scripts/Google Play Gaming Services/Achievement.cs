@@ -90,29 +90,29 @@ namespace Runtime
         {
             ListDescriptions();
         }
-        public void GrantAchievementButton()
-        {
-            DoGrantAchievement(GPGSIds.achievement_unlock_achievement);
-        }
-        public void GrantIncrementalButton()
-        {
-            DoIncrementalAchievement(GPGSIds.achievement_incremental_achievement);
-        }
-        public void RevealAchievementButton()
-        {
-            DoIncrementalAchievement(GPGSIds.achievement_hidden_unlock_achievement);
-        }
-        public void RevealIncrementalButton()
-        {
-            DoIncrementalAchievement(GPGSIds.achievement_hidden_incremental_achievement);
-        }
-        public void GrantHiddenAchievementButton()
-        {
-            DoGrantAchievement(GPGSIds.achievement_hidden_unlock_achievement);
-        }
-        public void HiddenIncrementalAchievementButton()
-        {
-            DoIncrementalAchievement(GPGSIds.achievement_hidden_incremental_achievement);
-        }
+        // public void GrantAchievementButton()
+        // {
+        //     DoGrantAchievement(GPGSIds.achievement_unlock_achievement);
+        // }
+        // public void GrantIncrementalButton()
+        // {
+        //     DoIncrementalAchievement(GPGSIds.achievement_incremental_achievement);
+        // }
+        // public void RevealAchievementButton()
+        // {
+        //     DoIncrementalAchievement(GPGSIds.achievement_hidden_unlock_achievement);
+        // }
+        // public void RevealIncrementalButton()
+        // {
+        //     DoIncrementalAchievement(GPGSIds.achievement_hidden_incremental_achievement);
+        // }
+        // public void GrantHiddenAchievementButton()
+        // {
+        //     DoGrantAchievement(GPGSIds.achievement_hidden_unlock_achievement);
+        // }
+        // public void HiddenIncrementalAchievementButton()
+        // {
+        //     DoIncrementalAchievement(GPGSIds.achievement_hidden_incremental_achievement);
+        // }
     }
 }

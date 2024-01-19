@@ -35,6 +35,7 @@ namespace Runtime
             // }
             AreNewBladesOn();
             AreNewDojosOn();
+            SelectABlade();
             // DefineUnlockedBlades();
         }
         public void SelectABlade()

@@ -52,6 +52,13 @@ public class UIUpdater : MonoBehaviour
             FruitSpawner.Instance.IncreasePercentage();
 
         _imageAnimator.SetTrigger("scoreIncreaser");
+
+        if(scoreCount >= 1000)
+            VAchievement.Instance.AchievementFruitNinjaLegend();
+        else if(scoreCount >= 500)
+            VAchievement.Instance.AchievementFruitNinjaMaster();
+        else if(scoreCount >= 100)
+            VAchievement.Instance.AchievementFruitNinjaApprentice();
     }
     public void DecreaseHealth()
     {
