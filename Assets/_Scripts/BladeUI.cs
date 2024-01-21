@@ -42,6 +42,7 @@ namespace Runtime
                 {
                     if(trailEffectSecond == null)
                     {
+                        BladesAndDojos.Instance.SelectABlade();
                         _currentBlade = BladesAndDojos.Instance._selectedBlade;
                         Debug.Log(_currentBlade.bladeObj.name);
                         trailEffectSecond = Instantiate(_currentBlade.bladeObj);

@@ -127,6 +127,13 @@ namespace Runtime
         {
             VAchievement.Instance.ShowAchievements();
         }
+        public void showNotify()
+        {
+            if(FindObjectOfType<NotificationController>())
+            {
+                NotificationController.Instance.showNotify();
+            }
+        }
         public void SetNewBlade(int index)
         {
             if(VGPGSManager.Instance._playerData.currentBladeIndex != index)

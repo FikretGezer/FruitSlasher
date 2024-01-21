@@ -4,6 +4,9 @@ using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine;
 using TMPro;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.SceneManagement;
 
 namespace Runtime
 {
@@ -80,18 +83,62 @@ namespace Runtime
             areNewBladesUnlocked = false;
             areNewDojosUnlocked = false;
         }
-
-
     }
     public class VGPGSManager : MonoBehaviour
     {
-        public VPlayerData _playerData {get;set;}
+        public TMP_Text _loadInfoT;
+        public VPlayerData _playerData;
+        private const string fileName = "/player.dat";
 
         public static VGPGSManager Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
-            OpenSave(false);
+            Load();
         }
+        #region Local Saving & Loading
+        private void Save()
+        {
+            // Create a route from the program to the file
+            var isExist = File.Exists(Application.persistentDataPath + fileName);
+            FileStream file = isExist ? File.Open(Application.persistentDataPath + fileName, FileMode.Open) : File.Open(Application.persistentDataPath + fileName, FileMode.Create);
+
+            // Create a copy of the save data
+            VPlayerData pData = new VPlayerData();
+            pData = _playerData;
+
+            // Create a binary formatter that can read or write binary files
+            BinaryFormatter formatter = new BinaryFormatter();
+            // Save the data
+            formatter.Serialize(file, pData);
+
+            // Close the data stream
+            file.Close();
+        }
+        private void Load()
+        {
+            if(File.Exists(Application.persistentDataPath + fileName))
+            {
+                // Open File
+                FileStream file = File.Open(Application.persistentDataPath + fileName, FileMode.Open);
+
+                // Create a binary formatter that can read or write binary files
+                BinaryFormatter formatter = new BinaryFormatter();
+                _playerData = formatter.Deserialize(file) as VPlayerData;
+
+                // Close the data stream
+                file.Close();
+                Debug.Log("Loaded");
+                SceneManager.LoadScene("Menu");
+            }
+            else
+            {
+                Debug.Log("Loaded Sec");
+                _playerData = new VPlayerData();
+                SceneManager.LoadScene("Menu");
+            }
+        }
+        #endregion
+
 
         #region SavedGames
 
@@ -103,6 +150,7 @@ namespace Runtime
                 isSaving = input;
 
                 // Open to file to read data
+                _loadInfoT.text = $"Signed in {Social.localUser.userName}\n";
 
                 ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
                     "MyFileName",
@@ -111,19 +159,22 @@ namespace Runtime
                     SaveOrLoadGameFile
                 );
             }
-            // else
-            // {
-            //     if(_playerData == null)
-            //     {
-            //         _playerData = new VPlayerData();
-            //         Debug.Log("Index: " + _playerData.unlockedBlades[_playerData.currentBladeIndex]);
-            //     }
-            // }
+            else
+            {
+                _loadInfoT.text = "Not signed in";
+                // if(_playerData == null)
+                // {
+                //     _playerData = new VPlayerData();
+                //     Debug.Log("Normal->Index: " + _playerData.unlockedBlades[_playerData.currentBladeIndex]);
+                //     _loadInfoT.text += "NORMAL -> Index: " + _playerData.unlockedBlades[_playerData.currentBladeIndex] + "\n";
+                // }
+            }
         }
         private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)
         {
             if(status == SavedGameRequestStatus.Success)
             {
+                _loadInfoT.text += "Saving or loading started.\n";
                 if(isSaving) // Saving
                 {
 
@@ -140,7 +191,19 @@ namespace Runtime
                 }
                 else // Loading
                 {
-                    ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(meta, CallbackLoad);
+                    _loadInfoT.text += "Loading started...\n";
+
+                    if(!meta.IsOpen)
+                    {
+                        _loadInfoT.text += "New User Created\n";
+                        _playerData = new VPlayerData();
+                        First.Instance.LoadNewScene("Menu");
+                    }
+                    else
+                    {
+                        _loadInfoT.text += "Existing Data is loading...\n";
+                        ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(meta, CallbackLoad);
+                    }
                 }
             }
             else
@@ -169,15 +232,16 @@ namespace Runtime
         }
         private void LoadSavedData(string data)
         {
-            var _playerData = JsonUtility.FromJson<VPlayerData>(data);
-            this._playerData = _playerData;
-
+            var _pData = JsonUtility.FromJson<VPlayerData>(data);
+            this._playerData = _pData;
+            _loadInfoT.text += "CLOUD -> Player Data Loaded\nIs blade unlocked: " + _playerData.unlockedBlades[0] + "\n";
+            First.Instance.LoadNewScene("Menu");
             // _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
 
-            if(output != null)
-            {
-                LogOutput(output);
-            }
+            // if(output != null)
+            // {
+            //     LogOutput(output);
+            // }
         }
         private void CallbackSave(SavedGameRequestStatus status, ISavedGameMetadata meta)
         {
@@ -190,17 +254,18 @@ namespace Runtime
 
             }
         }
-        public TMP_Text output;
-        private void LogOutput(TMP_Text outputTxt)
-        {
-            outputTxt.text = "High Score: " + _playerData.highestScore + ", Level: " + _playerData.level;
-        }
+        // public TMP_Text output;
+        // private void LogOutput(TMP_Text outputTxt)
+        // {
+        //     outputTxt.text = "High Score: " + _playerData.highestScore + ", Level: " + _playerData.level;
+        // }
+        #endregion
         private void OnDisable() {
-            OpenSave(true);
+            Save();
         }
         private void OnApplicationQuit() {
-            OpenSave(true);
+            Save();
+            // OpenSave(true);
         }
-        #endregion
     }
 }

@@ -12,22 +12,20 @@ namespace Runtime
         [SerializeField] private TMP_Text _tLevel;
         [SerializeField] private Image _levelSlider;
 
-        private VPlayerData _playerData;
         public static MenuUI Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
         }
         private void Start() {
-            _playerData = VGPGSManager.Instance._playerData;
             LoadMenuItems();
         }
         private void LoadMenuItems()
         {
             if(_tLevel != null)
-                _tLevel.text = _playerData.level.ToString();
+                _tLevel.text = VGPGSManager.Instance._playerData.level.ToString();
             if(_levelSlider != null)
             {
-                var fillAmount = Mathf.Clamp01((float)_playerData.currentExperience / _playerData.neededExperience);
+                var fillAmount = Mathf.Clamp01((float)VGPGSManager.Instance._playerData.currentExperience / VGPGSManager.Instance._playerData.neededExperience);
                 _levelSlider.fillAmount = fillAmount;
             }
             if(_tPlayerTag != null)
@@ -40,7 +38,7 @@ namespace Runtime
         public void SetStars()
         {
             if(_tStars != null)
-                _tStars.text = _playerData.stars.ToString();
+                _tStars.text = VGPGSManager.Instance._playerData.stars.ToString();
         }
     }
 }

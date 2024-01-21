@@ -15,6 +15,10 @@ namespace Runtime
         private void Awake() {
             if(Instance == null) Instance = this;
         }
+        public void showNotify()
+        {
+            notificationAnim.SetTrigger("showNotify");
+        }
         public void SetNotification(Sprite notSprite, string notDesc, int notPoints)
         {
             notificationImage.sprite = notSprite;

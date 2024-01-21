@@ -5,10 +5,15 @@ namespace Runtime
 {
     public class First : MonoBehaviour
     {
-        private void Awake()
-        {
+        public static First Instance;
+        private void Awake() {
+            if(Instance == null) Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        public void LoadNewScene(string sceneToLoad)
+        {
+            SceneManager.LoadScene(sceneToLoad);
+            //
         }
     }
 }

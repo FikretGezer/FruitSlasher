@@ -42,10 +42,10 @@ namespace Runtime
         {
             if(_playerData != null)
             {
-                if(_playerData.unlockedBlades[_playerData.currentBladeIndex])
+                if(VGPGSManager.Instance._playerData.unlockedBlades[VGPGSManager.Instance._playerData.currentBladeIndex])
                 {
                     // Debug.Log(_bladesHolder.blades[_playerData.currentBladeIndex].bladeObj.name);
-                    _selectedBlade = _bladesHolder.blades[_playerData.currentBladeIndex];
+                    _selectedBlade = _bladesHolder.blades[VGPGSManager.Instance._playerData.currentBladeIndex];
                 }
             }
         }
