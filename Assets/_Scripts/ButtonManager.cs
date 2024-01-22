@@ -20,6 +20,7 @@ namespace Runtime
         [SerializeField] private StoreUIElements _storeUIElements;
         [SerializeField] private PreGameStoreUIElements _preGameStoreUIElements;
         [SerializeField] private bool isOnMenuStore;
+        [SerializeField] private GameObject _missionBoard;
         private float offSetXForDojos = -1f;
         private float offSetXForBlades = 6f;
 
@@ -117,11 +118,11 @@ namespace Runtime
         {
             var _playerData = new VPlayerData();
             VGPGSManager.Instance._playerData = _playerData;
-            VGPGSManager.Instance.OpenSave(true);
+
         }
         public void LoadSave()
         {
-            VGPGSManager.Instance.OpenSave(false);
+
         }
         public void ShowAch()
         {
@@ -142,7 +143,7 @@ namespace Runtime
                 {
                     VGPGSManager.Instance._playerData.currentBladeIndex = index;
                     BladesAndDojos.Instance.SelectABlade();
-                    VGPGSManager.Instance.OpenSave(true);
+
                 }
             }
         }
@@ -208,7 +209,7 @@ namespace Runtime
                 {
                     _playerData.currentBladeIndex = index;
                     BladesAndDojos.Instance.SelectABlade();
-                    VGPGSManager.Instance.OpenSave(true);
+
 
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
@@ -262,7 +263,7 @@ namespace Runtime
                 {
                     _playerData.currentDojoIndex = index;
                     BladesAndDojos.Instance.SelectADojo();
-                    VGPGSManager.Instance.OpenSave(true);
+
 
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
@@ -311,7 +312,7 @@ namespace Runtime
                     _playerData.currentDojoIndex = selectedDojoIndex;
                     BladesAndDojos.Instance.SelectADojo();
                     MenuUI.Instance.SetStars();
-                    VGPGSManager.Instance.OpenSave(true);
+
 
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
@@ -332,7 +333,7 @@ namespace Runtime
                     _playerData.currentBladeIndex = selectedBladeIndex;
                     BladesAndDojos.Instance.SelectABlade();
                     MenuUI.Instance.SetStars();
-                    VGPGSManager.Instance.OpenSave(true);
+
 
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
@@ -381,7 +382,7 @@ namespace Runtime
                 {
                     _playerData.currentBladeIndex = index;
                     BladesAndDojos.Instance.SelectABlade();
-                    VGPGSManager.Instance.OpenSave(true);
+
 
                     _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(false);
                 }
@@ -414,7 +415,7 @@ namespace Runtime
                 {
                     _playerData.currentDojoIndex = index;
                     BladesAndDojos.Instance.SelectADojo();
-                    VGPGSManager.Instance.OpenSave(true);
+
                     Background.Instance.FitBgToScreen();
 
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
@@ -451,7 +452,7 @@ namespace Runtime
                     _playerData.currentDojoIndex = selectedDojoIndex;
                     BladesAndDojos.Instance.SelectADojo();
                     MenuUI.Instance.SetStars();
-                    VGPGSManager.Instance.OpenSave(true);
+
                     Background.Instance.FitBgToScreen();
 
                     if(_selectedItem != null)
@@ -474,7 +475,7 @@ namespace Runtime
                     _playerData.currentBladeIndex = selectedBladeIndex;
                     BladesAndDojos.Instance.SelectABlade();
                     MenuUI.Instance.SetStars();
-                    VGPGSManager.Instance.OpenSave(true);
+
 
                     if(_selectedItem != null)
                     {
@@ -485,6 +486,11 @@ namespace Runtime
                 }
             }
             _itemTypeToBuy = ItemTypeToBuy.None;
+        }
+        public void OpenMissionBoard()
+        {
+            var activeness = !_missionBoard.activeInHierarchy;
+            _missionBoard.SetActive(activeness);
         }
         #endregion
     }

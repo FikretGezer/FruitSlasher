@@ -4,6 +4,7 @@ using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
@@ -143,7 +144,7 @@ namespace Runtime
         #region SavedGames
 
         private bool isSaving;
-        public void OpenSave(bool input) // If input true, activate SAVING otherwise activate LOADING
+        private void OpenSave(bool input) // If input true, activate SAVING otherwise activate LOADING
         {
             if(Social.localUser.authenticated)
             {
@@ -268,4 +269,6 @@ namespace Runtime
             // OpenSave(true);
         }
     }
+
+
 }

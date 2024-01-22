@@ -190,7 +190,7 @@ namespace Runtime
                 playerData.highestScore = currentScore;
                 _tHighestScore.text = currentScore.ToString();
 
-                VGPGSManager.Instance.OpenSave(true);
+
                 PostScoreToLeaderboard(currentScore);
             }
             else
@@ -240,7 +240,7 @@ namespace Runtime
 
             if(currentXP < neededExperience)// XP loaded max
             {
-                VGPGSManager.Instance.OpenSave(true);
+
                 _expDone = true;
                 _mainSceneCaster.enabled = true;
                 CheckEverythingIsDone();
@@ -405,7 +405,7 @@ namespace Runtime
             }
 
             _playerData.stars += stars;
-            VGPGSManager.Instance.OpenSave(true);
+
 
             if(stars > 0)
             {
