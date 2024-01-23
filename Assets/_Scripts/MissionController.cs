@@ -60,6 +60,7 @@ namespace Runtime
                         missionContainer[i].image.sprite = currentMission.sprite;
                         missionContainer[i].explanationT.text = currentMission.explanation;
                         missionContainer[i].pointsT.text = "+" + currentMission.points.ToString();
+                        missionContainer[i].progressT.text = $"{currentMission.currentAmount} / {currentMission.requiredAmount}";
                         missionContainer[i].completedLine.SetActive(false);
 
                         missions.Add(currentMission);
@@ -86,6 +87,7 @@ namespace Runtime
                         missionContainer[containerIndex].image.sprite = miss.sprite;
                         missionContainer[containerIndex].explanationT.text = miss.explanation;
                         missionContainer[containerIndex].pointsT.text = "+" + miss.points.ToString();
+                        missionContainer[containerIndex].progressT.text = $"{miss.currentAmount} / {miss.requiredAmount}";
 
                         if(miss.completed)
                             missionContainer[containerIndex].completedLine.SetActive(true);
@@ -146,6 +148,7 @@ namespace Runtime
         public Image image;
         public TMP_Text explanationT;
         public TMP_Text pointsT;
+        public TMP_Text progressT;
         public GameObject completedLine;
     }
 
@@ -170,59 +173,21 @@ namespace Runtime
         }
 
         #region Increment Functions
-        public void CutFruit()
+        public void CutFruit() => CompleteCheck(MissionType.CutFruit);
+        public void CutBomb() => CompleteCheck(MissionType.CutBomb);
+        public void PlayTheGame() => CompleteCheck(MissionType.Play);
+        public void BuyBlade() => CompleteCheck(MissionType.BuyBlade);
+        public void BuyDojo() => CompleteCheck(MissionType.BuyDojo);
+        private void CompleteCheck(MissionType missionType)
         {
             if(!IsReached())
             {
-                if(type == MissionType.CutFruit && !IsReached()) currentAmount++;
+                if(type == missionType && !IsReached()) currentAmount++;
             }
-            if(IsReached())
+            if(IsReached() && !completed)
             {
                 completed = true;
-            }
-        }
-        public void CutBomb()
-        {
-            if(!IsReached())
-            {
-                if(type == MissionType.CutBomb && !IsReached()) currentAmount++;
-            }
-            if(IsReached())
-            {
-                completed = true;
-            }
-        }
-        public void PlayTheGame()
-        {
-            if(!IsReached())
-            {
-                if(type == MissionType.Play && !IsReached()) currentAmount++;
-            }
-            if(IsReached())
-            {
-                completed = true;
-            }
-        }
-        public void BuyBlade()
-        {
-            if(!IsReached())
-            {
-                if(type == MissionType.BuyBlade && !IsReached()) currentAmount++;
-            }
-            if(IsReached())
-            {
-                completed = true;
-            }
-        }
-        public void BuyDojo()
-        {
-            if(!IsReached())
-            {
-                if(type == MissionType.BuyDojo && !IsReached()) currentAmount++;
-            }
-            if(IsReached())
-            {
-                completed = true;
+                VGPGSManager.Instance._playerData.stars += points;
             }
         }
         #endregion
