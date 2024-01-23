@@ -128,6 +128,17 @@ public class Blade : MonoBehaviour
                         VAchievement.Instance.AchievementOrangeBlitz();
                     }
 
+                    if(FindObjectOfType<MissionController>())
+                    {
+                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        {
+                            if(mission.type == MissionType.CutFruit)
+                            {
+                                mission.CutFruit();
+                            }
+                        }
+                    }
+
                     CutTheFruit(fruit);
                 }
                 else if(specialFruit != null)
@@ -161,6 +172,17 @@ public class Blade : MonoBehaviour
                         ExploadTheBomb(_bomb);
 
                         VAchievement.Instance.AchievementPulpFiction();
+
+                        if(FindObjectOfType<MissionController>())
+                        {
+                            foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                            {
+                                if(mission.type == MissionType.CutBomb)
+                                {
+                                    mission.CutBomb();
+                                }
+                            }
+                        }
                     }
                     else
                     {

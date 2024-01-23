@@ -1,23 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+using TMPro;
 
 namespace Runtime
 {
     public class MissionController : MonoBehaviour
     {
         [SerializeField] private MissionContainer[] missionContainer = new MissionContainer[3];
-        [SerializeField] private SelectedMissionsScriptable _selectedMissionsScriptable;
+        [SerializeField] private bool isThereABoard;
+        public SelectedMissionsScriptable _selectedMissionsScriptable;
+        public bool checkMissions;
 
+
+        public static MissionController Instance;
         private void Awake() {
-            SetMissions();
+            if(Instance == null) Instance = this;
+
+            if(isThereABoard)
+                SetMissions();
+        }
+        private void Update() {
+            if(checkMissions)
+            {
+                checkMissions = false;
+                SetMissions();
+            }
         }
 
         private void SetMissions()
         {
             var missions = new List<Mission>();
+            int count = 0;
 
             if(CheckIsAllCompleted())
             {
@@ -28,15 +43,24 @@ namespace Runtime
                         // Select a random mission
                         var rnd = Random.Range(0, _selectedMissionsScriptable.missions.Count);
                         var currentMission = _selectedMissionsScriptable.missions[rnd];
+                        count = 0;
+
+                        if(missions.Count > 0)
+                        {
+                            while(CheckSimilarityInMissions(currentMission, missions) && count < 10)
+                            {
+                                rnd = Random.Range(0, _selectedMissionsScriptable.missions.Count);
+                                currentMission = _selectedMissionsScriptable.missions[rnd];
+
+                                count++;
+                            }
+                        }
 
                         // Show selected mission on the board
                         missionContainer[i].image.sprite = currentMission.sprite;
                         missionContainer[i].explanationT.text = currentMission.explanation;
                         missionContainer[i].pointsT.text = "+" + currentMission.points.ToString();
                         missionContainer[i].completedLine.SetActive(false);
-
-                        // Make sure it is selected and not be selectable over and over again
-                        currentMission.line = missionContainer[i].completedLine;
 
                         missions.Add(currentMission);
                     }
@@ -72,6 +96,15 @@ namespace Runtime
                     }
                 }
             }
+        }
+        private bool CheckSimilarityInMissions(Mission currentMission, List<Mission> missions)
+        {
+            foreach(var mission in missions)
+            {
+                if(mission.explanation == currentMission.explanation)
+                    return true;
+            }
+            return false;
         }
         private bool CheckIsAllCompleted()
         {
@@ -119,10 +152,87 @@ namespace Runtime
     [System.Serializable]
     public class Mission
     {
+        public MissionType type;
+
+        [Header("Board Parameters")]
         public Sprite sprite;
         public string explanation;
         public int points;
+
+        [Header("Goal Progress")]
+        public int requiredAmount;
+        public int currentAmount;
         public bool completed;
-        [HideInInspector] public GameObject line;
+
+        public bool IsReached()
+        {
+            return currentAmount >= requiredAmount;
+        }
+
+        #region Increment Functions
+        public void CutFruit()
+        {
+            if(!IsReached())
+            {
+                if(type == MissionType.CutFruit && !IsReached()) currentAmount++;
+            }
+            if(IsReached())
+            {
+                completed = true;
+            }
+        }
+        public void CutBomb()
+        {
+            if(!IsReached())
+            {
+                if(type == MissionType.CutBomb && !IsReached()) currentAmount++;
+            }
+            if(IsReached())
+            {
+                completed = true;
+            }
+        }
+        public void PlayTheGame()
+        {
+            if(!IsReached())
+            {
+                if(type == MissionType.Play && !IsReached()) currentAmount++;
+            }
+            if(IsReached())
+            {
+                completed = true;
+            }
+        }
+        public void BuyBlade()
+        {
+            if(!IsReached())
+            {
+                if(type == MissionType.BuyBlade && !IsReached()) currentAmount++;
+            }
+            if(IsReached())
+            {
+                completed = true;
+            }
+        }
+        public void BuyDojo()
+        {
+            if(!IsReached())
+            {
+                if(type == MissionType.BuyDojo && !IsReached()) currentAmount++;
+            }
+            if(IsReached())
+            {
+                completed = true;
+            }
+        }
+        #endregion
+    }
+    public enum MissionType
+    {
+        CutFruit,
+        CutBomb,
+        Play,
+        BuyBlade,
+        BuyDojo
     }
 }

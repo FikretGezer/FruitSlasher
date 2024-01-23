@@ -84,6 +84,7 @@ public class UIUpdater : MonoBehaviour
                 healths[i].GetComponent<Animator>().SetTrigger("popUp");
                 healths[i].GetComponent<Image>().color = Color.black;
             }
+            MissionController.Instance.checkMissions = true;
             maxHealth = 0;
             Debug.Log("<color=red>Game is over</color>");
             StartCoroutine(nameof(BombCountdownCor));

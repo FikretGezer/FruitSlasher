@@ -313,6 +313,16 @@ namespace Runtime
                     BladesAndDojos.Instance.SelectADojo();
                     MenuUI.Instance.SetStars();
 
+                    if(FindObjectOfType<MissionController>())
+                    {
+                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        {
+                            if(mission.type == MissionType.BuyDojo)
+                            {
+                                mission.BuyDojo();
+                            }
+                        }
+                    }
 
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
@@ -334,6 +344,16 @@ namespace Runtime
                     BladesAndDojos.Instance.SelectABlade();
                     MenuUI.Instance.SetStars();
 
+                    if(FindObjectOfType<MissionController>())
+                    {
+                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        {
+                            if(mission.type == MissionType.BuyBlade)
+                            {
+                                mission.BuyBlade();
+                            }
+                        }
+                    }
 
                     _storeUIElements.itemBuyButton.GetComponent<Image>().sprite = _storeUIElements.boughtSprite;
                     _storeUIElements.itemBuyText.text = "BOUGHT";
@@ -460,6 +480,18 @@ namespace Runtime
                         _selectedItem.SetActive(false);
                         _selectedItem = null;
                     }
+
+                    if(FindObjectOfType<MissionController>())
+                    {
+                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        {
+                            if(mission.type == MissionType.BuyDojo)
+                            {
+                                mission.BuyDojo();
+                            }
+                        }
+                    }
+
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
                 }
             }
@@ -482,6 +514,18 @@ namespace Runtime
                         _selectedItem.SetActive(false);
                         _selectedItem = null;
                     }
+
+                    if(FindObjectOfType<MissionController>())
+                    {
+                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        {
+                            if(mission.type == MissionType.BuyBlade)
+                            {
+                                mission.BuyBlade();
+                            }
+                        }
+                    }
+
                     _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(false);
                 }
             }

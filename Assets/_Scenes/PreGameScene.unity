@@ -3336,6 +3336,7 @@ MonoBehaviour:
     explanationT: {fileID: 2064556504}
     pointsT: {fileID: 1624662598}
     completedLine: {fileID: 1039060100}
+  isThereABoard: 1
   _selectedMissionsScriptable: {fileID: 11400000, guid: 4fef244b2a6fe9b4a918374009de6b2d, type: 2}
 --- !u!4 &516243859
 Transform:
