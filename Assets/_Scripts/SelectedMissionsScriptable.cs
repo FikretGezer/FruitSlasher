@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Runtime
@@ -9,5 +9,8 @@ namespace Runtime
     {
         public List<Mission> missions = new List<Mission>();
         public List<Mission> selectedMissions = new List<Mission>();
+        private void OnEnable() {
+            EditorUtility.SetDirty(this);
+        }
     }
 }

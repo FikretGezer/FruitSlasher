@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
+  m_Name: Default Blade 6
+  m_EditorClassIdentifier: 
+  bladeSprite: {fileID: 1591576869, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+  bladeName: Basic Blade 5
+  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeLevel: 4
+  bladePrice: 500
+  bladeObj: {fileID: 6077083109295487349, guid: a871939cc63f6034fb1b0e7a504122e7, type: 3}

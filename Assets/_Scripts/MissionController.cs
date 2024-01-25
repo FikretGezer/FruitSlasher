@@ -29,73 +29,80 @@ namespace Runtime
             }
         }
 
-        private void SetMissions()
+        public void SetMissions()
+        {
+            if(CheckIsAllCompleted())
+                SetNewMissions();
+            else
+                SetPreviousMissions();
+        }
+        private void SetNewMissions()
         {
             var missions = new List<Mission>();
             int count = 0;
 
-            if(CheckIsAllCompleted())
+            if(missionContainer.Length >= 3)
             {
-                if(missionContainer.Length >= 3)
+                for (int i = 0; i < 3; i++)
                 {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        // Select a random mission
-                        var rnd = Random.Range(0, _selectedMissionsScriptable.missions.Count);
-                        var currentMission = _selectedMissionsScriptable.missions[rnd];
-                        count = 0;
+                    // Select a random mission
+                    var rnd = Random.Range(0, _selectedMissionsScriptable.missions.Count);
+                    var currentMission = _selectedMissionsScriptable.missions[rnd];
+                    count = 0;
 
-                        if(missions.Count > 0)
+                    if(missions.Count > 0)
+                    {
+                        while(CheckSimilarityInMissions(currentMission, missions) && count < 10)
                         {
-                            while(CheckSimilarityInMissions(currentMission, missions) && count < 10)
-                            {
-                                rnd = Random.Range(0, _selectedMissionsScriptable.missions.Count);
-                                currentMission = _selectedMissionsScriptable.missions[rnd];
+                            rnd = Random.Range(0, _selectedMissionsScriptable.missions.Count);
+                            currentMission = _selectedMissionsScriptable.missions[rnd];
 
-                                count++;
-                            }
+                            count++;
                         }
-
-                        // Show selected mission on the board
-                        missionContainer[i].image.sprite = currentMission.sprite;
-                        missionContainer[i].explanationT.text = currentMission.explanation;
-                        missionContainer[i].pointsT.text = "+" + currentMission.points.ToString();
-                        missionContainer[i].progressT.text = $"{currentMission.currentAmount} / {currentMission.requiredAmount}";
-                        missionContainer[i].completedLine.SetActive(false);
-
-                        missions.Add(currentMission);
                     }
-                }
+                    // Reset values
+                    currentMission.currentAmount = 0;
+                    currentMission.completed = false;
 
-                if(_selectedMissionsScriptable.selectedMissions.Count > 0)
-                {
-                    foreach(var miss in _selectedMissionsScriptable.selectedMissions)
-                    {
-                        miss.completed = false;
-                    }
+                    // Show selected mission on the board
+                    missionContainer[i].image.sprite = currentMission.sprite;
+                    missionContainer[i].explanationT.text = currentMission.explanation;
+                    missionContainer[i].pointsT.text = "+" + currentMission.points.ToString();
+                    missionContainer[i].progressT.text = $"{currentMission.currentAmount} / {currentMission.requiredAmount}";
+                    missionContainer[i].completedLine.SetActive(false);
+
+                    missions.Add(currentMission);
                 }
-                _selectedMissionsScriptable.selectedMissions.Clear();
-                _selectedMissionsScriptable.selectedMissions.AddRange(missions);
             }
-            else // Set previous missions
-            {
-                if(missionContainer.Length >= 3)
-                {
-                    int containerIndex = 0;
-                    foreach (var miss in _selectedMissionsScriptable.selectedMissions)
-                    {
-                        missionContainer[containerIndex].image.sprite = miss.sprite;
-                        missionContainer[containerIndex].explanationT.text = miss.explanation;
-                        missionContainer[containerIndex].pointsT.text = "+" + miss.points.ToString();
-                        missionContainer[containerIndex].progressT.text = $"{miss.currentAmount} / {miss.requiredAmount}";
 
-                        if(miss.completed)
-                            missionContainer[containerIndex].completedLine.SetActive(true);
-                        else
-                            missionContainer[containerIndex].completedLine.SetActive(false);
+            if(_selectedMissionsScriptable.selectedMissions.Count > 0)
+            {
+                foreach(var miss in _selectedMissionsScriptable.selectedMissions)
+                {
+                    miss.completed = false;
+                }
+            }
+            _selectedMissionsScriptable.selectedMissions.Clear();
+            _selectedMissionsScriptable.selectedMissions.AddRange(missions);
+        }
+        private void SetPreviousMissions()
+        {
+            if(missionContainer.Length >= 3)
+            {
+                int containerIndex = 0;
+                foreach (var miss in _selectedMissionsScriptable.selectedMissions)
+                {
+                    missionContainer[containerIndex].image.sprite = miss.sprite;
+                    missionContainer[containerIndex].explanationT.text = miss.explanation;
+                    missionContainer[containerIndex].pointsT.text = "+" + miss.points.ToString();
+                    missionContainer[containerIndex].progressT.text = $"{miss.currentAmount} / {miss.requiredAmount}";
+
+                    if(miss.completed)
+                        missionContainer[containerIndex].completedLine.SetActive(true);
+                    else
+                        missionContainer[containerIndex].completedLine.SetActive(false);
 
                         containerIndex++;
-                    }
                 }
             }
         }
@@ -176,13 +183,22 @@ namespace Runtime
         public void CutFruit() => CompleteCheck(MissionType.CutFruit);
         public void CutBomb() => CompleteCheck(MissionType.CutBomb);
         public void PlayTheGame() => CompleteCheck(MissionType.Play);
-        public void BuyBlade() => CompleteCheck(MissionType.BuyBlade);
-        public void BuyDojo() => CompleteCheck(MissionType.BuyDojo);
+        public void BuyBlade()
+        {
+            CompleteCheck(MissionType.BuyBlade);
+            MissionController.Instance.SetMissions();
+        }
+        public void BuyDojo()
+        {
+            CompleteCheck(MissionType.BuyDojo);
+            MissionController.Instance.SetMissions();
+        }
         private void CompleteCheck(MissionType missionType)
         {
             if(!IsReached())
             {
                 if(type == missionType && !IsReached()) currentAmount++;
+
             }
             if(IsReached() && !completed)
             {

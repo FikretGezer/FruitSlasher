@@ -31,41 +31,44 @@ namespace Runtime
 
         void Update()
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.touchCount > 0)
             {
-                startPos = Input.mousePosition;
-            }
-            if (Input.GetMouseButton(0))
-            {
-                endPos = Input.mousePosition;
-
-
-                _PointerEventData.position = endPos;
-
-                List<RaycastResult> results = new List<RaycastResult>();
-
-                //Raycast using the Graphics Raycaster and mouse click position
-                _Raycaster.Raycast(_PointerEventData, results);
-
-                foreach (RaycastResult result in results)
+                if(Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    if(endPos != startPos)
+                    startPos = Input.GetTouch(0).position;
+                }
+                if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                {
+                    endPos = Input.GetTouch(0).position;
+
+
+                    _PointerEventData.position = endPos;
+
+                    List<RaycastResult> results = new List<RaycastResult>();
+
+                    //Raycast using the Graphics Raycaster and mouse click position
+                    _Raycaster.Raycast(_PointerEventData, results);
+
+                    foreach (RaycastResult result in results)
                     {
-                        // Detect Continue Button
-                        if(!continueButtonClicked && result.gameObject.CompareTag("continueButton")){
-                            continueButtonClicked = true;
-                            _cutEffect.SetActive(true);
-                            _cutEffect.transform.position = result.gameObject.transform.position;
-                            SoundManager.Instance.PlayKnifeSlicing();
-                            StartCoroutine(nameof(ContinueCor));
-                        }
-                        if(!startPlayerButtonClicked && result.gameObject.CompareTag("startButton"))
+                        if(endPos != startPos)
                         {
-                            startPlayerButtonClicked = true;
-                            _cutEffect.SetActive(true);
-                            _cutEffect.transform.position = result.gameObject.transform.position;
-                            SoundManager.Instance.PlayKnifeSlicing();
-                            StartCoroutine(nameof(ContinueCor));
+                            // Detect Continue Button
+                            if(!continueButtonClicked && result.gameObject.CompareTag("continueButton")){
+                                continueButtonClicked = true;
+                                _cutEffect.SetActive(true);
+                                _cutEffect.transform.position = result.gameObject.transform.position;
+                                SoundManager.Instance.PlayKnifeSlicing();
+                                StartCoroutine(nameof(ContinueCor));
+                            }
+                            if(!startPlayerButtonClicked && result.gameObject.CompareTag("startButton"))
+                            {
+                                startPlayerButtonClicked = true;
+                                _cutEffect.SetActive(true);
+                                _cutEffect.transform.position = result.gameObject.transform.position;
+                                SoundManager.Instance.PlayKnifeSlicing();
+                                StartCoroutine(nameof(ContinueCor));
+                            }
                         }
                     }
                 }

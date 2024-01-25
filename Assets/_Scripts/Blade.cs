@@ -90,110 +90,113 @@ public class Blade : MonoBehaviour
     }
     private void Slash()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.touchCount > 0)
         {
-            startPos = cam.ScreenPointToRay(Input.mousePosition).origin;
-        }
-        if(Input.GetMouseButton(0))
-        {
-            endPos = cam.ScreenPointToRay(Input.mousePosition).origin;
-
-            if(endPos == startPos)
-                return;
-
-
-            var dir = endPos - startPos;
-            var length = dir.magnitude;
-
-            // RaycastHit2D hit = Physics2D.Raycast(startPos, dir, length);
-            RaycastHit2D hit = Physics2D.Raycast(endPos, Vector3.forward);
-            if(hit.collider != null)
+            if(Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                var fruit = hit.collider.GetComponent<Fruit>();
-                var specialFruit = hit.collider.GetComponent<SpecialFruit>();
-                if(fruit != null)
+                startPos = cam.ScreenPointToRay(Input.GetTouch(0).position).origin;
+            }
+            if(Input.GetTouch(0).phase == TouchPhase.Moved)
+            {
+                endPos = cam.ScreenPointToRay(Input.GetTouch(0).position).origin;
+
+                if(endPos == startPos)
+                    return;
+
+
+                var dir = endPos - startPos;
+                var length = dir.magnitude;
+
+                // RaycastHit2D hit = Physics2D.Raycast(startPos, dir, length);
+                RaycastHit2D hit = Physics2D.Raycast(endPos, Vector3.forward);
+                if(hit.collider != null)
                 {
-                    SoundManager.Instance.PlayKnifeSlicing();
-                    VAchievement.Instance.AchievementJuicyStart();
-                    VAchievement.Instance.AchievementFruitNovice();
-                    VAchievement.Instance.UnlockFruitSalad(fruit.tag);
-                    VAchievement.Instance.UnlockFruitExtravaganza(fruit.tag);
+                    var fruit = hit.collider.GetComponent<Fruit>();
+                    var specialFruit = hit.collider.GetComponent<SpecialFruit>();
+                    if(fruit != null)
+                    {
+                        SoundManager.Instance.PlayKnifeSlicing();
+                        VAchievement.Instance.AchievementJuicyStart();
+                        VAchievement.Instance.AchievementFruitNovice();
+                        VAchievement.Instance.UnlockFruitSalad(fruit.tag);
+                        VAchievement.Instance.UnlockFruitExtravaganza(fruit.tag);
 
-                    if(fruit.CompareTag("strawberry"))
-                    {
-                        VAchievement.Instance.AchievementBerryFan();
-                    }
-                    else if(fruit.CompareTag("strawberry"))
-                    {
-                        VAchievement.Instance.AchievementOrangeBlitz();
-                    }
-
-                    if(FindObjectOfType<MissionController>())
-                    {
-                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        if(fruit.CompareTag("strawberry"))
                         {
-                            if(mission.type == MissionType.CutFruit)
-                            {
-                                mission.CutFruit();
-                            }
+                            VAchievement.Instance.AchievementBerryFan();
                         }
-                    }
-
-                    CutTheFruit(fruit);
-                }
-                else if(specialFruit != null)
-                {
-                    CameraController.Instance.SFruit = specialFruit.transform;
-                    CameraController.Instance.IsActive = true;
-
-                    if(!isSpecialFruit)
-                    {
-                        isSpecialFruit = true;
-
-                        // Cut Effect
-                        SpawnCutEffect(specialFruit.transform.position);
-
-                        // Splash Effect
-                        SpawnSplash("redApple", specialFruit.transform.position);
-
-                        EffectSpawner.Instance.GetTextEffect(specialFruit.transform.position);
-                    }
-                }
-                else//This is bomb
-                {
-                    var _bomb = hit.collider.GetComponent<Bomb>();
-                    if(_bomb != null)
-                    {
-                        CameraController.Instance.IsActive = false;
-                        if(Time.timeScale < 0.9f) Time.timeScale = 1f;
-                        SoundManager.Instance.StopBombPop();
-                        SoundManager.Instance.PlayBombCut();
-                        SoundManager.Instance.PlayBombExplode();
-                        ExploadTheBomb(_bomb);
-
-                        VAchievement.Instance.AchievementPulpFiction();
+                        else if(fruit.CompareTag("strawberry"))
+                        {
+                            VAchievement.Instance.AchievementOrangeBlitz();
+                        }
 
                         if(FindObjectOfType<MissionController>())
                         {
                             foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
                             {
-                                if(mission.type == MissionType.CutBomb)
+                                if(mission.type == MissionType.CutFruit)
                                 {
-                                    mission.CutBomb();
+                                    mission.CutFruit();
                                 }
                             }
                         }
+
+                        CutTheFruit(fruit);
                     }
-                    else
+                    else if(specialFruit != null)
                     {
-                        isSpecialFruit = false;
+                        CameraController.Instance.SFruit = specialFruit.transform;
+                        CameraController.Instance.IsActive = true;
+
+                        if(!isSpecialFruit)
+                        {
+                            isSpecialFruit = true;
+
+                            // Cut Effect
+                            SpawnCutEffect(specialFruit.transform.position);
+
+                            // Splash Effect
+                            SpawnSplash("redApple", specialFruit.transform.position);
+
+                            EffectSpawner.Instance.GetTextEffect(specialFruit.transform.position);
+                        }
                     }
+                    else//This is bomb
+                    {
+                        var _bomb = hit.collider.GetComponent<Bomb>();
+                        if(_bomb != null)
+                        {
+                            CameraController.Instance.IsActive = false;
+                            if(Time.timeScale < 0.9f) Time.timeScale = 1f;
+                            SoundManager.Instance.StopBombPop();
+                            SoundManager.Instance.PlayBombCut();
+                            SoundManager.Instance.PlayBombExplode();
+                            ExploadTheBomb(_bomb);
+
+                            VAchievement.Instance.AchievementPulpFiction();
+
+                            if(FindObjectOfType<MissionController>())
+                            {
+                                foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                                {
+                                    if(mission.type == MissionType.CutBomb)
+                                    {
+                                        mission.CutBomb();
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            isSpecialFruit = false;
+                        }
+                    }
+                    startPos = endPos;
                 }
-                startPos = endPos;
-            }
-            else
-            {
-                isSpecialFruit = false;
+                else
+                {
+                    isSpecialFruit = false;
+                }
             }
         }
     }
@@ -266,23 +269,16 @@ public class Blade : MonoBehaviour
     }
     private void RenderTrailEffect()
     {
-        // if(trailEffect != null && Time.timeScale > 0.1f)
-        // {
-        //     trailEffect.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-        //     if(Input.GetMouseButton(0))
-        //     {
-        //         trailEffect.SetActive(true);
-        //     }
-        //     if(Input.GetMouseButtonUp(0))
-        //         trailEffect.SetActive(false);
-        // }
         if(trailEffectSecond != null && Time.timeScale > 0.1f)
         {
-            trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-            if(Input.GetMouseButtonDown(0))
-                trailEffectSecond.SetActive(true);
-            if(Input.GetMouseButtonUp(0))
-                trailEffectSecond.SetActive(false);
+            if(Input.touchCount > 0)
+            {
+                trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.GetTouch(0).position);
+                if(Input.GetTouch(0).phase == TouchPhase.Began)
+                    trailEffectSecond.SetActive(true);
+                if(Input.GetTouch(0).phase == TouchPhase.Ended)
+                    trailEffectSecond.SetActive(false);
+            }
         }
         else
             {

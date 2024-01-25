@@ -18,23 +18,25 @@ namespace Runtime
         }
         private void RenderTrailEffect()
         {
-            // if(trailEffect != null && Time.timeScale > 0.1f)
-            // {
-            //     trailEffect.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-            //     if(Input.GetMouseButtonDown(0))
-            //         trailEffect.SetActive(true);
-            //
-            //     if(Input.GetMouseButtonUp(0))
-            //         trailEffect.SetActive(false);
-            // }
-            //
+
             if(trailEffectSecond != null && Time.timeScale > 0.1f)
             {
-                trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-                if(Input.GetMouseButtonDown(0))
-                    trailEffectSecond.SetActive(true);
-                if(Input.GetMouseButtonUp(0))
-                    trailEffectSecond.SetActive(false);
+                // // PC INPUTS
+                // trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+                // if(Input.GetMouseButtonDown(0))
+                //     trailEffectSecond.SetActive(true);
+                // if(Input.GetMouseButtonUp(0))
+                //     trailEffectSecond.SetActive(false);
+
+                // MOBILE INPUTS
+                if(Input.touchCount > 0)
+                {
+                    trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.GetTouch(0).position);
+                    if(Input.GetTouch(0).phase == TouchPhase.Began)
+                        trailEffectSecond.SetActive(true);
+                    if(Input.GetTouch(0).phase == TouchPhase.Ended)
+                        trailEffectSecond.SetActive(false);
+                }
             }
             else
             {
