@@ -31,15 +31,56 @@ namespace Runtime
 
         void Update()
         {
-            if(Input.touchCount > 0)
-            {
-                if(Input.GetTouch(0).phase == TouchPhase.Began)
+            // if(Input.touchCount > 0)
+            // {
+            //     if(Input.GetTouch(0).phase == TouchPhase.Began)
+            //     {
+            //         startPos = Input.GetTouch(0).position;
+            //     }
+            //     if (Input.GetTouch(0).phase == TouchPhase.Moved)
+            //     {
+            //         endPos = Input.GetTouch(0).position;
+
+
+            //         _PointerEventData.position = endPos;
+
+            //         List<RaycastResult> results = new List<RaycastResult>();
+
+            //         //Raycast using the Graphics Raycaster and mouse click position
+            //         _Raycaster.Raycast(_PointerEventData, results);
+
+            //         foreach (RaycastResult result in results)
+            //         {
+            //             if(endPos != startPos)
+            //             {
+            //                 // Detect Continue Button
+            //                 if(!continueButtonClicked && result.gameObject.CompareTag("continueButton")){
+            //                     continueButtonClicked = true;
+            //                     _cutEffect.SetActive(true);
+            //                     _cutEffect.transform.position = result.gameObject.transform.position;
+            //                     SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.knifeSliceSFX);
+            //                     StartCoroutine(nameof(ContinueCor));
+            //                 }
+            //                 if(!startPlayerButtonClicked && result.gameObject.CompareTag("startButton"))
+            //                 {
+            //                     startPlayerButtonClicked = true;
+            //                     _cutEffect.SetActive(true);
+            //                     _cutEffect.transform.position = result.gameObject.transform.position;
+            //                     SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.knifeSliceSFX);
+            //                     StartCoroutine(nameof(ContinueCor));
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+
+            if(Input.GetMouseButtonDown(0))
                 {
-                    startPos = Input.GetTouch(0).position;
+                    startPos = Input.mousePosition;
                 }
-                if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                if (Input.GetMouseButton(0))
                 {
-                    endPos = Input.GetTouch(0).position;
+                    endPos = Input.mousePosition;
 
 
                     _PointerEventData.position = endPos;
@@ -58,7 +99,7 @@ namespace Runtime
                                 continueButtonClicked = true;
                                 _cutEffect.SetActive(true);
                                 _cutEffect.transform.position = result.gameObject.transform.position;
-                                SoundManager.Instance.PlayKnifeSlicing();
+                                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.knifeSliceSFX);
                                 StartCoroutine(nameof(ContinueCor));
                             }
                             if(!startPlayerButtonClicked && result.gameObject.CompareTag("startButton"))
@@ -66,13 +107,12 @@ namespace Runtime
                                 startPlayerButtonClicked = true;
                                 _cutEffect.SetActive(true);
                                 _cutEffect.transform.position = result.gameObject.transform.position;
-                                SoundManager.Instance.PlayKnifeSlicing();
+                                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.knifeSliceSFX);
                                 StartCoroutine(nameof(ContinueCor));
                             }
                         }
                     }
                 }
-            }
         }
         IEnumerator ContinueCor()
         {
@@ -81,7 +121,7 @@ namespace Runtime
             {
                 if(continueButtonClicked)/* && GameManager.Situation == GameSituation.EverythingDone*/
                 {
-                    SoundManager.Instance.PlayMusicBeginningSFX();
+                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.vihuSFX);
                     AsyncLoader.Instance.LoadAScene("PreGameScene");
                     // UIUpdater.Instance.LoadSceneAgain();
                 }
@@ -99,7 +139,7 @@ namespace Runtime
 
             }
             else{
-                SoundManager.Instance.PlayMusicBeginningSFX();
+                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.vihuSFX);
 
                 AsyncLoader.Instance.LoadSceneAsync("PreGameScene");
             }

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 namespace Runtime
 {
@@ -21,6 +22,9 @@ namespace Runtime
         [SerializeField] private PreGameStoreUIElements _preGameStoreUIElements;
         [SerializeField] private bool isOnMenuStore;
         [SerializeField] private GameObject _missionBoard;
+        [Header("Sound Images")]
+        [SerializeField] private Image _soundFXImage;
+        [SerializeField] private Image _musicImage;
         private float offSetXForDojos = -1f;
         private float offSetXForBlades = 6f;
 
@@ -38,6 +42,9 @@ namespace Runtime
         public static ButtonManager Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
+        }
+        private void Start() {
+            SoundMixerManager.Instance.SetStartVolumes(_soundFXImage, _musicImage);
         }
         public void ShowLeaderboardBTN()
         {
@@ -118,10 +125,6 @@ namespace Runtime
         {
             var _playerData = new VPlayerData();
             VGPGSManager.Instance._playerData = _playerData;
-
-        }
-        public void LoadSave()
-        {
 
         }
         public void ShowAch()
@@ -536,6 +539,11 @@ namespace Runtime
             var activeness = !_missionBoard.activeInHierarchy;
             _missionBoard.SetActive(activeness);
         }
+        #endregion
+        #region Sound Buttons
+        public void MusicOnAndOff() => SoundMixerManager.Instance.SetMusicVolume(_musicImage);
+        public void SoundFXOnAndOff() => SoundMixerManager.Instance.SetSoundFXVolume(_soundFXImage);
+
         #endregion
     }
 

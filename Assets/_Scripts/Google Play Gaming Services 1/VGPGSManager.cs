@@ -37,6 +37,9 @@ namespace Runtime
         public bool areNewBladesUnlocked;
         public bool areNewDojosUnlocked;
 
+        public float musicVolume;
+        public float soundFXVolume;
+
         #region Achievements
         public bool achivement_sliceFirstFruit;
         public bool achivement_fruitSalad;
@@ -83,6 +86,9 @@ namespace Runtime
 
             areNewBladesUnlocked = false;
             areNewDojosUnlocked = false;
+
+            musicVolume = 0f;
+            soundFXVolume = 0f;
         }
     }
     public class VGPGSManager : MonoBehaviour

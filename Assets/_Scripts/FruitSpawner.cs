@@ -96,7 +96,7 @@ public class FruitSpawner : MonoBehaviour
                     var fruit = GetFruit();
                     _activeFruits.Add(fruit.GetComponent<Fruit>());
                     fruit.SetActive(true);
-                    SoundManager.Instance.PlayFruitPop();
+                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.fruitPopSFX);
 
                     randomDelayForEachFruit = Random.Range(0.1f, 0.5f);
                     yield return new WaitForSeconds(randomDelayForEachFruit);
@@ -193,7 +193,7 @@ public class FruitSpawner : MonoBehaviour
     }
     private GameObject GetBomb()
     {
-        SoundManager.Instance.PlayBombPop();
+        SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.bombPop);
         foreach(var bomb in _bombList)
         {
             if(!bomb.activeSelf)

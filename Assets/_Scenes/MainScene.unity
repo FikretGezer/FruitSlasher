@@ -4635,7 +4635,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 847596062}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 970238633}
+        m_TargetAssemblyTypeName: Runtime.ButtonManager, Runtime
+        m_MethodName: MusicOnAndOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &847596062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5231,6 +5243,8 @@ MonoBehaviour:
     dojoBuyButton: {fileID: 0}
   isOnMenuStore: 0
   _missionBoard: {fileID: 0}
+  _soundFXImage: {fileID: 1418089410}
+  _musicImage: {fileID: 847596062}
 --- !u!1 &977810626
 GameObject:
   m_ObjectHideFlags: 0
@@ -7882,7 +7896,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1418089410}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 970238633}
+        m_TargetAssemblyTypeName: Runtime.ButtonManager, Runtime
+        m_MethodName: SoundFXOnAndOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1418089410
 MonoBehaviour:
   m_ObjectHideFlags: 0

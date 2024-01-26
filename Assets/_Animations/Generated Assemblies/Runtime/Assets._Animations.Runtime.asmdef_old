@@ -1,0 +1,10 @@
+{
+  "name": "Assets._Animations.Runtime",
+  "rootNamespace": "Assets._Animations.Runtime",
+  "references": [
+ ],
+  "includePlatforms": [],
+  "allowUnsafeCode": "true",
+  "versionDefines": [],
+  "noEngineReferences": false
+}

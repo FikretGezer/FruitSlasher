@@ -4,13 +4,14 @@
     "references": [
         "Assets.Assets.Runtime",
         "Google.Play.Games",
-        "GUID:9da6497914269f54c8fa247ce173f4a5",
+        "NaughtyAttributes.Core",
+        "Assets._Animations.Runtime",
         "KinoBloom.Runtime",
-        "GUID:3799a127a810ddd499fddb524754a098",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:6546d7765b4165b40850b3667f981c26",
-        "GUID:656e461844099ae43a609ff6109b0877",
-        "GUID:bb05cab7d802aa5468f8f2f86840d984"
+        "Runtime",
+        "Unity.TextMeshPro",
+        "Unity.TextMeshPro.Editor",
+        "Unity.TextMeshPro.Editor.Tests",
+        "Unity.TextMeshPro.Tests"
     ],
     "includePlatforms": [
         "Editor"

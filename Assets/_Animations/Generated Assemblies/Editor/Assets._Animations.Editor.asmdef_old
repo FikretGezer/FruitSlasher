@@ -1,0 +1,13 @@
+{
+  "name": "Assets._Animations.Editor",
+  "rootNamespace": "Assets._Animations.Editor",
+  "references": [
+    "Assets._Animations.Runtime"
+ ],
+  "includePlatforms": [
+    "Editor"
+ ],
+  "allowUnsafeCode": "true",
+  "versionDefines": [],
+  "noEngineReferences": false
+}

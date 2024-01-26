@@ -1,75 +1,91 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Runtime
 {
     public class SoundManager : MonoBehaviour
     {
-        [SerializeField] private AudioSource _fruitSource;
-        [SerializeField] private AudioSource _knifeSource;
-        [SerializeField] private AudioSource _musicSource;
-        [SerializeField] private AudioSource _bombSource;
-
-        [SerializeField] private AudioClips _audioClips;
-
+        [SerializeField] private AudioSource sfxObject;
+        [SerializeField] private AudioSource musicObject;
+        [SerializeField] private AudioClip _clip;
+        [field: SerializeField] public AudioClips Clips { get; private set; }
+        public List<AudioSource> bombSources = new List<AudioSource>();
         public static SoundManager Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
         }
-        public void PlayMusicBeginningSFX()
-        {
-            Invoke("PlayMusic", _audioClips.vihuSFX.length);
-            _musicSource.clip = _audioClips.vihuSFX;
-            _musicSource.Play();
+        private void Update() {
+            if(Input.GetKeyDown(KeyCode.H))
+                PlaySFXClip(_clip);
         }
-        private void PlayMusic()
+        public void PlaySFXClip(AudioClip audioClip)
         {
-            _musicSource.loop = true;
-            _musicSource.clip = _audioClips.roundMusic;
-            _musicSource.Play();
+            // Spawn in gameObject
+            AudioSource audioSource = SoundFXPool.Instance.GetSoundFXFromThePool();
+
+            // Assign the audioClip
+            audioSource.clip = audioClip;
+
+            // // Assign volume
+            // audioSource.volume = volume;
+
+            // Play sound
+            audioSource.Play();
+
+            // Get length of SFX clip
+            float clipLength = audioSource.clip.length;
+
+            // Add bombSource to the list
+            if(audioClip == Clips.bombPop) bombSources.Add(audioSource);
+
+            // Disable the clip after it is done playing
+            StartCoroutine(DelayAndDisable(audioSource, clipLength));
         }
-        public void PlayFruitPop()
+        public void PlayRandomSFXClip(AudioClip[] audioClips)
         {
-            _fruitSource.PlayOneShot(_audioClips.fruitPopSFX);
+            // Assing random index
+            int rand = Random.Range(0, audioClips.Length);
+
+            // Spawn in gameObject
+            AudioSource audioSource = SoundFXPool.Instance.GetSoundFXFromThePool();
+
+            // Assign the audioClip
+            audioSource.clip = audioClips[rand];
+
+            // // Assign volume
+            // audioSource.volume = volume;
+
+            // Play sound
+            audioSource.Play();
+
+            // Get length of SFX clip
+            float clipLength = audioSource.clip.length;
+
+            // Disable the clip after it is done playing
+            StartCoroutine(DelayAndDisable(audioSource, clipLength));
         }
-        public void PlayKnifeSlicing()
+        public void PlayMusic(AudioClip audioClip)
         {
-            _knifeSource.PlayOneShot(_audioClips.knifeSliceSFX);
+            // Assign the audioClip
+            musicObject.clip = audioClip;
+
+            // Play music
+            musicObject.Play();
         }
-        public void PlayBombPop()
+        public void StopBombSoundFX()
         {
-            _bombSource.PlayOneShot(_audioClips.bombPop);
+            foreach(var bombSource in bombSources)
+            {
+                bombSource.Stop();
+                DelayAndDisable(bombSource, 0f);
+            }
+            bombSources.Clear();
         }
-        public void StopBombPop()
+        private IEnumerator DelayAndDisable(AudioSource audioSource, float delay)
         {
-            _bombSource.Stop();
+            yield return new WaitForSeconds(delay);
+            audioSource.gameObject.SetActive(false);
         }
-        public void PlayBombExplode()
-        {
-            _musicSource.Stop();
-            _bombSource.PlayOneShot(_audioClips.bombExplodeSFX);
-            Invoke("PlayMusicAgain", _audioClips.bombExplodeSFX.length);
-        }
-        private void PlayMusicAgain()
-        {
-            _musicSource.clip = _audioClips.chillMusic;
-            _musicSource.Play();
-        }
-        public void PlayBombCut()
-        {
-            _knifeSource.PlayOneShot(_audioClips.bombCuttingSFX);
-        }
-    }
-    [System.Serializable]
-    public class AudioClips{
-        [Header("SFX")]
-        public AudioClip knifeSliceSFX;
-        public AudioClip fruitPopSFX;
-        public AudioClip bombPop;
-        public AudioClip bombExplodeSFX;
-        public AudioClip bombCuttingSFX;
-        public AudioClip vihuSFX;
-        [Header("Musics")]
-        public AudioClip roundMusic;
-        public AudioClip chillMusic;
     }
 }

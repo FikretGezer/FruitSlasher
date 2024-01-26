@@ -2,7 +2,6 @@
     "name": "Runtime",
     "rootNamespace": "Runtime",
     "references": [
-        "CFXRRuntime",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
         "Unity.TextMeshPro.Editor.Tests",
