@@ -534,10 +534,12 @@ namespace Runtime
             }
             _itemTypeToBuy = ItemTypeToBuy.None;
         }
-        public void OpenMissionBoard()
+        public void OpenMissionBoard(Animator animator)
         {
-            var activeness = !_missionBoard.activeInHierarchy;
-            _missionBoard.SetActive(activeness);
+            var res = animator.GetBool("slideIn");
+            animator.SetBool("slideIn", !res);
+            // var activeness = !_missionBoard.activeInHierarchy;
+            // _missionBoard.SetActive(activeness);
         }
         #endregion
         #region Sound Buttons

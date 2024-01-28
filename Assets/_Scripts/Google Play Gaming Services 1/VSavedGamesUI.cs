@@ -365,7 +365,7 @@ namespace Runtime
                 foreach(var sprite in spriteList)
                 {
                     var item = Instantiate(rewardItemPrefab);
-                    item.GetComponent<Image>().sprite = sprite;
+                    item.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
                     item.transform.SetParent(rewardItemContainer);
                     item.transform.localScale = Vector3.one;
                 }
