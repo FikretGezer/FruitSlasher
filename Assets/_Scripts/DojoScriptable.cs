@@ -11,7 +11,7 @@ namespace Runtime
         public string dojoName;
         [TextArea(1,5)]
         public string dojoExplanation;
-        public int dojoLevel;
-        public int dojoPrice;
+        [Min(0)] public int dojoLevel;
+        [Min(0)] public int dojoPrice;
     }
 }

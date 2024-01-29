@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Default Blade 2
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: bb3c2d4f4742cca45804c9d51f85e6f1, type: 3}
-  bladeName: Basic Blade
+  bladeName: "Bas\u0131c Blade"
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 2
   bladePrice: 250

@@ -10,7 +10,9 @@ namespace Runtime
         public List<Mission> missions = new List<Mission>();
         public List<Mission> selectedMissions = new List<Mission>();
         private void OnEnable() {
+            #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+            #endif
         }
     }
 }

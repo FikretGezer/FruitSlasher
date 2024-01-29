@@ -3127,10 +3127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: 982d044b2951b0e45aeacd95423de51a, type: 2}
-  _soundFXOn: {fileID: 1370530071, guid: e7f4989cc284327458d59de16ff05904, type: 3}
-  _soundFXOff: {fileID: 1974544370, guid: e7f4989cc284327458d59de16ff05904, type: 3}
-  _musicOn: {fileID: 1642935838, guid: e7f4989cc284327458d59de16ff05904, type: 3}
-  _musicOff: {fileID: 1389607919, guid: e7f4989cc284327458d59de16ff05904, type: 3}
+  _soundFXOn: {fileID: 1642935838, guid: e7f4989cc284327458d59de16ff05904, type: 3}
+  _soundFXOff: {fileID: 1389607919, guid: e7f4989cc284327458d59de16ff05904, type: 3}
+  _musicOn: {fileID: -1293327584, guid: e7f4989cc284327458d59de16ff05904, type: 3}
+  _musicOff: {fileID: 1989397043, guid: e7f4989cc284327458d59de16ff05904, type: 3}
 --- !u!1 &1256006077
 GameObject:
   m_ObjectHideFlags: 0
