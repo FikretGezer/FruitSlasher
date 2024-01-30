@@ -53,12 +53,20 @@ namespace Runtime
                 VLeaderboard.Instance.ShowLeaderboardUI();
             }
         }
+        public void ShowLogs()
+        {
+            var activeness =  VGPGSManager.Instance._infoCloudT.gameObject.activeInHierarchy;
+
+            VGPGSManager.Instance._infoCloudT.gameObject.SetActive(!activeness);
+            VGPGSManager.Instance._infoT.gameObject.SetActive(!activeness);
+        }
         #region In Game
         public void LoadAScene(string sceneName)
         {
             if(GameManager.Situation == GameSituation.Play || GameManager.Situation == GameSituation.EverythingDone)
             {
                 Time.timeScale = 1f;
+
                 SceneManager.LoadScene(sceneName);
             }
         }
@@ -146,7 +154,6 @@ namespace Runtime
                 {
                     VGPGSManager.Instance._playerData.currentBladeIndex = index;
                     BladesAndDojos.Instance.SelectABlade();
-
                 }
             }
         }
@@ -218,6 +225,7 @@ namespace Runtime
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
                     _storeUIElements.itemPriceContainer.SetActive(false);
+                    VGPGSManager.Instance.SaveDouble();
                 }
                 else
                 {
@@ -273,6 +281,7 @@ namespace Runtime
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
                     _storeUIElements.itemPriceContainer.SetActive(false);
                     Background.Instance.FitBgToScreen();
+                    VGPGSManager.Instance.SaveDouble();
                 }
                 else
                 {
@@ -332,6 +341,7 @@ namespace Runtime
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
                     _storeUIElements.itemPriceContainer.SetActive(false);
                     Background.Instance.FitBgToScreen();
+                    VGPGSManager.Instance.SaveDouble();
                 }
             }
             else if(_itemTypeToBuy == ItemTypeToBuy.Blade)
@@ -362,6 +372,7 @@ namespace Runtime
                     _storeUIElements.itemBuyText.text = "BOUGHT";
                     _storeUIElements.itemBuyButton.GetComponent<Button>().enabled = false;
                     _storeUIElements.itemPriceContainer.SetActive(false);
+                    VGPGSManager.Instance.SaveDouble();
                 }
             }
             _itemTypeToBuy = ItemTypeToBuy.None;
@@ -408,6 +419,7 @@ namespace Runtime
 
 
                     _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(false);
+                    VGPGSManager.Instance.SaveDouble();
                 }
                 else
                 {
@@ -442,6 +454,7 @@ namespace Runtime
                     Background.Instance.FitBgToScreen();
 
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
+                    VGPGSManager.Instance.SaveDouble();
                 }
                 else
                 {
@@ -496,6 +509,7 @@ namespace Runtime
                     }
 
                     _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
+                    VGPGSManager.Instance.SaveDouble();
                 }
             }
             else if(_itemTypeToBuy == ItemTypeToBuy.Blade)
@@ -530,6 +544,7 @@ namespace Runtime
                     }
 
                     _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(false);
+                    VGPGSManager.Instance.SaveDouble();
                 }
             }
             _itemTypeToBuy = ItemTypeToBuy.None;
@@ -543,8 +558,14 @@ namespace Runtime
         }
         #endregion
         #region Sound Buttons
-        public void MusicOnAndOff() => SoundMixerManager.Instance.SetMusicVolume(_musicImage);
-        public void SoundFXOnAndOff() => SoundMixerManager.Instance.SetSoundFXVolume(_soundFXImage);
+        public void MusicOnAndOff(){
+            SoundMixerManager.Instance.SetMusicVolume(_musicImage);
+            VGPGSManager.Instance.SaveDouble();
+        }
+        public void SoundFXOnAndOff(){
+            SoundMixerManager.Instance.SetSoundFXVolume(_soundFXImage);
+            VGPGSManager.Instance.SaveDouble();
+        }
 
         #endregion
     }

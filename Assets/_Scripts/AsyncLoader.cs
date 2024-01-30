@@ -30,6 +30,7 @@ namespace Runtime
         }
         IEnumerator LoadAsync(string sceneToLoad)
         {
+
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneToLoad);
 
             while(!loadOperation.isDone)

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
+using System.Text;
 
 namespace Runtime
 {
@@ -93,6 +94,8 @@ namespace Runtime
     }
     public class VGPGSManager : MonoBehaviour
     {
+        public TMP_Text _infoCloudT;
+        public TMP_Text _infoT;
         public TMP_Text _loadInfoT;
         public VPlayerData _playerData;
         private const string fileName = "/player.dat";
@@ -100,14 +103,20 @@ namespace Runtime
         public static VGPGSManager Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
-            Load();
+
+            _playerData = new VPlayerData();
+            _infoCloudT.text = "CLOUD\n";
+            _infoT.text = "NORMAL\n";
+            // Load();
         }
         #region Local Saving & Loading
-        private void Save()
+        public void Save()
         {
             // Create a route from the program to the file
-            var isExist = File.Exists(Application.persistentDataPath + fileName);
-            FileStream file = isExist ? File.Open(Application.persistentDataPath + fileName, FileMode.Open) : File.Open(Application.persistentDataPath + fileName, FileMode.Create);
+            string filePath = Path.Combine(Application.persistentDataPath, fileName);
+
+            var isExist = File.Exists(filePath);
+            FileStream file = isExist ? File.Open(filePath, FileMode.Open) : File.Open(filePath, FileMode.Create);
 
             // Create a copy of the save data
             VPlayerData pData = new VPlayerData();
@@ -120,13 +129,15 @@ namespace Runtime
 
             // Close the data stream
             file.Close();
+            _infoT.text += $"File Saved Normal\n";
         }
-        private void Load()
+        public void Load()
         {
-            if(File.Exists(Application.persistentDataPath + fileName))
+            string filePath = Path.Combine(Application.persistentDataPath, fileName);
+            if(File.Exists(filePath))
             {
                 // Open File
-                FileStream file = File.Open(Application.persistentDataPath + fileName, FileMode.Open);
+                FileStream file = File.Open(filePath, FileMode.Open);
 
                 // Create a binary formatter that can read or write binary files
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -135,12 +146,14 @@ namespace Runtime
                 // Close the data stream
                 file.Close();
                 Debug.Log("Loaded");
+                _infoT.text += "File Exist, Loaded Normal\n";
                 SceneManager.LoadScene("Menu");
             }
             else
             {
                 Debug.Log("Loaded Sec");
                 _playerData = new VPlayerData();
+                _infoT.text += "File Not Found Created and Loaded Normal\n";
                 SceneManager.LoadScene("Menu");
             }
         }
@@ -267,12 +280,110 @@ namespace Runtime
         //     outputTxt.text = "High Score: " + _playerData.highestScore + ", Level: " + _playerData.level;
         // }
         #endregion
-        private void OnDisable() {
+
+        #region Save & Load V2
+        public void OpenSavedGame(bool input)
+        {
+            if(PlayGamesPlatform.Instance.IsAuthenticated())
+            {
+                isSaving = input;
+                _infoCloudT.text = "File Opened Cloud\n";
+                ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+                savedGameClient.OpenWithAutomaticConflictResolution(
+                    "CurrentPlayerData",
+                    DataSource.ReadCacheOrNetwork,
+                    ConflictResolutionStrategy.UseLongestPlaytime,
+                    OnSavedGameOpened
+                );
+            }
+        }
+        private void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata meta)
+        {
+            if(status == SavedGameRequestStatus.Success)
+            {
+                _infoCloudT.text += "File Success Cloud\n";
+                if(isSaving)
+                {
+                    _infoCloudT.text += "File Saving Cloud\n";
+                    SaveGame(meta);
+                }
+                else
+                {
+                    _infoCloudT.text += "File Loading Cloud\n";
+                    LoadGameData(meta);
+                }
+            }
+            else
+            {
+
+            }
+        }
+        private void SaveGame(ISavedGameMetadata game)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+            var t = new TimeSpan((int)Time.realtimeSinceStartup);
+
+            builder = builder
+                .WithUpdatedPlayedTime(game.TotalTimePlayed + t)
+                .WithUpdatedDescription("Saved game at " + DateTime.Now);
+
+            string playerDataString = JsonUtility.ToJson(_playerData);
+            byte[] data = ASCIIEncoding.ASCII.GetBytes(playerDataString);
+
+            SavedGameMetadataUpdate updatedMetaData = builder.Build();
+            savedGameClient.CommitUpdate(game, updatedMetaData, data, OnSavedGameWritten);
+        }
+        private void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+        {
+            if(status == SavedGameRequestStatus.Success)
+            {
+                _infoCloudT.text += "Final File Saving Success Cloud\n";
+            }
+            else
+            {
+
+            }
+        }
+        private void LoadGameData(ISavedGameMetadata game)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
+        }
+        private void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
+        {
+            if(status == SavedGameRequestStatus.Success)
+            {
+                string playerDataString = ASCIIEncoding.ASCII.GetString(data);
+                _playerData = JsonUtility.FromJson<VPlayerData>(playerDataString);
+                _infoCloudT.text += "Final File Loading Success Cloud\n";
+                if(_playerData != null) SceneManager.LoadScene("Menu");
+                else
+                {
+                    _playerData = new VPlayerData();
+                    OpenSavedGame(true);
+                    SceneManager.LoadScene("Menu");
+                }
+            }
+            else
+            {
+
+            }
+        }
+        #endregion
+        // public void OnApplicationQuit() {
+        //     SaveDouble();
+        // }
+        public void SaveDouble()
+        {
+            OpenSavedGame(true);
             Save();
         }
-        private void OnApplicationQuit() {
-            Save();
-            // OpenSave(true);
+        private void OnEnable() {
+            EventManager.AddHandler(GameEvents.OnPlayerValuesChanges, SaveDouble);
+        }
+        private void OnDisable() {
+            EventManager.RemoveHandler(GameEvents.OnPlayerValuesChanges, SaveDouble);
         }
     }
 

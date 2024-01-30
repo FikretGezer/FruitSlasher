@@ -1,8 +1,8 @@
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
+using GooglePlayGames.BasicApi.SavedGame;
 
 namespace Runtime
 {
@@ -11,21 +11,25 @@ namespace Runtime
         public GameObject authenticateButton;
         public TMP_Text _autenhticateT;
         public GameObject _canvas;
-        private void Awake() {
-            DontDestroyOnLoad(_canvas);
-            SignInToGPGS();
-        }
-        // private void Start() {
+
+        public static SignInStatus Authenticated {get; private set;}
+        public static PlayGamesPlatform Platform {get; private set;}
+        // private void Awake() {
+        //     DontDestroyOnLoad(_canvas);
+        //     SignInToGPGS();
         // }
+        private void Start() {
+            PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+        }
         #region Authentication
         private void SignInToGPGS()
         {
+            PlayGamesPlatform.Activate();
 
             if(!Social.localUser.authenticated)
             {
                 PlayGamesPlatform.Instance.Authenticate(SignInCallback);
             }
-                PlayGamesPlatform.Activate();
         }
         private void SignInCallback(SignInStatus status)
         {
@@ -39,11 +43,6 @@ namespace Runtime
             {
                 Debug.Log("Signing in failed...");
                 _autenhticateT.text = "Signing in failed...";
-                // SceneManager.LoadScene(1);
-
-                // Activate manually signing in
-                // authenticateButton.SetActive(true);
-                // SignInToGPGS();
             }
         }
         public void AuthenticateButton()
@@ -63,6 +62,21 @@ namespace Runtime
                 Debug.Log("Signing in failed...");
             }
         }
+        #endregion
+
+        #region V2 Login
+        internal void ProcessAuthentication(SignInStatus status)
+        {
+            if(status == SignInStatus.Success)
+            {
+                VGPGSManager.Instance.OpenSavedGame(false);
+            }
+            else
+            {
+                VGPGSManager.Instance.Load();
+            }
+        }
+
         #endregion
     }
 }

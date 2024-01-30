@@ -126,14 +126,6 @@ namespace Runtime
                     // UIUpdater.Instance.LoadSceneAgain();
                 }
                 else if(startPlayerButtonClicked){
-
-                    foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
-                    {
-                        if(mission.type == MissionType.Play)
-                        {
-                            mission.PlayTheGame();
-                        }
-                    }
                     AsyncLoader.Instance.LoadSceneAsync("MainScene");
                 }
 

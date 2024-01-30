@@ -84,7 +84,6 @@ public class UIUpdater : MonoBehaviour
                 healths[i].GetComponent<Animator>().SetTrigger("popUp");
                 healths[i].GetComponent<Image>().color = Color.black;
             }
-            MissionController.Instance.checkMissions = true;
             maxHealth = 0;
             Debug.Log("<color=red>Game is over</color>");
             StartCoroutine(nameof(BombCountdownCor));
@@ -93,6 +92,17 @@ public class UIUpdater : MonoBehaviour
     IEnumerator BombCountdownCor()
     {
         GameManager.Situation = GameSituation.Stop;
+        #region Play Game Mission
+        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+        {
+            if(mission.type == MissionType.Play)
+            {
+                mission.PlayTheGame();
+            }
+        }
+        #endregion
+
+        MissionController.Instance.checkMissions = true;
         yield return new WaitForSeconds(2f);
         EventManager.Broadcasting(GameEvents.OnFinishGame);
         yield return new WaitForSeconds(1f);
@@ -151,7 +161,6 @@ public class UIUpdater : MonoBehaviour
         {
             VSavedGamesUI.Instance.UpdateHighestScore(scoreCount);
         }
-
         #endregion
     }
     private void OnEnable() {
