@@ -147,7 +147,7 @@ namespace Runtime
                 var ach = achievementQueue.Dequeue();
                 if(FindObjectOfType<NotificationController>())
                 {
-                    NotificationController.Instance.SetNotification(ach.sprite, ach.description, ach.points);
+                    NotificationController.Instance.EnqueueNotification(ach.sprite, ach.description, ach.points);
                 }
             }
         }

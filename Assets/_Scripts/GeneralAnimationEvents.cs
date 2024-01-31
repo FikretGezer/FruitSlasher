@@ -6,16 +6,9 @@ namespace Runtime
 {
     public class GeneralAnimationEvents : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public void SendItsFinished()
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            NotificationController.Instance.IsNotificationShowed = false;
         }
     }
 }

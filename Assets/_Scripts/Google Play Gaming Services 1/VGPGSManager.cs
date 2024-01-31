@@ -40,6 +40,7 @@ namespace Runtime
 
         public float musicVolume;
         public float soundFXVolume;
+        public float totalPlayTime;
 
         #region Achievements
         public bool achivement_sliceFirstFruit;
@@ -90,6 +91,8 @@ namespace Runtime
 
             musicVolume = 0f;
             soundFXVolume = 0f;
+
+            totalPlayTime = 0f;
         }
     }
     public class VGPGSManager : MonoBehaviour
@@ -98,7 +101,9 @@ namespace Runtime
         public TMP_Text _infoT;
         public TMP_Text _loadInfoT;
         public VPlayerData _playerData;
+        private bool isSaving;
         private const string fileName = "/player.dat";
+        private const string cloudFileName = "CurrentPlayerData";
 
         public static VGPGSManager Instance;
         private void Awake() {
@@ -147,141 +152,30 @@ namespace Runtime
                 file.Close();
                 Debug.Log("Loaded");
                 _infoT.text += "File Exist, Loaded Normal\n";
-                SceneManager.LoadScene("Menu");
+                // SceneManager.LoadScene("Menu");
+                AsyncLoader.Instance.LoadSceneAsync("Menu");
             }
             else
             {
                 Debug.Log("Loaded Sec");
                 _playerData = new VPlayerData();
                 _infoT.text += "File Not Found Created and Loaded Normal\n";
-                SceneManager.LoadScene("Menu");
+                // SceneManager.LoadScene("Menu");
+                AsyncLoader.Instance.LoadSceneAsync("Menu");
+            }
+        }
+
+        public void DeleteLocalGameData()
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, fileName);
+            if(File.Exists(filePath))
+            {
+                File.Delete(filePath);
             }
         }
         #endregion
 
-
-        #region SavedGames
-
-        private bool isSaving;
-        private void OpenSave(bool input) // If input true, activate SAVING otherwise activate LOADING
-        {
-            if(Social.localUser.authenticated)
-            {
-                isSaving = input;
-
-                // Open to file to read data
-                _loadInfoT.text = $"Signed in {Social.localUser.userName}\n";
-
-                ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(
-                    "MyFileName",
-                    DataSource.ReadCacheOrNetwork,
-                    ConflictResolutionStrategy.UseLongestPlaytime,
-                    SaveOrLoadGameFile
-                );
-            }
-            else
-            {
-                _loadInfoT.text = "Not signed in";
-                // if(_playerData == null)
-                // {
-                //     _playerData = new VPlayerData();
-                //     Debug.Log("Normal->Index: " + _playerData.unlockedBlades[_playerData.currentBladeIndex]);
-                //     _loadInfoT.text += "NORMAL -> Index: " + _playerData.unlockedBlades[_playerData.currentBladeIndex] + "\n";
-                // }
-            }
-        }
-        private void SaveOrLoadGameFile(SavedGameRequestStatus status, ISavedGameMetadata meta)
-        {
-            if(status == SavedGameRequestStatus.Success)
-            {
-                _loadInfoT.text += "Saving or loading started.\n";
-                if(isSaving) // Saving
-                {
-
-                    byte[] byteData = System.Text.ASCIIEncoding.ASCII.GetBytes(GetSaveString());
-
-                    SavedGameMetadataUpdate updateForMetadata = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Player Data Updated at " + DateTime.Now.ToString()).Build();
-
-                    ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(
-                        meta,
-                        updateForMetadata,
-                        byteData,
-                        CallbackSave
-                    );
-                }
-                else // Loading
-                {
-                    _loadInfoT.text += "Loading started...\n";
-
-                    if(!meta.IsOpen)
-                    {
-                        _loadInfoT.text += "New User Created\n";
-                        _playerData = new VPlayerData();
-                        First.Instance.LoadNewScene("Menu");
-                    }
-                    else
-                    {
-                        _loadInfoT.text += "Existing Data is loading...\n";
-                        ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(meta, CallbackLoad);
-                    }
-                }
-            }
-            else
-            {
-
-            }
-        }
-        private string GetSaveString()
-        {
-            string stringData = JsonUtility.ToJson(_playerData);
-
-            return stringData;
-        }
-        private void CallbackLoad(SavedGameRequestStatus status, byte[] data)
-        {
-            if(status == SavedGameRequestStatus.Success)
-            {
-                string playerDataString = System.Text.ASCIIEncoding.ASCII.GetString(data);
-
-                LoadSavedData(playerDataString);
-            }
-            else
-            {
-
-            }
-        }
-        private void LoadSavedData(string data)
-        {
-            var _pData = JsonUtility.FromJson<VPlayerData>(data);
-            this._playerData = _pData;
-            _loadInfoT.text += "CLOUD -> Player Data Loaded\nIs blade unlocked: " + _playerData.unlockedBlades[0] + "\n";
-            First.Instance.LoadNewScene("Menu");
-            // _playerData.neededExperience = (int)(_playerData.baseExperience * (_playerData.experienceMultiplier * _playerData.level));
-
-            // if(output != null)
-            // {
-            //     LogOutput(output);
-            // }
-        }
-        private void CallbackSave(SavedGameRequestStatus status, ISavedGameMetadata meta)
-        {
-            if(status == SavedGameRequestStatus.Success)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
-        // public TMP_Text output;
-        // private void LogOutput(TMP_Text outputTxt)
-        // {
-        //     outputTxt.text = "High Score: " + _playerData.highestScore + ", Level: " + _playerData.level;
-        // }
-        #endregion
-
-        #region Save & Load V2
+        #region Cloud Save & Load
         public void OpenSavedGame(bool input)
         {
             if(PlayGamesPlatform.Instance.IsAuthenticated())
@@ -290,7 +184,7 @@ namespace Runtime
                 _infoCloudT.text = "File Opened Cloud\n";
                 ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
                 savedGameClient.OpenWithAutomaticConflictResolution(
-                    "CurrentPlayerData",
+                    cloudFileName,
                     DataSource.ReadCacheOrNetwork,
                     ConflictResolutionStrategy.UseLongestPlaytime,
                     OnSavedGameOpened
@@ -322,10 +216,9 @@ namespace Runtime
         {
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
             SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
-            var t = new TimeSpan((int)Time.realtimeSinceStartup);
 
             builder = builder
-                .WithUpdatedPlayedTime(game.TotalTimePlayed + t)
+                .WithUpdatedPlayedTime(game.TotalTimePlayed)
                 .WithUpdatedDescription("Saved game at " + DateTime.Now);
 
             string playerDataString = JsonUtility.ToJson(_playerData);
@@ -357,12 +250,14 @@ namespace Runtime
                 string playerDataString = ASCIIEncoding.ASCII.GetString(data);
                 _playerData = JsonUtility.FromJson<VPlayerData>(playerDataString);
                 _infoCloudT.text += "Final File Loading Success Cloud\n";
-                if(_playerData != null) SceneManager.LoadScene("Menu");
+                // if(_playerData != null) SceneManager.LoadScene("Menu");
+                if(_playerData != null) AsyncLoader.Instance.LoadSceneAsync("Menu");
                 else
                 {
                     _playerData = new VPlayerData();
                     OpenSavedGame(true);
-                    SceneManager.LoadScene("Menu");
+                    // SceneManager.LoadScene("Menu");
+                    AsyncLoader.Instance.LoadSceneAsync("Menu");
                 }
             }
             else
@@ -370,10 +265,30 @@ namespace Runtime
 
             }
         }
+
+        public void DeleteGameData()
+        {
+            if(PlayGamesPlatform.Instance.IsAuthenticated())
+            {
+                ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+                savedGameClient.OpenWithAutomaticConflictResolution(
+                    cloudFileName,
+                    DataSource.ReadCacheOrNetwork,
+                    ConflictResolutionStrategy.UseLongestPlaytime,
+                    DeleteSavedGame
+                );
+            }
+        }
+        private void DeleteSavedGame(SavedGameRequestStatus status, ISavedGameMetadata game)
+        {
+            if(status == SavedGameRequestStatus.Success)
+            {
+                ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+                savedGameClient.Delete(game);
+            }
+        }
         #endregion
-        // public void OnApplicationQuit() {
-        //     SaveDouble();
-        // }
+
         public void SaveDouble()
         {
             OpenSavedGame(true);

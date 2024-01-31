@@ -18,8 +18,10 @@ namespace Runtime
 
         public void LoadSceneAsync(string sceneToLoad)
         {
-            otherThings.SetActive(false);
-            loadingMenu.SetActive(true);
+            if(otherThings != null)
+                otherThings.SetActive(false);
+            if(loadingMenu != null)
+                loadingMenu.SetActive(true);
 
             // Start async loading
             StartCoroutine(LoadAsync(sceneToLoad));

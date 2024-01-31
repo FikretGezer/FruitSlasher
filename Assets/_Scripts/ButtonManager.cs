@@ -44,7 +44,7 @@ namespace Runtime
             if(Instance == null) Instance = this;
         }
         private void Start() {
-            SoundMixerManager.Instance.SetStartVolumes(_soundFXImage, _musicImage);
+            SoundMixerManager.Instance.SetStartImages(_soundFXImage, _musicImage);
         }
         public void ShowLeaderboardBTN()
         {
@@ -59,6 +59,11 @@ namespace Runtime
 
             VGPGSManager.Instance._infoCloudT.gameObject.SetActive(!activeness);
             VGPGSManager.Instance._infoT.gameObject.SetActive(!activeness);
+        }
+        public void DeleteGameData()
+        {
+            VGPGSManager.Instance.DeleteGameData();
+            VGPGSManager.Instance.DeleteLocalGameData();
         }
         #region In Game
         public void LoadAScene(string sceneName)
@@ -138,13 +143,6 @@ namespace Runtime
         public void ShowAch()
         {
             VAchievement.Instance.ShowAchievements();
-        }
-        public void showNotify()
-        {
-            if(FindObjectOfType<NotificationController>())
-            {
-                NotificationController.Instance.showNotify();
-            }
         }
         public void SetNewBlade(int index)
         {

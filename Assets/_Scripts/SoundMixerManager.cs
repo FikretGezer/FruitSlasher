@@ -16,6 +16,9 @@ namespace Runtime
         private void Awake() {
             if(Instance == null) Instance = this;
         }
+        private void Start() {
+            SetStartVolumes();
+        }
         public void SetSoundFXVolume(Image image) => VGPGSManager.Instance._playerData.soundFXVolume = SetVolumes("SoundFXVolume", image, _soundFXOn, _soundFXOff);
         public void SetMusicVolume(Image image) => VGPGSManager.Instance._playerData.musicVolume = SetVolumes("MusicVolume", image, _musicOn, _musicOff);
         private float SetVolumes(string name)
@@ -54,15 +57,15 @@ namespace Runtime
 
             return targetVol;
         }
-        public void SetStartVolumes(Image soundFXImage, Image musicImage)
+        public void SetStartImages(Image soundFXImage, Image musicImage)
         {
             var startSFXVol = VGPGSManager.Instance._playerData.soundFXVolume;
             var startMusicVol = VGPGSManager.Instance._playerData.musicVolume;
 
-            SetStartVolume("SoundFXVolume", startSFXVol, soundFXImage, _soundFXOn, _soundFXOff);
-            SetStartVolume("MusicVolume", startMusicVol, musicImage, _musicOn, _musicOff);
+            SetSpritesForSoundImages("SoundFXVolume", startSFXVol, soundFXImage, _soundFXOn, _soundFXOff);
+            SetSpritesForSoundImages("MusicVolume", startMusicVol, musicImage, _musicOn, _musicOff);
         }
-        private void SetStartVolume(string name, float vol, Image image = null, Sprite spriteOn = null, Sprite spriteOff = null)
+        private void SetSpritesForSoundImages(string name, float vol, Image image = null, Sprite spriteOn = null, Sprite spriteOff = null)
         {
             _audioMixer.SetFloat(name, vol);
             if(vol > -1f)
@@ -79,7 +82,14 @@ namespace Runtime
                     image.sprite = spriteOff;
                 }
             }
+        }
+        private void SetStartVolumes()
+        {
+            var startSFXVol = VGPGSManager.Instance._playerData.soundFXVolume;
+            var startMusicVol = VGPGSManager.Instance._playerData.musicVolume;
 
+            _audioMixer.SetFloat("SoundFXVolume", startSFXVol);
+            _audioMixer.SetFloat("MusicVolume", startMusicVol);
         }
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using GooglePlayGames;
 
 namespace Runtime
 {
@@ -30,8 +31,8 @@ namespace Runtime
             }
             if(_tPlayerTag != null)
             {
-                if(Social.localUser.authenticated)
-                    _tPlayerTag.text = Social.localUser.userName.ToString();
+                if(PlayGamesPlatform.Instance.IsAuthenticated())
+                    _tPlayerTag.text = PlayGamesPlatform.Instance.localUser.userName.ToString();
             }
             SetStars();
         }

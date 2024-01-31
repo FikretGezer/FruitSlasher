@@ -204,6 +204,7 @@ namespace Runtime
             {
                 completed = true;
                 VGPGSManager.Instance._playerData.stars += points;
+                NotificationController.Instance.EnqueueNotification(sprite, explanation, points);
             }
         }
         #endregion
