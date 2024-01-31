@@ -1,3 +1,4 @@
+using GooglePlayGames;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
@@ -8,20 +9,23 @@ namespace Runtime
         public static VLeaderboard Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
+        }
+        private void Start()
+        {
             CompareLeaderboardScores();
         }
         public void ShowLeaderboardUI()
         {
-            if(Social.localUser.authenticated)
+            if(PlayGamesPlatform.Instance.localUser.authenticated)
             {
-                Social.ShowLeaderboardUI();
+                PlayGamesPlatform.Instance.ShowLeaderboardUI();
             }
         }
         private void CompareLeaderboardScores()
         {
-            if(Social.localUser.authenticated)
+            if(PlayGamesPlatform.Instance.localUser.authenticated)
             {
-                ILeaderboard leaderboard = Social.CreateLeaderboard();
+                ILeaderboard leaderboard = PlayGamesPlatform.Instance.CreateLeaderboard();
                 leaderboard.timeScope = TimeScope.AllTime;
 
                 leaderboard.id = GPGSIds.leaderboard_leaderboard;
@@ -31,9 +35,13 @@ namespace Runtime
                         long userLeaderboardScore = leaderboard.localUserScore.value;
                         var userLocalScore = VGPGSManager.Instance._playerData.highestScore;
 
-                        if(userLocalScore > (int)userLeaderboardScore)
+                        if(userLocalScore > (int)userLeaderboardScore)// Player data's score is higher than the leaderboard so update leaderboard with data
                         {
                             DoLeaderboardPost(userLocalScore);
+                        }
+                        else// Player data's score is less than leaderboard score so update player data's highest score with leaderboard's
+                        {
+                            VGPGSManager.Instance._playerData.highestScore = (int)userLeaderboardScore;
                         }
                     }
                 });
@@ -41,16 +49,16 @@ namespace Runtime
         }
         private void DoLeaderboardPost(int _score)
         {
-            if(Social.localUser.authenticated)
+            if(PlayGamesPlatform.Instance.localUser.authenticated)
             {
-                Social.ReportScore(_score, GPGSIds.leaderboard_leaderboard, (bool success) => {
+                PlayGamesPlatform.Instance.ReportScore((long)_score, GPGSIds.leaderboard_leaderboard, (bool success) => {
                     if(success)
                     {
-                        Debug.Log("Score posted of: " + _score);
+                        // Debug.Log("Score posted of: " + _score);
                     }
                     else
                     {
-                        Debug.Log("Score failed to post");
+                        // Debug.Log("Score failed to post");
                     }
                 });
             }

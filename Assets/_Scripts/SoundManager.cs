@@ -67,11 +67,14 @@ namespace Runtime
         }
         public void PlayMusic(AudioClip audioClip)
         {
-            // Assign the audioClip
-            musicObject.clip = audioClip;
+            if(musicObject.clip != audioClip)
+            {
+                // Assign the audioClip
+                musicObject.clip = audioClip;
 
-            // Play music
-            musicObject.Play();
+                // Play music
+                musicObject.Play();
+            }
         }
         public void StopBombSoundFX()
         {

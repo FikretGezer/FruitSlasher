@@ -8097,6 +8097,12 @@ MonoBehaviour:
   _newBladesText: {fileID: 765128479}
   _newDojosText: {fileID: 1940398057}
   _selectedBlade: {fileID: 0}
+  bladeNameT: {fileID: 224193137}
+  bladeExpT: {fileID: 306585690}
+  bladeImage: {fileID: 1957905378}
+  dojoNameT: {fileID: 665686503}
+  dojoExpT: {fileID: 1253693845}
+  dojoImage: {fileID: 217755015}
 --- !u!4 &1496692899
 Transform:
   m_ObjectHideFlags: 0
@@ -10024,56 +10030,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830216176}
   m_CullTransparentMesh: 1
---- !u!1 &1845195024
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1845195026}
-  - component: {fileID: 1845195025}
-  m_Layer: 0
-  m_Name: Store
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1845195025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845195024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306848bdfff836042b46676578897b29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bladesHolder: {fileID: 11400000, guid: 4b51b3ee81122054e9ee7bbd30f17799, type: 2}
-  _dojosHolder: {fileID: 11400000, guid: e6af29cd8315b9947898045a980d1693, type: 2}
-  _itemBoxPrefab: {fileID: 5045637814879343635, guid: 17d18e7409ddcfb4eadd2977790c514a, type: 3}
-  _bladesContainer: {fileID: 275830861}
-  _dojosContainer: {fileID: 0}
-  isOnMenu: 0
---- !u!4 &1845195026
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845195024}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7664543, y: 1.4473978, z: 1.0033082}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1859263602
 GameObject:
   m_ObjectHideFlags: 0
@@ -11634,7 +11590,6 @@ SceneRoots:
   - {fileID: 516243859}
   - {fileID: 1270947430}
   - {fileID: 1496692899}
-  - {fileID: 1845195026}
   - {fileID: 1343372814}
   - {fileID: 1557466296}
   - {fileID: 371256307}

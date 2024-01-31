@@ -121,17 +121,20 @@ namespace Runtime
             {
                 if(continueButtonClicked)/* && GameManager.Situation == GameSituation.EverythingDone*/
                 {
-                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.vihuSFX);
+                    // SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.vihuSFX);
+                    SoundManager.Instance.PlayMusic(SoundManager.Instance.Clips.chillMusic);
                     AsyncLoader.Instance.LoadAScene("PreGameScene");
                     // UIUpdater.Instance.LoadSceneAgain();
                 }
                 else if(startPlayerButtonClicked){
+                    SoundManager.Instance.PlayMusic(SoundManager.Instance.Clips.roundMusic);
                     AsyncLoader.Instance.LoadSceneAsync("MainScene");
                 }
 
             }
             else{
-                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.vihuSFX);
+                // SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.vihuSFX);
+                SoundManager.Instance.PlayMusic(SoundManager.Instance.Clips.chillMusic);
 
                 AsyncLoader.Instance.LoadSceneAsync("PreGameScene");
             }

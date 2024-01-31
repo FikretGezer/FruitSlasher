@@ -18,7 +18,7 @@ MonoBehaviour:
     explanation: Play 3 games
     points: 150
     requiredAmount: 3
-    currentAmount: 3
+    currentAmount: 0
     completed: 0
   - type: 0
     sprite: {fileID: 131700632, guid: d3383226e2832954eb2294cca064f22a, type: 3}
@@ -48,4 +48,25 @@ MonoBehaviour:
     requiredAmount: 1
     currentAmount: 0
     completed: 0
-  selectedMissions: []
+  selectedMissions:
+  - type: 2
+    sprite: {fileID: 838763885, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    explanation: Play 5 games
+    points: 150
+    requiredAmount: 5
+    currentAmount: 3
+    completed: 0
+  - type: 2
+    sprite: {fileID: 473567953, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    explanation: Play 3 games
+    points: 150
+    requiredAmount: 3
+    currentAmount: 3
+    completed: 1
+  - type: 3
+    sprite: {fileID: 1324043890, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    explanation: Buy a new blade
+    points: 150
+    requiredAmount: 1
+    currentAmount: 1
+    completed: 1

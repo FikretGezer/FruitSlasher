@@ -32,58 +32,51 @@ namespace Runtime
             tagCompleteCount = 0;
         }
         private void Update() {
-            DequeueAchievements();
+            // DequeueAchievements();
         }
         internal void ShowAchievementsUI()
         {
-            Social.ShowAchievementsUI();
+            PlayGamesPlatform.Instance.ShowAchievementsUI();
         }
         internal void DoGrantAchievement(string _achievement)
         {
-            if(Social.localUser.authenticated)
+            if(PlayGamesPlatform.Instance.IsAuthenticated())
             {
-                if(!IsAchievementUnlocked(_achievement))
-                {
-                    Social.ReportProgress(_achievement, 100.0f, (bool success) => {
-                        if(success)
-                        {
-                            Debug.Log(_achievement + " : " + success.ToString());
-                            LoadAchievementInfo(_achievement);
-                            //perform new actions on success
-                        }
-                        else
-                        {
-                            Debug.Log(_achievement + " : " + success.ToString());
-                        }
-                    });
-                }
+                PlayGamesPlatform.Instance.ReportProgress(_achievement, 100.0f, (bool success) => {
+                    if(success)
+                    {
+                        Debug.Log(_achievement + " : " + success.ToString());
+                        // LoadAchievementInfo(_achievement);
+                        //perform new actions on success
+                    }
+                    else
+                    {
+                        Debug.Log(_achievement + " : " + success.ToString());
+                    }
+                });
             }
         }
         internal void DoIncrementalAchievement(string _achievement)
         {
-            if(Social.localUser.authenticated)
+            if(PlayGamesPlatform.Instance.IsAuthenticated())
             {
-                PlayGamesPlatform platform = (PlayGamesPlatform)Social.Active;
-
-                if(!IsAchievementUnlocked(_achievement)){
-                    platform.IncrementAchievement(_achievement, 1, (bool success) => {
-                        if(success)
-                        {
-                            Debug.Log(_achievement + " : " + success.ToString());
-                            //perform new actions on success
-                            LoadAchievementInfo(_achievement);
-                        }
-                        else
-                        {
-                            Debug.Log(_achievement + " : " + success.ToString());
-                        }
-                    });
-                }
+                PlayGamesPlatform.Instance.IncrementAchievement(_achievement, 1, (bool success) => {
+                    if(success)
+                    {
+                        Debug.Log(_achievement + " : " + success.ToString());
+                        //perform new actions on success
+                        // LoadAchievementInfo(_achievement);
+                    }
+                    else
+                    {
+                        Debug.Log(_achievement + " : " + success.ToString());
+                    }
+                });
             }
         }
         internal void DoRevealAchievement(string _achievement)
         {
-            Social.ReportProgress(_achievement, 0f, (bool success) => {
+            PlayGamesPlatform.Instance.ReportProgress(_achievement, 0f, (bool success) => {
                 if(success)
                 {
                     Debug.Log(_achievement + " : " + success.ToString());
@@ -95,66 +88,66 @@ namespace Runtime
                 }
             });
         }
-        private bool IsAchievementUnlocked(string achievementID)
-        {
-            var isUnlocked = false;
-            Social.LoadAchievements((IAchievement[] achievements) => {
-                foreach(var ach in achievements)
-                {
-                    if(ach.id == achievementID)
-                    {
-                        if(ach.completed)
-                            isUnlocked = true;
-                        else
-                            break;
-                    }
-                }
-            });
-            if(isUnlocked)
-                return true;
+        // private bool IsAchievementUnlocked(string achievementID)
+        // {
+        //     var isUnlocked = false;
+        //     PlayGamesPlatform.Instance.LoadAchievements((IAchievement[] achievements) => {
+        //         foreach(var ach in achievements)
+        //         {
+        //             if(ach.id == achievementID)
+        //             {
+        //                 if(ach.completed)
+        //                     isUnlocked = true;
+        //                 else
+        //                     break;
+        //             }
+        //         }
+        //     });
+        //     if(isUnlocked)
+        //         return true;
 
-            return false;
-        }
-        private void LoadAchievementInfo(string achievementID)
-        {
-            Social.LoadAchievementDescriptions((IAchievementDescription[] achievementDescriptions) => {
-                foreach(var achInfo in achievementDescriptions)
-                {
-                    if(achInfo.id == achievementID)
-                    {
-                        // Call AchievementBoard and Pass The Info
-                        Texture2D achImage = achInfo.image;
-                        var achSprite = Sprite.Create(
-                            achImage,
-                            new Rect(0, 0, achImage.width, achImage.height),
-                            new Vector2(0.5f, 0.5f)
-                        );
-                        var achDesc = achInfo.achievedDescription;
-                        var achPoints = achInfo.points;
+        //     return false;
+        // }
+        // private void LoadAchievementInfo(string achievementID)
+        // {
+        //     PlayGamesPlatform.Instance.LoadAchievementDescriptions((IAchievementDescription[] achievementDescriptions) => {
+        //         foreach(var achInfo in achievementDescriptions)
+        //         {
+        //             if(achInfo.id == achievementID)
+        //             {
+        //                 // Call AchievementBoard and Pass The Info
+        //                 Texture2D achImage = achInfo.image;
+        //                 var achSprite = Sprite.Create(
+        //                     achImage,
+        //                     new Rect(0, 0, achImage.width, achImage.height),
+        //                     new Vector2(0.5f, 0.5f)
+        //                 );
+        //                 var achDesc = achInfo.achievedDescription;
+        //                 var achPoints = achInfo.points;
 
-                        var unlockedAch = new AchievementContainer(achSprite, achDesc, achPoints);
+        //                 var unlockedAch = new AchievementContainer(achSprite, achDesc, achPoints);
 
-                        achievementQueue.Enqueue(unlockedAch);
-                        break;
-                    }
-                }
-            });
-        }
-        private void DequeueAchievements()
-        {
-            while(achievementQueue.Count > 0)
-            {
-                var ach = achievementQueue.Dequeue();
-                if(FindObjectOfType<NotificationController>())
-                {
-                    NotificationController.Instance.EnqueueNotification(ach.sprite, ach.description, ach.points);
-                }
-            }
-        }
+        //                 achievementQueue.Enqueue(unlockedAch);
+        //                 break;
+        //             }
+        //         }
+        //     });
+        // }
+        // private void DequeueAchievements()
+        // {
+        //     while(achievementQueue.Count > 0)
+        //     {
+        //         var ach = achievementQueue.Dequeue();
+        //         if(FindObjectOfType<NotificationController>())
+        //         {
+        //             NotificationController.Instance.EnqueueNotification(ach.sprite, ach.description, ach.points);
+        //         }
+        //     }
+        // }
 
         internal void ListAchievements()
         {
-            Social.LoadAchievements(achievements => {
+            PlayGamesPlatform.Instance.LoadAchievements(achievements => {
                 Debug.Log("Loaded Achievements " + achievements.Length);
                 foreach (IAchievement ach in achievements)
                 {
@@ -164,7 +157,7 @@ namespace Runtime
         }
         internal void ListDescriptions()
         {
-            Social.LoadAchievementDescriptions(achievements => {
+            PlayGamesPlatform.Instance.LoadAchievementDescriptions(achievements => {
                 Debug.Log("Loaded Achievements " + achievements.Length);
                 foreach (IAchievementDescription ach in achievements)
                 {
