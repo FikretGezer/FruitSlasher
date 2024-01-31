@@ -423,7 +423,10 @@ namespace Runtime
         public void CheckEverythingIsDone()
         {
             if(_expDone && _starsDone && _scoreDone)
+            {
                 GameManager.Situation = GameSituation.EverythingDone;
+                EventManager.Broadcasting(GameEvents.OnEndGameUIUpdateFinish);
+            }
         }
     }
 }

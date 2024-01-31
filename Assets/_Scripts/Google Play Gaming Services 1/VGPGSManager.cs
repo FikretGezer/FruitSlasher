@@ -380,10 +380,10 @@ namespace Runtime
             Save();
         }
         private void OnEnable() {
-            EventManager.AddHandler(GameEvents.OnPlayerValuesChanges, SaveDouble);
+            EventManager.AddHandler(GameEvents.OnEndGameUIUpdateFinish, SaveDouble);
         }
         private void OnDisable() {
-            EventManager.RemoveHandler(GameEvents.OnPlayerValuesChanges, SaveDouble);
+            EventManager.RemoveHandler(GameEvents.OnEndGameUIUpdateFinish, SaveDouble);
         }
     }
 

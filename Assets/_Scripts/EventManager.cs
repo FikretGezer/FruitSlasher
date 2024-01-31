@@ -9,7 +9,8 @@ namespace Runtime
         OnPlayerValuesChanges,
         OnCuttingBomb,
         OnCuttingFruit,
-        OnCuttingSpecialFruit
+        OnCuttingSpecialFruit,
+        OnEndGameUIUpdateFinish
     }
     public static class EventManager
     {
