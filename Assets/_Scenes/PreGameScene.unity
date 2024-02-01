@@ -3485,11 +3485,11 @@ RectTransform:
   - {fileID: 719679579}
   - {fileID: 843702915}
   - {fileID: 2074869419}
-  - {fileID: 703742543}
   - {fileID: 327527062}
   - {fileID: 1493966936}
   - {fileID: 428747499}
   - {fileID: 479662467}
+  - {fileID: 703742543}
   m_Father: {fileID: 1891967839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -8666,13 +8666,13 @@ MonoBehaviour:
   - start
   - reset
   _tooltipMenuTexts:
-  - 'Tap to open blade list and select a blade
+  - 'Tap to open blade list and to select a blade
 
     you want to use!'
-  - 'Tap to open dojo list and select a dojo
+  - 'Tap to open dojo list and to select a dojo
 
     you want to use!'
-  - Slice the apple to begin!
+  - Slice the peach to begin!
 --- !u!4 &1557466296
 Transform:
   m_ObjectHideFlags: 0

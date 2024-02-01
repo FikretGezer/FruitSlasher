@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1709887819266712785}
   - component: {fileID: 2734582417698029340}
   m_Layer: 5
-  m_Name: Trail_4
+  m_Name: Trail_Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

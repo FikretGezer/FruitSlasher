@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Default Dojo
   m_EditorClassIdentifier: 
   dojoSprite: {fileID: 21300000, guid: 43b02feadc731394daa62651dac3fc16, type: 3}
-  dojoName: "Bas\u0131c Dojo 1"
+  dojoName: Default Dojo
   dojoExplanation: A humble dojo but Sensei started here
   dojoLevel: 1
   dojoPrice: 0

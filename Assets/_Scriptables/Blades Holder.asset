@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: Blades Holder
   m_EditorClassIdentifier: 
   blades:
-  - {fileID: 11400000, guid: 000f53b411d625b48a3417ac39c77500, type: 2}
-  - {fileID: 11400000, guid: 04e2c97a9159ca94fb72851c754e4d15, type: 2}
-  - {fileID: 11400000, guid: 2d5d8e6d7d88ee9479305fb92b6c6c9d, type: 2}
   - {fileID: 11400000, guid: da306630c6fee294eb18740107c64dba, type: 2}
+  - {fileID: 11400000, guid: 3e158cb311966054d9ed0703615099f0, type: 2}
+  - {fileID: 11400000, guid: c18672c9f35d2314a83ceb2b05e18f65, type: 2}
+  - {fileID: 11400000, guid: 04e2c97a9159ca94fb72851c754e4d15, type: 2}
+  - {fileID: 11400000, guid: 61e7a4adcfae7e94eaa28a1ad2dbd8a7, type: 2}
   - {fileID: 11400000, guid: 487bbaa284d73fa42948671fda9f0c71, type: 2}
+  - {fileID: 11400000, guid: bfacf9f0871ebfc4eaec1e1471ef882d, type: 2}
   - {fileID: 11400000, guid: 1cef947ec12f4e949b7e51c871f6a74e, type: 2}
+  - {fileID: 11400000, guid: 2d5d8e6d7d88ee9479305fb92b6c6c9d, type: 2}
+  - {fileID: 11400000, guid: 000f53b411d625b48a3417ac39c77500, type: 2}

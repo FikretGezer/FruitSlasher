@@ -1125,6 +1125,12 @@ MonoBehaviour:
   _newBladesText: {fileID: 0}
   _newDojosText: {fileID: 0}
   _selectedBlade: {fileID: 0}
+  bladeNameT: {fileID: 0}
+  bladeExpT: {fileID: 0}
+  bladeImage: {fileID: 0}
+  dojoNameT: {fileID: 0}
+  dojoExpT: {fileID: 0}
+  dojoImage: {fileID: 0}
 --- !u!4 &308305851
 Transform:
   m_ObjectHideFlags: 0
@@ -3254,7 +3260,7 @@ Transform:
   m_GameObject: {fileID: 765369958}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.18, y: -0.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4461,7 +4467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -165, y: 0}
+  m_AnchoredPosition: {x: -140, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1075843215
@@ -5213,17 +5219,12 @@ MonoBehaviour:
   _tooltipMenuTexts:
   - 'You can start the game in classic mode
 
-    by cutting the fruit by swiping.'
-  - 'You can turn on/off the music and the sound effects or
+    by slicing the apple.'
+  - You can turn on/off the music and the sound effects.
+  - 'You''ll earn extra stars by completing missions.
 
-    you can adjust other
-    settings by clicking
-
-    the clock icon.'
-  - 'You''ll earn stars by completing daily objectives, achievements.
-
-    Also you
-    will earn some amount of stars end of the each round.'
+    Also you will earn some
+    amount of stars end of the each round.'
 --- !u!4 &1250317008
 Transform:
   m_ObjectHideFlags: 0
@@ -6174,7 +6175,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -265, y: 0}
+  m_AnchoredPosition: {x: -260, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1399313333
@@ -6955,7 +6956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1567197617
 RectTransform:
   m_ObjectHideFlags: 0

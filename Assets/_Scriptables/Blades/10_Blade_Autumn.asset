@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
+  m_Name: 10_Blade_Autumn
+  m_EditorClassIdentifier: 
+  bladeSprite: {fileID: 21300000, guid: 3bef8f9fa603b5e40857eac184dc4255, type: 3}
+  bladeName: Autumn
+  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeLevel: 20
+  bladePrice: 1200
+  bladeObj: {fileID: 4317796316330462781, guid: 08cf795fb5a397f408d6a7f78e3761a2, type: 3}

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
-  m_Name: Default Blade 2
+  m_Name: 8_Blade_PoisonStars
   m_EditorClassIdentifier: 
-  bladeSprite: {fileID: 21300000, guid: bb3c2d4f4742cca45804c9d51f85e6f1, type: 3}
-  bladeName: "Bas\u0131c Blade"
+  bladeSprite: {fileID: 21300000, guid: ae9d36782a500534eb769e87875c0a97, type: 3}
+  bladeName: Poison Stars
   bladeExplanation: Your first blade giving to you by your Sensei
-  bladeLevel: 2
-  bladePrice: 250
-  bladeObj: {fileID: 746337863401667403, guid: f62425931a1663c4d9494a70f69b0cfe, type: 3}
+  bladeLevel: 15
+  bladePrice: 900
+  bladeObj: {fileID: 6332725825041592736, guid: d4edcdc8e11bc4a4c83bb3ce8b6ad4d2, type: 3}

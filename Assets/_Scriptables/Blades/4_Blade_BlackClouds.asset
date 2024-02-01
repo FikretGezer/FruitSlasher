@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
-  m_Name: Default Blade 1
+  m_Name: 4_Blade_BlackClouds
   m_EditorClassIdentifier: 
-  bladeSprite: {fileID: 132668327, guid: d3383226e2832954eb2294cca064f22a, type: 3}
-  bladeName: "Bas\u0131c Blade 4"
+  bladeSprite: {fileID: 21300000, guid: eb18fb116ee282a4da5512c361bb7f2e, type: 3}
+  bladeName: Black Clouds
   bladeExplanation: Your first blade giving to you by your Sensei
-  bladeLevel: 1
-  bladePrice: 0
-  bladeObj: {fileID: 3089683740995752211, guid: 2e9d2c2f1f756874ab46b7f0454bf293, type: 3}
+  bladeLevel: 5
+  bladePrice: 400
+  bladeObj: {fileID: 9044896316402722268, guid: e10ffb1808f88674dac02835d7bb9fb6, type: 3}

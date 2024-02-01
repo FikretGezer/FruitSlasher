@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
+  m_Name: 5_Blade_Sword
+  m_EditorClassIdentifier: 
+  bladeSprite: {fileID: 21300000, guid: dc6ff287709407f408b37f338a7881c2, type: 3}
+  bladeName: Sword
+  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeLevel: 8
+  bladePrice: 500
+  bladeObj: {fileID: 3930400221469979374, guid: 10dc4e72db9f2de45bca7734c6cf6229, type: 3}

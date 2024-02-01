@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c46624c3216a864d882a7e0888b286c, type: 3}
-  m_Name: Default Blade 3
+  m_Name: 3_Blade_Snow
   m_EditorClassIdentifier: 
-  bladeSprite: {fileID: 21300000, guid: a55b272f07dc2ab44b21b4b6013773ec, type: 3}
-  bladeName: "Bas\u0131c Blade 2"
+  bladeSprite: {fileID: 21300000, guid: 9323f84a19b04c2438df719f499a5146, type: 3}
+  bladeName: Snow
   bladeExplanation: Your first blade giving to you by your Sensei
-  bladeLevel: 3
-  bladePrice: 400
-  bladeObj: {fileID: 7826519999363582306, guid: d0f62314553bd054d9360c40f2b3c408, type: 3}
+  bladeLevel: 4
+  bladePrice: 300
+  bladeObj: {fileID: 8922450306740286164, guid: e760955c43da5164abf4181157cc8930, type: 3}
