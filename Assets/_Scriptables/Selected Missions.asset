@@ -25,21 +25,21 @@ MonoBehaviour:
     explanation: Slice 10 fruits
     points: 150
     requiredAmount: 10
-    currentAmount: 0
-    completed: 0
+    currentAmount: 10
+    completed: 1
   - type: 1
     sprite: {fileID: -820460241, guid: d3383226e2832954eb2294cca064f22a, type: 3}
     explanation: Slice a bomb
     points: 150
     requiredAmount: 1
-    currentAmount: 0
-    completed: 0
+    currentAmount: 1
+    completed: 1
   - type: 2
     sprite: {fileID: 838763885, guid: d3383226e2832954eb2294cca064f22a, type: 3}
     explanation: Play 5 games
     points: 150
     requiredAmount: 5
-    currentAmount: 0
+    currentAmount: 2
     completed: 0
   - type: 3
     sprite: {fileID: 1324043890, guid: d3383226e2832954eb2294cca064f22a, type: 3}
@@ -56,16 +56,16 @@ MonoBehaviour:
     requiredAmount: 5
     currentAmount: 3
     completed: 0
-  - type: 2
-    sprite: {fileID: 473567953, guid: d3383226e2832954eb2294cca064f22a, type: 3}
-    explanation: Play 3 games
+  - type: 0
+    sprite: {fileID: 131700632, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    explanation: Slice 10 fruits
     points: 150
-    requiredAmount: 3
-    currentAmount: 3
+    requiredAmount: 10
+    currentAmount: 10
     completed: 1
-  - type: 3
-    sprite: {fileID: 1324043890, guid: d3383226e2832954eb2294cca064f22a, type: 3}
-    explanation: Buy a new blade
+  - type: 1
+    sprite: {fileID: -820460241, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    explanation: Slice a bomb
     points: 150
     requiredAmount: 1
     currentAmount: 1

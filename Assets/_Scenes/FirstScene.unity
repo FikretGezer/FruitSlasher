@@ -2333,6 +2333,9 @@ MonoBehaviour:
     bombExplodeSFX: {fileID: 8300000, guid: a9458e28cc21cad47956eae5a1efa8bc, type: 3}
     bombCuttingSFX: {fileID: 8300000, guid: 88e33c92b8ec77f4d97d29cc9a57a1dc, type: 3}
     vihuSFX: {fileID: 8300000, guid: c151fc00a693e4e48974b3a15791dcd0, type: 3}
+    soundNMusicButtonSFX: {fileID: 8300000, guid: 6ca5c3332edad174ca93e554a516aff2, type: 3}
+    notificationSFX: {fileID: 8300000, guid: 59061b76acc0f3444afc012484920dad, type: 3}
+    itemBuySFX: {fileID: 8300000, guid: 440f17f616a893e409cebfefe9ae9274, type: 3}
     roundMusic: {fileID: 8300000, guid: efbd2cff88314144595fdc0eb3265e6c, type: 3}
     chillMusic: {fileID: 8300000, guid: 9e4964fde9cec8f4487cc4101f18e734, type: 3}
   bombSources: []

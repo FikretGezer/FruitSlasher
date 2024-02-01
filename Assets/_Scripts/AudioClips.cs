@@ -14,6 +14,9 @@ namespace Runtime
         public AudioClip bombExplodeSFX;
         public AudioClip bombCuttingSFX;
         public AudioClip vihuSFX;
+        public AudioClip soundNMusicButtonSFX;
+        public AudioClip notificationSFX;
+        public AudioClip itemBuySFX;
         [Header("Musics")]
         public AudioClip roundMusic;
         public AudioClip chillMusic;

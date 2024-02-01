@@ -71,7 +71,10 @@ namespace Runtime
             if(GameManager.Situation == GameSituation.Play || GameManager.Situation == GameSituation.EverythingDone)
             {
                 Time.timeScale = 1f;
-
+                if(sceneName == "Menu")
+                {
+                    SoundManager.Instance.PlayMusic(SoundManager.Instance.Clips.chillMusic);
+                }
                 SceneManager.LoadScene(sceneName);
             }
         }
@@ -82,6 +85,7 @@ namespace Runtime
                 var slideInBool = _uiElements.soundButtonAnim.GetBool("slideIn");
                 slideInBool = slideInBool ? false : true;
                 _uiElements.soundButtonAnim.SetBool("slideIn", slideInBool);
+                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.soundNMusicButtonSFX);
             }
         }
         public void PauseButton()
@@ -322,6 +326,7 @@ namespace Runtime
                     _playerData.currentDojoIndex = selectedDojoIndex;
                     BladesAndDojos.Instance.SelectADojo();
                     MenuUI.Instance.SetStars();
+                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.itemBuySFX);
 
                     if(FindObjectOfType<MissionController>())
                     {
@@ -354,6 +359,7 @@ namespace Runtime
                     _playerData.currentBladeIndex = selectedBladeIndex;
                     BladesAndDojos.Instance.SelectABlade();
                     MenuUI.Instance.SetStars();
+                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.itemBuySFX);
 
                     if(FindObjectOfType<MissionController>())
                     {
@@ -486,6 +492,7 @@ namespace Runtime
                     _playerData.currentDojoIndex = selectedDojoIndex;
                     BladesAndDojos.Instance.SelectADojo();
                     MenuUI.Instance.SetStars();
+                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.itemBuySFX);
 
                     Background.Instance.FitBgToScreen();
 
@@ -522,6 +529,7 @@ namespace Runtime
                     _playerData.currentBladeIndex = selectedBladeIndex;
                     BladesAndDojos.Instance.SelectABlade();
                     MenuUI.Instance.SetStars();
+                    SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.itemBuySFX);
 
 
                     if(_selectedItem != null)

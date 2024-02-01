@@ -19,8 +19,14 @@ namespace Runtime
         private void Start() {
             SetStartVolumes();
         }
-        public void SetSoundFXVolume(Image image) => VGPGSManager.Instance._playerData.soundFXVolume = SetVolumes("SoundFXVolume", image, _soundFXOn, _soundFXOff);
-        public void SetMusicVolume(Image image) => VGPGSManager.Instance._playerData.musicVolume = SetVolumes("MusicVolume", image, _musicOn, _musicOff);
+        public void SetSoundFXVolume(Image image) {
+            VGPGSManager.Instance._playerData.soundFXVolume = SetVolumes("SoundFXVolume", image, _soundFXOn, _soundFXOff);
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.soundNMusicButtonSFX);
+        }
+        public void SetMusicVolume(Image image) {
+            VGPGSManager.Instance._playerData.musicVolume = SetVolumes("MusicVolume", image, _musicOn, _musicOff);
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.soundNMusicButtonSFX);
+        }
         private float SetVolumes(string name)
         {
             float outVol = 0f;

@@ -39,6 +39,7 @@ namespace Runtime
             notificationPoints.text = info.points.ToString();
 
             notificationAnim.SetTrigger("showNotify");
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.notificationSFX);
         }
     }
     public class NotificationInfo{
