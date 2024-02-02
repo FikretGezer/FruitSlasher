@@ -74,12 +74,16 @@ namespace Runtime
             LoadedDatasOfThePlayer();
         }
         private void Update() {
-            if(_calculateGameTime && GameManager.Situation == GameSituation.Play)
+            if(_calculateGameTime)
             {
-                CalculateGameTime();
+                if(GameManager.Situation == GameSituation.Play)
+                {
+                    CalculateGameTime();
+                }
             }
             if(_sendTrail)
             {
+                _calculateGameTime = false;
                 current = Mathf.MoveTowards(current, target, _trailSpeed * Time.unscaledDeltaTime);
 
                 var trailPos = _starsTrailEffect.transform.position;
@@ -93,6 +97,7 @@ namespace Runtime
                     _tTotalStars.text = VGPGSManager.Instance._playerData.stars.ToString();
                     _sendTrail = false;
                     isTrailSent = true;
+
                 }
             }
         }
@@ -127,7 +132,7 @@ namespace Runtime
         private void CalculateGameTime()
         {
             seconds += Time.deltaTime;
-            _tTime.text = $"{seconds:000000}";
+            // _tTime.text = $"{seconds:000000}";
         }
 
         #region In Game Updates

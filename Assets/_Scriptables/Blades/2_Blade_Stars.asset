@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: 43094f1a58c2f7e4381d22601b56f0f7, type: 3}
   bladeName: Stars
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: Slice in style with Stars, leveling up your journey.
   bladeLevel: 2
   bladePrice: 500
   bladeObj: {fileID: 746337863401667403, guid: f62425931a1663c4d9494a70f69b0cfe, type: 3}

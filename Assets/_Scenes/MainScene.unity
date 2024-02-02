@@ -416,7 +416,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 371256306}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Runtime.VSavedGamesUI, Runtime
         m_MethodName: ClickContinue
         m_Mode: 1
@@ -1700,7 +1700,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 371256307}
-  - component: {fileID: 371256306}
   m_Layer: 0
   m_Name: SaveGameUI
   m_TagString: Untagged
@@ -1708,46 +1707,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &371256306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371256305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6b89b6c1347846b117e21964366db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tHighestScore: {fileID: 344434120}
-  _tLevel: {fileID: 2076732005}
-  _tExpNeeded: {fileID: 788060}
-  _tExpCurrent: {fileID: 585861736}
-  _tTime: {fileID: 1918048098}
-  _tTotalStars: {fileID: 397259232}
-  _tStars: {fileID: 1346922098}
-  _levelSlider: {fileID: 1663081293}
-  _totalStarsImageTransform: {fileID: 845775081}
-  _sessionStarsImageTransform: {fileID: 1241563382}
-  speedController: 500
-  _starsTrailEffect: {fileID: 1428544929}
-  _starsPopEffect: {fileID: 6556492671811944041}
-  _starsPopEffectSecond: {fileID: 616187223}
-  _calculateGameTime: 1
-  _scoreDone: 0
-  _trailSpeed: 0.5
-  _rewardsBoard: {fileID: 486917521}
-  _tCurrentLevel: {fileID: 2005442610}
-  _tStarsReward: {fileID: 1068531233}
-  closingRewardClip: {fileID: 7400000, guid: 71c7b50c4928d7a41a75143a008cf3ab, type: 2}
-  closingRewardLongClip: {fileID: 7400000, guid: 0a3c9912c2c879e46bdc85348ed9d63c, type: 2}
-  rewardItemsClip: {fileID: 7400000, guid: 26d940c6fb762224fbe5cfd7f5b6859c, type: 2}
-  rewardItemContainer: {fileID: 1560895960}
-  rewardItemPrefab: {fileID: 1155448600595798194, guid: 5c272090baeb9e543995568d43f20d98, type: 3}
-  _bladesHolder: {fileID: 11400000, guid: 4b51b3ee81122054e9ee7bbd30f17799, type: 2}
-  _dojosHolder: {fileID: 11400000, guid: e6af29cd8315b9947898045a980d1693, type: 2}
-  _mainSceneCaster: {fileID: 2085135392}
 --- !u!4 &371256307
 Transform:
   m_ObjectHideFlags: 0
@@ -2435,7 +2394,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 371256306}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Runtime.VSavedGamesUI, Runtime
         m_MethodName: ClickContinue
         m_Mode: 1
@@ -11447,7 +11406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1918048097
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12646,7 +12605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2025891384
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13328,7 +13287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26.97, y: 0.59}
+  m_AnchoredPosition: {x: 26.970001, y: 0.59}
   m_SizeDelta: {x: 146.05, y: 73.83}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2076732005
@@ -13462,6 +13421,7 @@ GameObject:
   - component: {fileID: 2085135389}
   - component: {fileID: 2085135388}
   - component: {fileID: 2085135392}
+  - component: {fileID: 2085135393}
   m_Layer: 5
   m_Name: EndScreenUI
   m_TagString: Untagged
@@ -13577,6 +13537,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cutEffect: {fileID: 2018391431}
   isItOnMenu: 0
+--- !u!114 &2085135393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085135387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b6b89b6c1347846b117e21964366db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tHighestScore: {fileID: 344434120}
+  _tLevel: {fileID: 2076732005}
+  _tExpNeeded: {fileID: 788060}
+  _tExpCurrent: {fileID: 585861736}
+  _tTime: {fileID: 1918048098}
+  _tTotalStars: {fileID: 397259232}
+  _tStars: {fileID: 1346922098}
+  _levelSlider: {fileID: 1663081293}
+  _totalStarsImageTransform: {fileID: 845775081}
+  _sessionStarsImageTransform: {fileID: 1241563382}
+  speedController: 500
+  _starsTrailEffect: {fileID: 1428544929}
+  _starsPopEffect: {fileID: 6556492671811944041}
+  _starsPopEffectSecond: {fileID: 616187223}
+  _calculateGameTime: 1
+  _scoreDone: 0
+  _trailSpeed: 0.5
+  _rewardsBoard: {fileID: 486917521}
+  _tCurrentLevel: {fileID: 2005442610}
+  _tStarsReward: {fileID: 1068531233}
+  closingRewardClip: {fileID: 7400000, guid: 71c7b50c4928d7a41a75143a008cf3ab, type: 2}
+  closingRewardLongClip: {fileID: 7400000, guid: 0a3c9912c2c879e46bdc85348ed9d63c, type: 2}
+  rewardItemsClip: {fileID: 7400000, guid: 26d940c6fb762224fbe5cfd7f5b6859c, type: 2}
+  rewardItemContainer: {fileID: 1560895960}
+  rewardItemPrefab: {fileID: 1155448600595798194, guid: 5c272090baeb9e543995568d43f20d98, type: 3}
+  _bladesHolder: {fileID: 11400000, guid: 4b51b3ee81122054e9ee7bbd30f17799, type: 2}
+  _dojosHolder: {fileID: 11400000, guid: e6af29cd8315b9947898045a980d1693, type: 2}
+  _mainSceneCaster: {fileID: 2085135392}
 --- !u!1 &2102980436
 GameObject:
   m_ObjectHideFlags: 0
