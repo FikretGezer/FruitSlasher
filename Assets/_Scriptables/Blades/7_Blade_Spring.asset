@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Spring
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 12
-  bladePrice: 800
+  bladePrice: 3500
   bladeObj: {fileID: 6409130013567846233, guid: 70a194070d205484c92bc83b0f87fff2, type: 3}

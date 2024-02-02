@@ -1,0 +1,10 @@
+{
+  "name": "Assets.Assets.Runtime",
+  "rootNamespace": "Assets.Assets.Runtime",
+  "references": [
+ ],
+  "includePlatforms": [],
+  "allowUnsafeCode": "true",
+  "versionDefines": [],
+  "noEngineReferences": false
+}

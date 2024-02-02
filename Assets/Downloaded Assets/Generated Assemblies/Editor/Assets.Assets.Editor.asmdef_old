@@ -1,0 +1,13 @@
+{
+  "name": "Assets.Assets.Editor",
+  "rootNamespace": "Assets.Assets.Editor",
+  "references": [
+    "Assets.Assets.Runtime"
+ ],
+  "includePlatforms": [
+    "Editor"
+ ],
+  "allowUnsafeCode": "true",
+  "versionDefines": [],
+  "noEngineReferences": false
+}

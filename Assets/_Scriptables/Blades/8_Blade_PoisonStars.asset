@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Poison Stars
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 15
-  bladePrice: 900
+  bladePrice: 3600
   bladeObj: {fileID: 6332725825041592736, guid: d4edcdc8e11bc4a4c83bb3ce8b6ad4d2, type: 3}

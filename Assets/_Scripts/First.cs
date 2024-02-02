@@ -13,7 +13,6 @@ namespace Runtime
         public void LoadNewScene(string sceneToLoad)
         {
             SceneManager.LoadScene(sceneToLoad);
-            //
         }
     }
 }

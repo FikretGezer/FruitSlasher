@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Clouds
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 17
-  bladePrice: 1000
+  bladePrice: 4000
   bladeObj: {fileID: 4069073676881008544, guid: 400a6c67f4e9d234c89296437eeeec12, type: 3}

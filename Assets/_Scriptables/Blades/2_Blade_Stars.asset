@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Stars
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 2
-  bladePrice: 250
+  bladePrice: 500
   bladeObj: {fileID: 746337863401667403, guid: f62425931a1663c4d9494a70f69b0cfe, type: 3}

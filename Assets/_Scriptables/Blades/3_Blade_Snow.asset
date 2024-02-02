@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Snow
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 4
-  bladePrice: 300
+  bladePrice: 1000
   bladeObj: {fileID: 8922450306740286164, guid: e760955c43da5164abf4181157cc8930, type: 3}

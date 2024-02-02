@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Black Clouds
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 5
-  bladePrice: 400
+  bladePrice: 1500
   bladeObj: {fileID: 9044896316402722268, guid: e10ffb1808f88674dac02835d7bb9fb6, type: 3}

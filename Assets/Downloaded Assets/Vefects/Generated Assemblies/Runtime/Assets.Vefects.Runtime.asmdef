@@ -1,0 +1,10 @@
+{
+  "name": "Assets.Vefects.Runtime",
+  "rootNamespace": "Assets.Vefects.Runtime",
+  "references": [
+ ],
+  "includePlatforms": [],
+  "allowUnsafeCode": "true",
+  "versionDefines": [],
+  "noEngineReferences": false
+}

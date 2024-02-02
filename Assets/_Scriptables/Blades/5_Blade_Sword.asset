@@ -16,5 +16,5 @@ MonoBehaviour:
   bladeName: Sword
   bladeExplanation: Your first blade giving to you by your Sensei
   bladeLevel: 8
-  bladePrice: 500
+  bladePrice: 2000
   bladeObj: {fileID: 3930400221469979374, guid: 10dc4e72db9f2de45bca7734c6cf6229, type: 3}
