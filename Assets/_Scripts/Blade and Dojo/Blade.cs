@@ -379,6 +379,11 @@ public class Blade : MonoBehaviour
     }
     private void RenderTrailEffect()
     {
+        if(GameManager.Situation == GameSituation.Paused)
+        {
+            trailEffectSecond.SetActive(false);
+            return;
+        }
         if(trailEffectSecond != null && Time.timeScale > 0.1f)
         {
             trailEffectSecond.transform.position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);

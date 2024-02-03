@@ -95,6 +95,7 @@ namespace Runtime
                     _uiElements.scoreHolder.SetActive(false);
 
                     Time.timeScale = Mathf.Epsilon;
+                    GameManager.Situation = GameSituation.Paused;
                 }
                 else
                 {
@@ -126,8 +127,8 @@ namespace Runtime
             _uiElements.endGameMenu.SetActive(false);
             _uiElements.healthHolder.SetActive(true);
             _uiElements.scoreHolder.SetActive(true);
+            GameManager.Situation = GameSituation.Play;
             isPaused = false;
-
         }
         #endregion
         #region Menu

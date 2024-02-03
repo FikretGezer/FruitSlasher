@@ -1,14 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Runtime
 {
-    public enum GameSituation{
-        Play,
-        Stop,
-        EverythingDone
-    }
     public class GameManager : MonoBehaviour
     {
         public static GameSituation Situation;
