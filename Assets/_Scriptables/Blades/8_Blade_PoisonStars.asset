@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: ae9d36782a500534eb769e87875c0a97, type: 3}
   bladeName: Poison Stars
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: Deadly blade that adds a venomous twist to your fruit slashing
+    skills.
   bladeLevel: 15
   bladePrice: 3600
   bladeObj: {fileID: 6332725825041592736, guid: d4edcdc8e11bc4a4c83bb3ce8b6ad4d2, type: 3}

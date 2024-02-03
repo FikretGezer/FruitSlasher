@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: 9323f84a19b04c2438df719f499a5146, type: 3}
   bladeName: Snow
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: 'Embrace the chill with Snow, a frosty blade to cool down your
+    slicing skills. '
   bladeLevel: 4
   bladePrice: 1000
   bladeObj: {fileID: 8922450306740286164, guid: e760955c43da5164abf4181157cc8930, type: 3}

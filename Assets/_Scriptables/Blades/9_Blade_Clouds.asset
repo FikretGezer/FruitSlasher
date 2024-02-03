@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: ee5697468e305844984ae1368a25b3f8, type: 3}
   bladeName: Clouds
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: A nimble blade that brings a touch of serenity to your fruit
+    slashing adventure.
   bladeLevel: 17
   bladePrice: 4000
   bladeObj: {fileID: 4069073676881008544, guid: 400a6c67f4e9d234c89296437eeeec12, type: 3}

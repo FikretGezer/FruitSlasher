@@ -16,7 +16,7 @@ namespace Runtime
 
         private List<GameObject> bladesObjList = new List<GameObject>();
         private List<GameObject> dojosObjList = new List<GameObject>();
-
+        private const float aspectRatioForDojos = 16/9f;
         public static Store Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
@@ -63,6 +63,7 @@ namespace Runtime
             {
                 int current = i;
                 var newItem = Instantiate(_itemBoxPrefab);
+                newItem.transform.GetChild(0).GetComponent<AspectRatioFitter>().aspectRatio = aspectRatioForDojos;
                 newItem.transform.GetChild(0).GetComponent<Image>().sprite = _dojosHolder.dojos[i].dojoSprite;
 
                 if(!VGPGSManager.Instance._playerData.unlockedDojos[current])

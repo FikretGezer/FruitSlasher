@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: 3bef8f9fa603b5e40857eac184dc4255, type: 3}
   bladeName: Autumn
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: Bring a touch of fall elegance to your fruit ninja adventure.
   bladeLevel: 20
   bladePrice: 5000
   bladeObj: {fileID: 4317796316330462781, guid: 08cf795fb5a397f408d6a7f78e3761a2, type: 3}

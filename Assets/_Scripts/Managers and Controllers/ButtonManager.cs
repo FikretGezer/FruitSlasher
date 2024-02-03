@@ -21,6 +21,8 @@ namespace Runtime
         private float offSetXForDojos = -1f;
         private float offSetXForBlades = 6f;
 
+        private const float aspectRatioForDojos = 16/9f;
+
         private int selectedBladeIndex; // For Buy Option
         private int selectedDojoIndex; // For Buy Option
         private bool isPaused;
@@ -201,6 +203,7 @@ namespace Runtime
             BladeScriptable currentBlade = _storeUIElements.bladeHolder.blades[index];
 
             _storeUIElements.itemImage.sprite = currentBlade.bladeSprite;
+            _storeUIElements.itemImage.GetComponent<AspectRatioFitter>().aspectRatio = 1f;
 
             if(_playerData.unlockedBlades[index])
             {
@@ -256,6 +259,7 @@ namespace Runtime
             DojoScriptable currentDojo = _storeUIElements.dojoHolder.dojos[index];
 
             _storeUIElements.itemImage.sprite = currentDojo.dojoSprite;
+            _storeUIElements.itemImage.GetComponent<AspectRatioFitter>().aspectRatio = aspectRatioForDojos;
 
             if(_playerData.unlockedDojos[index])
             {

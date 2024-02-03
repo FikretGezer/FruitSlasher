@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: eb18fb116ee282a4da5512c361bb7f2e, type: 3}
   bladeName: Black Clouds
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: 'A blade that casts a shadow of power over your fruit slicing
+    journey. '
   bladeLevel: 5
   bladePrice: 1500
   bladeObj: {fileID: 9044896316402722268, guid: e10ffb1808f88674dac02835d7bb9fb6, type: 3}

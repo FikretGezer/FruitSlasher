@@ -78,6 +78,7 @@ namespace Runtime
             }
         }
 
+        [ContextMenu("Delete Local Game Data")]
         public void DeleteLocalGameData()
         {
             string filePath = Path.Combine(Application.persistentDataPath, fileName);
@@ -202,7 +203,6 @@ namespace Runtime
             }
         }
         #endregion
-
         public void SaveDouble()
         {
             OpenSavedGame(true);

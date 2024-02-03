@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSprite: {fileID: 21300000, guid: 5420201b656b02f44baeeb35dbf0ab23, type: 3}
   bladeName: Default Orange
-  bladeExplanation: Your first blade giving to you by your Sensei
+  bladeExplanation: Squeeze every drop of precision into your slicing mastery with
+    Orange.
   bladeLevel: 10
   bladePrice: 2200
   bladeObj: {fileID: 8466553296027225271, guid: 8c8fca17615915648b05de4cc2180e86, type: 3}

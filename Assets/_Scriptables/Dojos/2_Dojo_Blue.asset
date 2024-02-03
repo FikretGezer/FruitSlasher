@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd473561c4b5d914e8d10bece70c439f, type: 3}
-  m_Name: Default Dojo 1
+  m_Name: 2_Dojo_Blue
   m_EditorClassIdentifier: 
-  dojoSprite: {fileID: 21300000, guid: 82ff8747f4428424dac59069d59bee0a, type: 3}
-  dojoName: Market
-  dojoExplanation: Elevate your fruit slashing skills with a touch of elegance.
-  dojoLevel: 2
-  dojoPrice: 300
+  dojoSprite: {fileID: 21300000, guid: 88c84079a6956024fa6773565b21da61, type: 3}
+  dojoName: Deep
+  dojoExplanation: Master the art of fruit slicing in an oceanic abyss with The Deep.
+  dojoLevel: 3
+  dojoPrice: 400

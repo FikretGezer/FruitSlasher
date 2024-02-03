@@ -15,3 +15,7 @@ MonoBehaviour:
   dojos:
   - {fileID: 11400000, guid: 402291ef2dc5b2a4abd57d3d407f8a02, type: 2}
   - {fileID: 11400000, guid: 82ad095e38ef67a4594b1eddc001718e, type: 2}
+  - {fileID: 11400000, guid: 1f7cacb8ffdc9f84e90c23d22fb2f70e, type: 2}
+  - {fileID: 11400000, guid: 213de1cc951b19643900d3000a3c21da, type: 2}
+  - {fileID: 11400000, guid: ba8d7246e73e47b4c8c342a538f60008, type: 2}
+  - {fileID: 11400000, guid: c6f0a46da2ba52e41b57ad85c6cda981, type: 2}
