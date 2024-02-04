@@ -94,8 +94,8 @@ namespace Runtime
             if(_newBladesText != null)
             {
                 _newBladesText.SetActive(false);
-                _playerData.areNewBladesUnlocked = false;
-
+                VGPGSManager.Instance._playerData.areNewBladesUnlocked = false;
+                // VGPGSManager.Instance.SaveDouble();
             }
         }
         public void SetInactiveNewDojoText()
@@ -103,7 +103,8 @@ namespace Runtime
             if(_newDojosText != null)
             {
                 _newDojosText.SetActive(false);
-                _playerData.areNewDojosUnlocked = false;
+                VGPGSManager.Instance._playerData.areNewDojosUnlocked = false;
+                // VGPGSManager.Instance.SaveDouble();
             }
         }
         private void CurrentBladeUI(BladeScriptable blade)

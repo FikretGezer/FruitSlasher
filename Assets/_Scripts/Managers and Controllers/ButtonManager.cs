@@ -63,9 +63,10 @@ namespace Runtime
         #region In Game
         public void LoadAScene(string sceneName)
         {
-            if(GameManager.Situation == GameSituation.Play || GameManager.Situation == GameSituation.EverythingDone)
+            if(GameManager.Situation == GameSituation.Play || GameManager.Situation == GameSituation.EverythingDone || GameManager.Situation == GameSituation.Paused)
             {
                 Time.timeScale = 1f;
+                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.buttonClickSFX);
                 if(sceneName == "Menu")
                 {
                     SoundManager.Instance.PlayMusic(SoundManager.Instance.Clips.chillMusic);
@@ -80,13 +81,15 @@ namespace Runtime
                 var slideInBool = _uiElements.soundButtonAnim.GetBool("slideIn");
                 slideInBool = slideInBool ? false : true;
                 _uiElements.soundButtonAnim.SetBool("slideIn", slideInBool);
-                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.soundNMusicButtonSFX);
+                // SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.soundNMusicButtonSFX);
+                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.swipeSoundsSFX);
             }
         }
         public void PauseButton()
         {
             if(!isPaused)
             {
+                SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.buttonClickSFX);
                 if(!_uiElements.endGameMenu.activeInHierarchy)
                 {
                     _uiElements.endGameMenu.SetActive(true);
@@ -162,6 +165,7 @@ namespace Runtime
             // Store.Instance.CheckUnlockedBlades();
             // Store.Instance.CheckUnlockedDojos();
             Store.Instance.ResetPositionOfScroll();
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.swipeMenusSFX);
 
             if(VGPGSManager.Instance._playerData.areNewBladesUnlocked)
                 VGPGSManager.Instance._playerData.areNewBladesUnlocked = false;
@@ -171,6 +175,7 @@ namespace Runtime
             _menuUIElements.menuUI.SetActive(true);
             _menuUIElements.storeUI.SetActive(false);
             _storeUIElements.container.SetActive(false);
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.buttonClickSFX);
         }
         #endregion
         #region Menu Store
@@ -395,11 +400,13 @@ namespace Runtime
         {
             didBladesMenuOpen = !didBladesMenuOpen;
             _preGameStoreUIElements.bladesAnimator.SetBool("openBladesMenu", didBladesMenuOpen);
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.swipeMenusSFX);
         }
         private void OpenPreGameDojosMenu()
         {
             didDojosMenuOpen = !didDojosMenuOpen;
             _preGameStoreUIElements.dojosAnimator.SetBool("openDojosMenu", didDojosMenuOpen);
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.swipeMenusSFX);
 
             if(didDojosMenuOpen)
                 _preGameStoreUIElements.playButton.SetActive(false);
@@ -557,6 +564,7 @@ namespace Runtime
         {
             var res = animator.GetBool("slideIn");
             animator.SetBool("slideIn", !res);
+            SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.swipeMenusSFX);
             // var activeness = !_missionBoard.activeInHierarchy;
             // _missionBoard.SetActive(activeness);
         }
