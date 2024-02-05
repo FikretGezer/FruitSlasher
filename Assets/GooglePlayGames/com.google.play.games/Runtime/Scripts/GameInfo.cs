@@ -38,7 +38,7 @@ namespace GooglePlayGames {
 
         public const string ApplicationId = "1012188972665"; // Filled in automatically
         public const string IosClientId = "__IOS_CLIENTID__"; // Filled in automatically
-        public const string WebClientId = "1012188972665-4lmg2v7v6ic509cutdv1njutdrkpkv2p.apps.googleusercontent.com"; // Filled in automatically
+        public const string WebClientId = "1012188972665-nkf0t5fpk3asehe8hg514ofe8n4vcfga.apps.googleusercontent.com"; // Filled in automatically
         public const string NearbyConnectionServiceId = "com.FikretGezer.FruitSlasher";
 
         public static bool ApplicationIdInitialized() {

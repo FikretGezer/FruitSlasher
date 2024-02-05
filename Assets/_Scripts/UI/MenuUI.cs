@@ -12,6 +12,7 @@ namespace Runtime
         [SerializeField] private TMP_Text _tLevel;
         [SerializeField] private Image _levelSlider;
 
+
         public static MenuUI Instance;
         private void Awake() {
             if(Instance == null) Instance = this;
@@ -33,6 +34,7 @@ namespace Runtime
                 if(PlayGamesPlatform.Instance.IsAuthenticated())
                     _tPlayerTag.text = PlayGamesPlatform.Instance.localUser.userName.ToString();
             }
+
             SetStars();
         }
         public void SetStars()

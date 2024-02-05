@@ -11,8 +11,7 @@ namespace Runtime
         public TMP_Text _autenhticateT;
         public GameObject _canvas;
 
-        public static SignInStatus Authenticated {get; private set;}
-        public static PlayGamesPlatform Platform {get; private set;}
+
         private void Start() {
             PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
         }
