@@ -2,11 +2,13 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine;
+using UnityEngine.Android;
 using TMPro;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using UnityEngine.SceneManagement;
 
 namespace Runtime
 {
@@ -17,8 +19,9 @@ namespace Runtime
         public TMP_Text _loadInfoT;
         public VPlayerData _playerData;
         private bool isSaving;
-        private const string fileName = "/player.dat";
+        private string fileName = "player.game";
         private const string cloudFileName = "CurrentPlayerData";
+        private readonly string encryptionCodeWord = "word";
 
         public static VGPGSManager Instance;
         private void Awake() {
@@ -30,62 +33,61 @@ namespace Runtime
             // Load();
         }
         #region Local Saving & Loading
-        public void Save()
-        {
-            // Create a route from the program to the file
-            string filePath = Path.Combine(Application.persistentDataPath, fileName);
-
-            var isExist = File.Exists(filePath);
-            FileStream file = isExist ? File.Open(filePath, FileMode.Open) : File.Open(filePath, FileMode.Create);
-
-            // Create a copy of the save data
-            VPlayerData pData = new VPlayerData();
-            pData = _playerData;
-
-            // Create a binary formatter that can read or write binary files
-            BinaryFormatter formatter = new BinaryFormatter();
-            // Save the data
-            formatter.Serialize(file, pData);
-
-            // Close the data stream
-            file.Close();
-            _infoT.text += $"File Saved Normal\n";
-        }
         public void Load()
         {
-            string filePath = Path.Combine(Application.persistentDataPath, fileName);
-            if(File.Exists(filePath))
+            string fullPath = Path.Combine(Application.persistentDataPath, fileName);
+            _playerData = null;
+            if(File.Exists(fullPath))
             {
-                // Open File
-                FileStream file = File.Open(filePath, FileMode.Open);
+                string dataToLoad = "";
+                using(FileStream stream = new FileStream(fullPath, FileMode.Open))
+                {
+                    using(StreamReader reader = new StreamReader(stream))
+                    {
+                        dataToLoad = reader.ReadToEnd();
+                    }
+                }
 
-                // Create a binary formatter that can read or write binary files
-                BinaryFormatter formatter = new BinaryFormatter();
-                _playerData = formatter.Deserialize(file) as VPlayerData;
+                dataToLoad = EncrypDecrypt(dataToLoad);
 
-                // Close the data stream
-                file.Close();
-                _infoT.text += "File Exist, Loaded Normal\n";
-                // SceneManager.LoadScene("Menu");
+                _playerData = JsonUtility.FromJson<VPlayerData>(dataToLoad);
+
                 AsyncLoader.Instance.LoadSceneAsync("Menu");
             }
             else
             {
                 _playerData = new VPlayerData();
-                _infoT.text += "File Not Found Created and Loaded Normal\n";
-                // SceneManager.LoadScene("Menu");
                 AsyncLoader.Instance.LoadSceneAsync("Menu");
             }
         }
-
-        [ContextMenu("Delete Local Game Data")]
-        public void DeleteLocalGameData()
+        public void Save()
         {
-            string filePath = Path.Combine(Application.persistentDataPath, fileName);
-            if(File.Exists(filePath))
+            string fullPath = Path.Combine(Application.persistentDataPath, fileName);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+
+            string dataToStore = JsonUtility.ToJson(_playerData, true);
+
+            dataToStore = EncrypDecrypt(dataToStore);
+
+            using(FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
-                File.Delete(filePath);
+                using(StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.Write(dataToStore);
+                }
             }
+        }
+        private string EncrypDecrypt(string data)
+        {
+            string modifiedData = "";
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
+            }
+
+            return modifiedData;
         }
         #endregion
 
@@ -166,12 +168,15 @@ namespace Runtime
                 _infoCloudT.text += "Final File Loading Success Cloud\n";
                 VLeaderboard.Instance.CompareLeaderboardScores();
                 // if(_playerData != null) SceneManager.LoadScene("Menu");
-                if(_playerData != null) AsyncLoader.Instance.LoadSceneAsync("Menu");
+                if(_playerData != null)
+                {
+                    AsyncLoader.Instance.LoadSceneAsync("Menu");
+                }
                 else
                 {
                     _playerData = new VPlayerData();
+
                     OpenSavedGame(true);
-                    // SceneManager.LoadScene("Menu");
                     AsyncLoader.Instance.LoadSceneAsync("Menu");
                 }
             }

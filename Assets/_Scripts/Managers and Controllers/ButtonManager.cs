@@ -58,7 +58,10 @@ namespace Runtime
         public void DeleteGameData()
         {
             VGPGSManager.Instance.DeleteGameData();
-            VGPGSManager.Instance.DeleteLocalGameData();
+        }
+        public void LoginManual()
+        {
+            VLoginManager.Instance.ManualAuthenticate();
         }
         #region In Game
         public void LoadAScene(string sceneName)

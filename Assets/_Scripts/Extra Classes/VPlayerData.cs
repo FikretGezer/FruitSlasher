@@ -1,3 +1,5 @@
+using System;
+
 namespace Runtime
 {
     [System.Serializable]
@@ -28,7 +30,6 @@ namespace Runtime
 
         public float musicVolume;
         public float soundFXVolume;
-        public float totalPlayTime;
 
         #region Achievements
         public bool achivement_sliceFirstFruit;
@@ -50,7 +51,7 @@ namespace Runtime
         public VPlayerData() {
             highestScore = 0;
             level = 1;
-            stars = 500;
+            stars = 0;
 
             experienceMultiplier = 1.2f;
             baseExperience = 80;
@@ -79,8 +80,6 @@ namespace Runtime
 
             musicVolume = 0f;
             soundFXVolume = 0f;
-
-            totalPlayTime = 0f;
         }
     }
 
