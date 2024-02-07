@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 
 namespace Runtime
 {
-    [System.Serializable]
+    [Serializable]
     public class VPlayerData {
         public int highestScore;
         public int level;
@@ -30,6 +31,8 @@ namespace Runtime
 
         public float musicVolume;
         public float soundFXVolume;
+
+        public List<Mission> selectedMissions;
 
         #region Achievements
         public bool achivement_sliceFirstFruit;
@@ -80,6 +83,8 @@ namespace Runtime
 
             musicVolume = 0f;
             soundFXVolume = 0f;
+
+            selectedMissions = new List<Mission>();
         }
     }
 

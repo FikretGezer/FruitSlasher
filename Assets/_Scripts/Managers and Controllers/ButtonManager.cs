@@ -336,7 +336,14 @@ namespace Runtime
 
                     if(FindObjectOfType<MissionController>())
                     {
-                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // {
+                        //     if(mission.type == MissionType.BuyDojo)
+                        //     {
+                        //         mission.BuyDojo();
+                        //     }
+                        // }
+                        foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
                         {
                             if(mission.type == MissionType.BuyDojo)
                             {
@@ -369,7 +376,14 @@ namespace Runtime
 
                     if(FindObjectOfType<MissionController>())
                     {
-                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // {
+                        //     if(mission.type == MissionType.BuyBlade)
+                        //     {
+                        //         mission.BuyBlade();
+                        //     }
+                        // }
+                        foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
                         {
                             if(mission.type == MissionType.BuyBlade)
                             {
@@ -512,7 +526,14 @@ namespace Runtime
 
                     if(FindObjectOfType<MissionController>())
                     {
-                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // {
+                        //     if(mission.type == MissionType.BuyDojo)
+                        //     {
+                        //         mission.BuyDojo();
+                        //     }
+                        // }
+                        foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
                         {
                             if(mission.type == MissionType.BuyDojo)
                             {
@@ -548,7 +569,14 @@ namespace Runtime
 
                     if(FindObjectOfType<MissionController>())
                     {
-                        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                        // {
+                        //     if(mission.type == MissionType.BuyBlade)
+                        //     {
+                        //         mission.BuyBlade();
+                        //     }
+                        // }
+                        foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
                         {
                             if(mission.type == MissionType.BuyBlade)
                             {

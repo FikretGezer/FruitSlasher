@@ -74,22 +74,32 @@ namespace Runtime
                 }
             }
 
-            if(_selectedMissionsScriptable.selectedMissions.Count > 0)
+            // if(_selectedMissionsScriptable.selectedMissions.Count > 0)
+            // {
+            //     foreach(var miss in _selectedMissionsScriptable.selectedMissions)
+            //     {
+            //         miss.completed = false;
+            //     }
+            // }
+            if(VGPGSManager.Instance._playerData.selectedMissions.Count > 0)
             {
-                foreach(var miss in _selectedMissionsScriptable.selectedMissions)
+                foreach(var miss in VGPGSManager.Instance._playerData.selectedMissions)
                 {
                     miss.completed = false;
                 }
             }
-            _selectedMissionsScriptable.selectedMissions.Clear();
-            _selectedMissionsScriptable.selectedMissions.AddRange(missions);
+            // _selectedMissionsScriptable.selectedMissions.Clear();
+            // _selectedMissionsScriptable.selectedMissions.AddRange(missions);
+
+            VGPGSManager.Instance._playerData.selectedMissions.Clear();
+            VGPGSManager.Instance._playerData.selectedMissions.AddRange(missions);
         }
         private void SetPreviousMissions()
         {
             if(missionContainer.Length >= 3)
             {
                 int containerIndex = 0;
-                foreach (var miss in _selectedMissionsScriptable.selectedMissions)
+                foreach (var miss in VGPGSManager.Instance._playerData.selectedMissions)
                 {
                     missionContainer[containerIndex].image.sprite = miss.sprite;
                     missionContainer[containerIndex].explanationT.text = miss.explanation;
@@ -116,9 +126,19 @@ namespace Runtime
         }
         private bool CheckIsAllCompleted()
         {
-            if(_selectedMissionsScriptable.selectedMissions.Count > 0)
+            // if(_selectedMissionsScriptable.selectedMissions.Count > 0)
+            // {
+            //     foreach(var miss in _selectedMissionsScriptable.selectedMissions)
+            //     {
+            //         if(!miss.completed)
+            //         {
+            //             return false;
+            //         }
+            //     }
+            // }
+            if(VGPGSManager.Instance._playerData.selectedMissions.Count > 0)
             {
-                foreach(var miss in _selectedMissionsScriptable.selectedMissions)
+                foreach(var miss in VGPGSManager.Instance._playerData.selectedMissions)
                 {
                     if(!miss.completed)
                     {

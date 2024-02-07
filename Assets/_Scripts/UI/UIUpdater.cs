@@ -90,7 +90,14 @@ public class UIUpdater : MonoBehaviour
     {
         GameManager.Situation = GameSituation.Stop;
         #region Play Game Mission
-        foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+        // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+        // {
+        //     if(mission.type == MissionType.Play)
+        //     {
+        //         mission.PlayTheGame();
+        //     }
+        // }
+        foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
         {
             if(mission.type == MissionType.Play)
             {

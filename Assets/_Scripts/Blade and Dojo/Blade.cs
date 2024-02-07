@@ -240,7 +240,14 @@ public class Blade : MonoBehaviour
 
                         if(FindObjectOfType<MissionController>())
                         {
-                            foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                            // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                            // {
+                            //     if(mission.type == MissionType.CutFruit)
+                            //     {
+                            //         mission.CutFruit();
+                            //     }
+                            // }
+                            foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
                             {
                                 if(mission.type == MissionType.CutFruit)
                                 {
@@ -287,7 +294,14 @@ public class Blade : MonoBehaviour
 
                             if(FindObjectOfType<MissionController>())
                             {
-                                foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                                // foreach(var mission in MissionController.Instance._selectedMissionsScriptable.selectedMissions)
+                                // {
+                                //     if(mission.type == MissionType.CutBomb)
+                                //     {
+                                //         mission.CutBomb();
+                                //     }
+                                // }
+                                foreach(var mission in VGPGSManager.Instance._playerData.selectedMissions)
                                 {
                                     if(mission.type == MissionType.CutBomb)
                                     {
