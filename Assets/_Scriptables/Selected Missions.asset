@@ -15,6 +15,7 @@ MonoBehaviour:
   missions:
   - type: 2
     sprite: {fileID: 473567953, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 0
     explanation: Play 10 games
     points: 150
     requiredAmount: 10
@@ -22,6 +23,7 @@ MonoBehaviour:
     completed: 0
   - type: 2
     sprite: {fileID: 838763885, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 1
     explanation: Play 15 games
     points: 150
     requiredAmount: 15
@@ -29,6 +31,7 @@ MonoBehaviour:
     completed: 0
   - type: 2
     sprite: {fileID: -1477315775, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 2
     explanation: Play 20 games
     points: 150
     requiredAmount: 20
@@ -36,6 +39,7 @@ MonoBehaviour:
     completed: 0
   - type: 0
     sprite: {fileID: 131700632, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 3
     explanation: Slice 300 fruits
     points: 150
     requiredAmount: 300
@@ -43,6 +47,7 @@ MonoBehaviour:
     completed: 0
   - type: 0
     sprite: {fileID: 1414700673, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 4
     explanation: Slice 500 fruits
     points: 150
     requiredAmount: 500
@@ -50,6 +55,7 @@ MonoBehaviour:
     completed: 0
   - type: 0
     sprite: {fileID: -1342342814, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 5
     explanation: Slice 700 fruits
     points: 150
     requiredAmount: 700
@@ -57,6 +63,7 @@ MonoBehaviour:
     completed: 0
   - type: 1
     sprite: {fileID: -820460241, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 6
     explanation: Slice a bomb
     points: 150
     requiredAmount: 1
@@ -64,6 +71,7 @@ MonoBehaviour:
     completed: 0
   - type: 3
     sprite: {fileID: 1324043890, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 7
     explanation: Buy a new blade
     points: 150
     requiredAmount: 1
@@ -71,6 +79,7 @@ MonoBehaviour:
     completed: 0
   - type: 4
     sprite: {fileID: -320173931, guid: d3383226e2832954eb2294cca064f22a, type: 3}
+    missionIndex: 8
     explanation: Buy a new dojo
     points: 150
     requiredAmount: 1

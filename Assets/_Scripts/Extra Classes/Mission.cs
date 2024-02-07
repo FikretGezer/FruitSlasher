@@ -9,6 +9,7 @@ namespace Runtime
 
         [Header("Board Parameters")]
         public Sprite sprite;
+        public int missionIndex;
         public string explanation;
         public int points;
 

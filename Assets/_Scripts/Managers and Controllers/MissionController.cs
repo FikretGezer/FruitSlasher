@@ -101,7 +101,7 @@ namespace Runtime
                 int containerIndex = 0;
                 foreach (var miss in VGPGSManager.Instance._playerData.selectedMissions)
                 {
-                    missionContainer[containerIndex].image.sprite = miss.sprite;
+                    missionContainer[containerIndex].image.sprite = _selectedMissionsScriptable.missions[miss.missionIndex].sprite;
                     missionContainer[containerIndex].explanationT.text = miss.explanation;
                     missionContainer[containerIndex].pointsT.text = "+" + miss.points.ToString();
                     missionContainer[containerIndex].progressT.text = $"{miss.currentAmount} / {miss.requiredAmount}";
