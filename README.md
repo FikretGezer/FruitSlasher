@@ -10,3 +10,21 @@
   <img src="https://github.com/FikretGezer/FruitSlasher/assets/64322071/e0d9dccb-d48b-4561-b478-79e9d6323350" width="400" height="220"> 
   <img src="https://github.com/FikretGezer/FruitSlasher/assets/64322071/bf1d7662-8735-4dd3-a138-332853fe3c41" width="400" height="220"> 
 </div>
+
+## What is this game about?
+Fruit Slasher is a clone of a known game Fruit Ninja. There is currently 1 mode in the game and the goal of the mode is slicing fruits as much as possible while avoiding bombs. End of the each round players earns some in game currency called "Stars" and experience to level up. Once players level up, some blade or some dojos will be unlocked and they can buy these items from the in game store with stars they own and players can see in the store, which level the items will be unlocked.
+
+Also there are:
+* 10 different blades
+* 6 different dojos in the game.
+
+## Background and Development
+I tried to analize what can I do and what I can't do before developing the game and wrote everything down. During the development I used OOP, implemented store, created a mission board, implement object pooling for fruits, bombs, effects etc., created different blades using unity's particle system, implement Event Manager using Observer Pattern and more.
+* I used OOP to create a Event Manager. I created enum called Game Events and declared bunch of events to use subscribing from different scripts and when something happened to related to the event I broadcasted the event in the needed script.
+* Created a store for players to buy new blades and dojos to give them something to pursue. I created a scriptable object to store these items and added one by one after adjusting the parameters (sprites, unlock level, price, etc.). So players can see which item unlocks when and when players reach out the certain level for an item, they can buy it if they have enough Stars.
+* Used similar type of approach for the mission creating. I stored different type of missions in scriptable object and if there is no active missions, game randomly select 3 different mission and assign them on the board. They will stay there until players complete them.
+* Implemented pooling system to avoid performance problems by creating and destroying the reusable objects.
+* Created simple animations for the menus and buttons.
+* Tried to created dynamic UIs with default Unity components like Layout groups.
+* Implemented beginner guide to show players around by using inverted mask with materials.
+* and more...
