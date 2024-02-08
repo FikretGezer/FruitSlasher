@@ -415,9 +415,13 @@ namespace Runtime
         }
         private void OpenPreGameBladesMenu()
         {
+
             didBladesMenuOpen = !didBladesMenuOpen;
             _preGameStoreUIElements.bladesAnimator.SetBool("openBladesMenu", didBladesMenuOpen);
             SoundManager.Instance.PlaySFXClip(SoundManager.Instance.Clips.swipeMenusSFX);
+
+            if(!didBladesMenuOpen)
+                _preGameStoreUIElements.bladeBuyButton.gameObject.SetActive(false);
         }
         private void OpenPreGameDojosMenu()
         {
@@ -428,7 +432,10 @@ namespace Runtime
             if(didDojosMenuOpen)
                 _preGameStoreUIElements.playButton.SetActive(false);
             else
+            {
                 _preGameStoreUIElements.playButton.SetActive(true);
+                _preGameStoreUIElements.dojoBuyButton.gameObject.SetActive(false);
+            }
         }
         public void SetPreGameItemBlade(GameObject priceContainer, Transform t, int index)
         {

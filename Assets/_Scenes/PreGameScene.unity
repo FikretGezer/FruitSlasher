@@ -3487,12 +3487,12 @@ RectTransform:
   m_Children:
   - {fileID: 1556220530}
   - {fileID: 1483711197}
-  - {fileID: 1143887085}
   - {fileID: 719679579}
   - {fileID: 843702915}
   - {fileID: 2074869419}
   - {fileID: 327527062}
   - {fileID: 1493966936}
+  - {fileID: 1143887085}
   - {fileID: 428747499}
   - {fileID: 479662467}
   - {fileID: 703742543}
@@ -4714,7 +4714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.8352942, g: 0.63529414, b: 0.3647059, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5642,7 +5642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.8352942, g: 0.64705884, b: 0.38823533, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
