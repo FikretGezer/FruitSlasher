@@ -49,7 +49,7 @@ namespace Runtime
                 completed = true;
                 VGPGSManager.Instance._playerData.stars += points;
                 MenuUI.Instance.SetStars();
-                NotificationController.Instance.EnqueueNotification(sprite, explanation, points);
+                NotificationController.Instance.EnqueueNotification(missionIndex, explanation, points);
             }
         }
         #endregion

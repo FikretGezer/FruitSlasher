@@ -11,6 +11,7 @@ namespace Runtime
         [SerializeField] private Image notificationImage;
         [SerializeField] private TMP_Text notificationDescription;
         [SerializeField] private TMP_Text notificationPoints;
+        [SerializeField] private SelectedMissionsScriptable _missionsScriptable;
 
         private Queue<NotificationInfo> missionQ = new Queue<NotificationInfo>();
         public bool IsNotificationShowed { get; set; }
@@ -26,8 +27,9 @@ namespace Runtime
                 SetNotificationUI(mInfo);
             }
         }
-        public void EnqueueNotification(Sprite notSprite, string notDesc, int notPoints)
+        public void EnqueueNotification(int idx, string notDesc, int notPoints)
         {
+            var notSprite = _missionsScriptable.missions[idx].sprite;
             missionQ.Enqueue(new NotificationInfo(notSprite, notDesc, notPoints));
         }
         private void SetNotificationUI(NotificationInfo info)

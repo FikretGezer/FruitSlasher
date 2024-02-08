@@ -1015,6 +1015,7 @@ MonoBehaviour:
   notificationImage: {fileID: 2030429309}
   notificationDescription: {fileID: 409073680}
   notificationPoints: {fileID: 1199927324}
+  _missionsScriptable: {fileID: 11400000, guid: 4fef244b2a6fe9b4a918374009de6b2d, type: 2}
 --- !u!114 &582647173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2514,7 +2515,7 @@ MonoBehaviour:
     areNewDojosUnlocked: 0
     musicVolume: 0
     soundFXVolume: 0
-    totalPlayTime: 0
+    selectedMissions: []
     achivement_sliceFirstFruit: 0
     achivement_fruitSalad: 0
     achivement_tastyQuadro: 0
