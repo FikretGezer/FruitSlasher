@@ -233,7 +233,7 @@ public class Blade : MonoBehaviour
                         {
                             VAchievement.Instance.AchievementBerryFan();
                         }
-                        else if(fruit.CompareTag("strawberry"))
+                        else if(fruit.CompareTag("orange"))
                         {
                             VAchievement.Instance.AchievementOrangeBlitz();
                         }
@@ -350,7 +350,7 @@ public class Blade : MonoBehaviour
 
             fruit.cutIt = true;
             if(!comboStart)
-                StartCoroutine(ComboCor(0.1f));
+                StartCoroutine(ComboCor(0.3f));
             else
             {
                 comboCount++;
@@ -472,7 +472,7 @@ public class Blade : MonoBehaviour
         comboStart = true;
         comboCount = 1;
         yield return new WaitForSeconds(time);
-        if(comboCount > 1)
+        if(comboCount > 2)
         {
             EffectSpawner.Instance.GetComboTextEffect(lastHitFruitPos, comboCount);
             _comboAmount++;
@@ -484,7 +484,7 @@ public class Blade : MonoBehaviour
         VAchievement.Instance.AchievementComboProdidy();
         VAchievement.Instance.AchievementComboVirtuoso();
 
-        if(comboCount >= 4)
+        if(comboCount >= 5)
         {
             VAchievement.Instance.AchievementSliceMaster();
         }
